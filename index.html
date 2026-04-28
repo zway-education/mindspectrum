@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'self';">
     <title>覺知心智光譜｜了解您的原生底色</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,138 +12,200 @@
 
     <style>
         :root {
+            --primary:      #1A2740;   /* 深海藍 - 主色 */
+            --primary-mid:  #2D3F5C;   /* 中藍 */
+            --primary-light:#4A6080;   /* 淺藍 */
+            --accent:       #E8600A;   /* 展威橘 */
+            --accent-light: #F5914A;
+            --accent-pale:  #FFF0E6;
+            --gold:         #C8960A;   /* 金色強調 */
+            --gold-pale:    #FFF8E0;
+            --surface:      #F5F7FA;   /* 淺灰背景 */
+            --surface2:     #EAECF0;
+            --white:        #FFFFFF;
+            --text-dark:    #1A2740;
+            --text-mid:     #4A5568;
+            --text-light:   #8896A8;
+            --red:    #D63030;
             --orange: #E8600A;
-            --orange-light: #F5914A;
+            --green:  #2E8B5A;
+            --blue:   #3A70B0;
+            --red-pale:    #FFF0F0;
             --orange-pale: #FFF0E6;
-            --orange-bg: #FFF8F3;
-            --orange-border: #F5D0B0;
-            --blue: #5B8FC9;
-            --blue-pale: #EEF4FF;
-            --blue-border: #C8DCF0;
-            --brown-dark: #3A2010;
-            --brown-mid: #7A4A2A;
-            --brown-light: #B08060;
+            --green-pale:  #F0FAF4;
+            --blue-pale:   #EEF4FF;
         }
-        * { box-sizing: border-box; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body, html {
-            height: 100%; margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
-            background-color: var(--orange-bg);
-            -webkit-user-select: none; user-select: none;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+            background: linear-gradient(160deg, #FFF6F0 0%, #F5F8FF 50%, #F0FBF5 100%);
+            background-image:
+                linear-gradient(160deg, rgba(255,240,230,0.9) 0%, rgba(245,248,255,0.85) 50%, rgba(240,251,245,0.9) 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Crect x='40' y='30' width='140' height='140' rx='22' fill='%23F2B8A8' opacity='0.18' transform='rotate(-12 110 100)'/%3E%3Crect x='210' y='10' width='110' height='110' rx='18' fill='%23F8D898' opacity='0.15' transform='rotate(6 265 65)'/%3E%3Crect x='370' y='50' width='130' height='130' rx='20' fill='%23B8DDB0' opacity='0.15' transform='rotate(-8 435 115)'/%3E%3Crect x='540' y='20' width='100' height='100' rx='16' fill='%23A8C8E8' opacity='0.15' transform='rotate(10 590 70)'/%3E%3Crect x='10' y='210' width='120' height='120' rx='20' fill='%23F8D898' opacity='0.13' transform='rotate(8 70 270)'/%3E%3Crect x='170' y='180' width='150' height='150' rx='24' fill='%23D8B8D8' opacity='0.12' transform='rotate(-5 245 255)'/%3E%3Crect x='360' y='200' width='120' height='120' rx='20' fill='%23F2B8A8' opacity='0.14' transform='rotate(14 420 260)'/%3E%3Crect x='530' y='170' width='140' height='140' rx='22' fill='%23B8DDB0' opacity='0.13' transform='rotate(-10 600 240)'/%3E%3Crect x='50' y='390' width='130' height='130' rx='22' fill='%23A8C8E8' opacity='0.14' transform='rotate(-6 115 455)'/%3E%3Crect x='220' y='370' width='110' height='110' rx='18' fill='%23F2B8A8' opacity='0.12' transform='rotate(9 275 425)'/%3E%3Crect x='380' y='380' width='140' height='140' rx='22' fill='%23F8D898' opacity='0.13' transform='rotate(-12 450 450)'/%3E%3Crect x='555' y='360' width='120' height='120' rx='20' fill='%23D8B8D8' opacity='0.11' transform='rotate(7 615 420)'/%3E%3Crect x='20' y='560' width='110' height='110' rx='18' fill='%23B8DDB0' opacity='0.12' transform='rotate(11 75 615)'/%3E%3Crect x='200' y='550' width='130' height='130' rx='22' fill='%23A8C8E8' opacity='0.11' transform='rotate(-8 265 615)'/%3E%3Crect x='380' y='560' width='115' height='115' rx='18' fill='%23F2B8A8' opacity='0.10' transform='rotate(6 437 617)'/%3E%3Crect x='545' y='540' width='135' height='135' rx='22' fill='%23F8D898' opacity='0.12' transform='rotate(-9 612 607)'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-attachment: fixed;
+            -webkit-user-select: none;
+            user-select: none;
+            color: var(--text-dark);
         }
         input, textarea { -webkit-user-select: auto; user-select: auto; }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
+            from { opacity: 0; transform: translateY(20px); }
             to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes popIn {
-            0%   { transform: scale(0.85); opacity: 0; }
-            70%  { transform: scale(1.04); }
-            100% { transform: scale(1);    opacity: 1; }
+            0%   { transform: scale(0.88); opacity: 0; }
+            70%  { transform: scale(1.03); }
+            100% { transform: scale(1); opacity: 1; }
         }
-        .fade-up   { animation: fadeUp 0.45s cubic-bezier(.22,.68,0,1.2) forwards; }
-        .pop-in    { animation: popIn 0.4s cubic-bezier(.22,.68,0,1.2) forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(16px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .fade-up  { animation: fadeUp 0.4s cubic-bezier(.22,.68,0,1.15) both; }
+        .pop-in   { animation: popIn 0.38s cubic-bezier(.22,.68,0,1.2) both; }
+        .slide-in { animation: slideIn 0.35s cubic-bezier(.22,.68,0,1.15) both; }
 
-        /* 捲軸隱藏 */
         .no-bar { -ms-overflow-style:none; scrollbar-width:none; }
         .no-bar::-webkit-scrollbar { display:none; }
 
-        /* 全頁容器 */
+        /* ── Layout ──────────────────────── */
         .page {
             min-height: 100vh;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: var(--surface);
         }
 
-        /* 頂部橘色 Header */
+        /* ── Top Header ──────────────────── */
         .top-header {
             width: 100%;
-            background: var(--orange);
-            padding: 40px 24px 28px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 100%);
+            padding: 40px 24px 32px;
             text-align: center;
             position: relative;
-        }
-        .spectrum-bar {
-            display: flex;
-            gap: 4px;
-            margin: 14px auto 0;
-            max-width: 200px;
-            border-radius: 4px;
             overflow: hidden;
-            height: 5px;
+        }
+        .top-header::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+        }
+        .top-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: -20px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(232,96,10,0.08);
+        }
+        .spectrum-strip {
+            display: flex;
+            height: 3px;
+            margin: 16px auto 0;
+            max-width: 120px;
+            border-radius: 2px;
+            overflow: hidden;
+            gap: 2px;
         }
 
-        /* 內容區 */
+        /* ── Content ─────────────────────── */
         .content {
             width: 100%;
             max-width: 480px;
-            padding: 20px 20px 40px;
+            padding: 20px 18px 48px;
             flex: 1;
         }
 
-        /* 卡片 */
+        /* ── Cards ───────────────────────── */
         .card {
-            background: #fff;
-            border-radius: 20px;
-            border: 1.5px solid var(--orange-border);
+            background: var(--white);
+            border-radius: 16px;
+            border: 1px solid var(--surface2);
             padding: 20px;
             margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(26,39,64,0.06);
         }
-        .card-blue {
-            background: #fff;
-            border-radius: 20px;
-            border: 1.5px solid var(--blue-border);
+        .card-accent {
+            background: var(--white);
+            border-radius: 16px;
+            border: 1.5px solid var(--accent-pale);
             padding: 20px;
             margin-bottom: 12px;
         }
 
-        /* 按鈕 */
-        .btn-main {
+        /* ── Buttons ─────────────────────── */
+        .btn-primary {
             width: 100%;
-            background: var(--orange);
+            background: var(--accent);
             color: #fff;
             border: none;
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 16px;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.18s;
+            transition: all 0.16s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+        }
+        .btn-primary:active { transform: scale(0.97); background: #C05008; }
+
+        .btn-secondary {
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.16s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        .btn-main:active { transform: scale(0.97); background: #C05008; }
+        .btn-secondary:active { transform: scale(0.97); background: #0E1929; }
 
-        .btn-sub {
+        .btn-outline {
             width: 100%;
-            background: var(--orange-pale);
-            color: var(--orange);
-            border: 1.5px solid var(--orange-border);
+            background: transparent;
+            color: var(--text-mid);
+            border: 1.5px solid var(--surface2);
             border-radius: 14px;
             padding: 13px;
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.18s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            transition: all 0.15s;
         }
-        .btn-sub:active { transform: scale(0.97); }
+        .btn-outline:active { background: var(--surface); }
 
         .btn-ghost {
             width: 100%;
             background: transparent;
-            color: var(--brown-light);
             border: none;
+            color: var(--text-light);
             padding: 12px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -153,97 +214,199 @@
             gap: 4px;
         }
 
-        /* 輸入框 */
+        /* ── Inputs ──────────────────────── */
         .input-field {
             width: 100%;
             padding: 13px 14px 13px 44px;
             font-size: 15px;
-            background: var(--orange-bg);
-            border: 1.5px solid var(--orange-border);
-            border-radius: 14px;
+            background: var(--surface);
+            border: 1.5px solid var(--surface2);
+            border-radius: 12px;
             outline: none;
-            color: var(--brown-dark);
-            transition: border-color 0.2s;
+            color: var(--text-dark);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
-        .input-field:focus { border-color: var(--orange); }
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232,96,10,0.1);
+        }
         .input-wrap { position: relative; }
         .input-icon {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--brown-light);
+            color: var(--text-light);
         }
 
-        /* 選項按鈕 */
+        /* ── Entry Cards (Home) ───────────── */
+        .entry-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid var(--surface2);
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            transition: all 0.18s;
+            box-shadow: 0 2px 8px rgba(26,39,64,0.06);
+        }
+        .entry-card:active, .entry-card:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,39,64,0.12); }
+
+        /* ── Quiz Option Buttons ─────────── */
         .option-btn {
             width: 100%;
-            background: #fff;
-            border: 1.5px solid var(--orange-border);
+            background: var(--white);
+            border: 1.5px solid var(--surface2);
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 15px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             transition: all 0.15s;
             margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(26,39,64,0.06);
         }
-        .option-btn:active { transform: scale(0.98); background: var(--orange-pale); }
-        .option-badge {
-            background: var(--orange-pale);
-            color: var(--orange);
-            border-radius: 10px;
-            padding: 3px 10px;
+        .option-btn:active { transform: scale(0.98); background: var(--accent-pale); border-color: var(--accent); }
+
+        /* ── Score Bar ───────────────────── */
+        .score-bar-track { width:100%; height:8px; border-radius:6px; overflow:hidden; margin-top:4px; background:var(--surface2); }
+        .score-bar-fill  { height:100%; border-radius:6px; transition:width 1s ease-out; }
+
+        /* ── Result type sections ─────────── */
+        .type-section {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 1px 4px rgba(26,39,64,0.05);
+        }
+
+        /* ── Badge ───────────────────────── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 700;
+            background: var(--accent-pale);
+            color: var(--accent);
         }
 
-        /* 分數條 */
-        .score-bar-track {
-            width: 100%;
-            height: 8px;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 4px;
+        /* ── Divider ─────────────────────── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
         }
-        .score-bar-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 1s ease-out;
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--surface2);
         }
 
-        /* 結果頁型別卡 */
-        .type-section {
-            background: #fff;
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--orange);
+        /* ━━━ RESPONSIVE: Desktop ━━━━━━━━━ */
+        @media (min-width: 768px) {
+            body { background: var(--primary); }
+
+            .page {
+                min-height: 100vh;
+                background: var(--primary);
+                justify-content: center;
+                align-items: center;
+                padding: 24px;
+            }
+
+            /* Phone shell */
+            .phone-shell {
+                width: 100%;
+                max-width: 520px;
+                background: var(--surface);
+                border-radius: 32px;
+                overflow: hidden;
+                box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+                max-height: 90vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .phone-content {
+                overflow-y: auto;
+                flex: 1;
+            }
+            .phone-content.no-bar { -ms-overflow-style:none; scrollbar-width:none; }
+            .phone-content.no-bar::-webkit-scrollbar { display:none; }
+
+            /* Scale up text for projection */
+            .top-header { padding: 48px 32px 40px; }
+            .top-header .title-label { font-size: 13px !important; }
+            .top-header .title-main  { font-size: 34px !important; }
+            .top-header .title-sub   { font-size: 16px !important; }
+
+            .entry-card { padding: 24px; }
+            .entry-card .entry-title { font-size: 19px !important; }
+            .entry-card .entry-sub   { font-size: 14px !important; }
+
+            .btn-primary, .btn-secondary { font-size: 17px; padding: 18px; }
+            .option-btn { padding: 17px 20px; }
+            .option-btn .opt-label { font-size: 17px !important; }
+            .option-btn .opt-badge { font-size: 14px !important; padding: 4px 14px !important; }
+
+            .content { padding: 24px 24px 48px; max-width: 100%; }
         }
-        .type-section.blue-accent  { border-left-color: var(--blue); }
-        .type-section.green-accent { border-left-color: #4CAF7D; }
+
+        @media (min-width: 1024px) {
+            /* Wide screen: side-by-side layout */
+            .desktop-layout {
+                display: flex;
+                align-items: flex-start;
+                gap: 48px;
+                width: 100%;
+                max-width: 1100px;
+                padding: 0 32px;
+            }
+            .desktop-left {
+                flex: 1;
+                color: white;
+                padding-top: 32px;
+            }
+            .desktop-right {
+                width: 440px;
+                flex-shrink: 0;
+            }
+            .phone-shell {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
-/* ── 設定區（只需改這裡）─────────────────────── */
+/* ── 設定區 ─────────────────────────────────── */
 const GOOGLE_SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbznZaOZDD91ueme98boz8OthigK2xP5Od__-OmD_Y82i10sP9Y6hYgMjv6HVdClFaIf/exec";
 const CHILD_VERSION_URL  = "https://sites.google.com/view/zwaymindspectrum2026monster/%E5%BF%83%E6%99%BA%E5%85%89%E8%AD%9C%E6%B8%AC%E9%A9%97-%E5%AD%A9%E5%AD%90%E7%89%88";
 const REVIEW_RECORDS_URL = "https://sites.google.com/view/mindtest-review/%E9%A6%96%E9%A0%81";
-const LINE_ADD_FRIEND_URL= "https://lin.ee/nnDYAZE";
-const QUIZ_SHARE_URL     = "https://zway-education.github.io/mindspectrum/";
+const LINE_ADD_FRIEND_URL = "https://lin.ee/nnDYAZE";
+const QUIZ_SHARE_URL      = "https://zway-education.github.io/mindspectrum/";
 /* ───────────────────────────────────────────── */
 
 const TYPE_INFO = {
-    red:    { label:"紅色・開創型", stress:"習慣說「快點」、「我說了算」、「為什麼還沒做好？」", strength:"具備極強的行動力、突破力與主導感。", practice:"練習「三秒鐘留白」。強迫自己閉嘴三秒，改問：「我現在是想解決問題，還是想接住這個孩子？」", barColor:"#E84040", bgClass:"bg-red-50", borderClass:"border-red-200", textClass:"text-red-600" },
-    orange: { label:"橙色・關懷型", stress:"容易情緒波動，會說「你這樣讓媽媽很難過」、「你為什麼不理我？」", strength:"天生的雷達，對情感與連結有高度精準的感受力。", practice:"練習「劃分心理邊界」。告訴自己：「孩子的情緒是他的，我的愛不會因為他的情緒而改變。」", barColor:"#E8600A", bgClass:"bg-orange-50", borderClass:"border-orange-200", textClass:"text-orange-600" },
-    green:  { label:"綠色・協調型", stress:"追求和諧、怕衝突，習慣說「隨便啦」、「平安就好」。", strength:"關乎穩定與安全，能帶給家庭平靜的節奏感。", practice:"練習「刻意發聲」。溫柔且堅定地說出自己的底線與規則。", barColor:"#4CAF7D", bgClass:"bg-green-50", borderClass:"border-green-200", textClass:"text-green-600" },
-    blue:   { label:"藍色・分析型", stress:"重視對錯與細節，會說「這不合邏輯」、「細節要注意」。", strength:"具備強大的結構思考與分析理解能力。", practice:"啟動「Bug 感謝祭」。陪孩子一起把錯誤看作是「測試數據」並優化。", barColor:"#5B8FC9", bgClass:"bg-blue-50", borderClass:"border-blue-200", textClass:"text-blue-600" },
+    red:    { label:"紅色・開創型", emoji:"🔴", stress:"習慣說「快點」、「我說了算」、「為什麼還沒做好？」", strength:"具備極強的行動力、突破力與主導感。", practice:"練習「三秒鐘留白」。強迫自己閉嘴三秒，改問：「我現在是想解決問題，還是想接住這個孩子？」", barColor:"#D63030", bgColor:"#FFF0F0" },
+    orange: { label:"橙色・關懷型", emoji:"🟠", stress:"容易情緒波動，會說「你這樣讓媽媽很難過」、「你為什麼不理我？」", strength:"天生的雷達，對情感與連結有高度精準的感受力。", practice:"練習「劃分心理邊界」。告訴自己：「孩子的情緒是他的，我的愛不會因為他的情緒而改變。」", barColor:"#E8600A", bgColor:"#FFF0E6" },
+    green:  { label:"綠色・協調型", emoji:"🟢", stress:"追求和諧、怕衝突，習慣說「隨便啦」、「平安就好」。", strength:"關乎穩定與安全，能帶給家庭平靜的節奏感。", practice:"練習「刻意發聲」。溫柔且堅定地說出自己的底線與規則。", barColor:"#2E8B5A", bgColor:"#F0FAF4" },
+    blue:   { label:"藍色・分析型", emoji:"🔵", stress:"重視對錯與細節，會說「這不合邏輯」、「細節要注意」。", strength:"具備強大的結構思考與分析理解能力。", practice:"啟動「Bug 感謝祭」。陪孩子一起把錯誤看作是「測試數據」並優化。", barColor:"#3A70B0", bgColor:"#EEF4FF" },
 };
 
 const QUESTIONS = [
@@ -262,42 +425,56 @@ const OPTIONS = [
 ];
 const REFERRAL_OPTIONS = ["校園講座","教師研習","覺知SEL課程","親友分享","FB/IG","其它"];
 
-const sanitize = (s) => typeof s!=='string' ? s : s.replace(/[&<>'"]/g, t=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]));
-const validPhone = (p) => /^09\d{8}$/.test(p);
+const sanitize = s => typeof s!=='string' ? s : s.replace(/[&<>'"]/g, t=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]));
+const validPhone = p => /^09\d{8}$/.test(p);
 
-/* ── SVG 小圖示 ───── */
+/* ── Icons ─────────────────────────────────── */
 const Ico = {
-    Chevron: ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>,
-    ChevronL:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="m15 18-6-6 6-6"/></svg>,
-    User:    ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-    Mail:    ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
-    Phone:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
-    Search:  ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
-    Check:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>,
-    Smile:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
-    Restart: ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 3v6h6"/></svg>,
-    Share:   ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>,
-    Camera:  ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
-    Line:    ()=><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>,
+    Chevron:  ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>,
+    ChevronL: ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="m15 18-6-6 6-6"/></svg>,
+    User:  ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    Mail:  ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+    Phone: ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+    Search: ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+    Check:  ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>,
+    Star:   ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
+    Restart:()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 3v6h6"/></svg>,
+    Share:  ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>,
+    Camera: ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+    Smile:  ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+    Gift:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+    Bolt:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+    Line:   ()=><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>,
 };
 
-/* ── SpectrumBar ─── */
-function SpectrumBar({ label, score, color, trackColor }) {
+/* ── Spectrum Header Strip ─────────────────── */
+const SpectrumStrip = () => (
+    <div className="spectrum-strip">
+        <div style={{flex:1,background:'#D63030'}}/>
+        <div style={{flex:1,background:'#E8600A'}}/>
+        <div style={{flex:1,background:'#2E8B5A'}}/>
+        <div style={{flex:1,background:'#3A70B0'}}/>
+    </div>
+);
+
+/* ── Score Bar ────────────────────────────── */
+function ScoreBar({ label, score, color }) {
     return (
         <div style={{marginBottom:10}}>
-            <div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:700,color:'#7A4A2A',marginBottom:3}}>
-                <span>{label}</span><span>{score}</span>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:700,color:'rgba(255,255,255,0.9)',marginBottom:4}}>
+                <span>{label}</span><span style={{fontVariantNumeric:'tabular-nums'}}>{score}</span>
             </div>
-            <div className="score-bar-track" style={{background:trackColor}}>
-                <div className="score-bar-fill" style={{width:`${(score/30)*100}%`,background:color}}></div>
+            <div style={{height:6,background:'rgba(255,255,255,0.15)',borderRadius:4,overflow:'hidden'}}>
+                <div style={{height:'100%',background:color,width:`${(score/30)*100}%`,borderRadius:4,transition:'width 1s ease-out'}}/>
             </div>
         </div>
     );
 }
 
-/* ── 主程式 ─────────────────────────────────── */
+/* ━━━ MAIN APP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function App() {
     const [step, setStep]           = useState('home');
+    const [mode, setMode]           = useState('quiz'); // 'quiz' | 'direct'
     const [name, setName]           = useState('');
     const [email, setEmail]         = useState('');
     const [phone, setPhone]         = useState('');
@@ -314,6 +491,7 @@ function App() {
     const [engPwd, setEngPwd]       = useState('');
     const [showEng, setShowEng]     = useState(false);
     const [uid]                     = useState(()=>'u_'+Math.random().toString(36).slice(2,9));
+    const isDesktop                 = window.innerWidth >= 768;
 
     const sortedTypes = () =>
         ['red','orange','green','blue']
@@ -321,17 +499,18 @@ function App() {
             .sort((a,b)=>scores[b.id]-scores[a.id]);
 
     const reset = () => {
-        setStep('home'); setName(''); setEmail(''); setPhone('');
+        setStep('home'); setMode('quiz'); setName(''); setEmail(''); setPhone('');
         setQIdx(0); setAnswers({}); setScores({red:0,orange:0,green:0,blue:0});
         setTotal(0); setReferral([]); setRefErr(false);
         setConfirm(false); setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap('');
     };
 
-    const handleIntroSubmit = (e) => {
+    const handleRegisterSubmit = (e) => {
         e.preventDefault();
         if (botTrap) return;
         if (!validPhone(phone)) { alert('請填寫正確的手機號碼（如 0912345678）'); return; }
-        setStep('quiz');
+        if (mode === 'quiz') { setStep('quiz'); }
+        else { setStep('contact'); }
     };
 
     const handleAnswer = (score) => {
@@ -372,8 +551,11 @@ function App() {
                 method:'POST', mode:'no-cors', cache:'no-cache',
                 body: JSON.stringify({
                     identity:'家長', nickname:sanitize(name),
-                    email, phone, totalScore:total,
-                    ...scores, answers, uid,
+                    email, phone,
+                    totalScore: mode==='direct' ? 0 : total,
+                    ...( mode==='direct' ? {red:0,orange:0,green:0,blue:0} : scores ),
+                    answers: mode==='direct' ? {} : answers,
+                    uid, mode,
                     submittedAt: new Date().toISOString(),
                     referral: referral.join(','),
                     source:   referral.join(','),
@@ -389,93 +571,125 @@ function App() {
         QUESTIONS.forEach((_,i)=>{ const v=Math.ceil(Math.random()*5); ta[i+1]=v; tt+=v; ts[CATS[i]]+=v; });
         setName(`測試員_${rid}`); setEmail(`test${rid}@example.com`);
         setPhone('0900000000'); setAnswers(ta); setTotal(tt); setScores(ts);
-        setShowEng(false); setEngPwd(''); setStep('contact');
+        setMode('quiz'); setShowEng(false); setEngPwd(''); setStep('contact');
     };
 
-    const top = sortedTypes()[0];
+    const top  = sortedTypes()[0];
     const info = top ? TYPE_INFO[top.id] : null;
     const progress = Math.round(((qIdx+1)/QUESTIONS.length)*100);
 
+    /* ── Shell wrapper for desktop ── */
+    const Shell = ({children}) => {
+        if (!isDesktop) return <div className="page fade-up">{children}</div>;
+        return (
+            <div className="page">
+                <div className="phone-shell">
+                    <div className="phone-content no-bar">{children}</div>
+                </div>
+            </div>
+        );
+    };
+
     /* ━━━ 首頁 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     if (step==='home') return (
-        <div className="page fade-up">
+        <Shell>
             {/* Header */}
             <div className="top-header">
-                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.75)',marginBottom:6,fontWeight:600}}>覺知 SEL × 心智光譜</div>
-                <div style={{fontSize:30,fontWeight:900,color:'#fff',lineHeight:1.15}}>了解您的原生底色</div>
-                <div style={{fontSize:14,color:'rgba(255,255,255,0.85)',marginTop:8}}>看見自己，也看見孩子</div>
-                <div className="spectrum-bar">
-                    <div style={{flex:1,background:'#E84040'}}></div>
-                    <div style={{flex:1,background:'#F5914A'}}></div>
-                    <div style={{flex:1,background:'#4CAF7D'}}></div>
-                    <div style={{flex:1,background:'#5B8FC9'}}></div>
-                </div>
+                <div className="title-label" style={{fontSize:11,letterSpacing:'4px',color:'rgba(255,255,255,0.55)',marginBottom:8,fontWeight:700,textTransform:'uppercase'}}>覺知 SEL × 心智光譜</div>
+                <div className="title-main" style={{fontSize:30,fontWeight:900,color:'#fff',lineHeight:1.2,letterSpacing:'-0.5px'}}>了解您的原生底色</div>
+                <div className="title-sub" style={{fontSize:13,color:'rgba(255,255,255,0.65)',marginTop:8,fontWeight:500}}>看見自己，也看見孩子</div>
+                <SpectrumStrip/>
             </div>
 
             <div className="content">
-                {/* 家長卡 */}
-                <button onClick={()=>setStep('intro')} className="card" style={{width:'100%',textAlign:'left',cursor:'pointer',border:'1.5px solid #F5D0B0',display:'flex',alignItems:'center',gap:14,padding:'18px 20px'}}>
-                    <div style={{width:48,height:48,background:'#FFF0E6',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8600A" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                {/* 標題區 */}
+                <div style={{marginBottom:16,paddingTop:4}}>
+                    <div style={{fontSize:12,fontWeight:700,color:'var(--text-light)',letterSpacing:2,marginBottom:4}}>選擇方式</div>
+                    <div style={{fontSize:18,fontWeight:800,color:'var(--text-dark)'}}>您想如何領取心智光譜說明？</div>
+                </div>
+
+                {/* 入口一：做測驗 */}
+                <button className="entry-card fade-up" onClick={()=>{setMode('quiz');setStep('register');}} style={{border:'none',width:'100%',textAlign:'left'}}>
+                    <div style={{width:52,height:52,background:'linear-gradient(135deg,#E8600A,#F5914A)',borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 4px 12px rgba(232,96,10,0.3)'}}>
+                        <Ico.Bolt/>
+                        <span style={{display:'none'}}></span>
                     </div>
                     <div style={{flex:1}}>
-                        <div style={{fontSize:17,fontWeight:800,color:'#3A2010'}}>我是家長</div>
-                        <div style={{fontSize:13,color:'#B08060',marginTop:2}}>進入成人版測驗 · 24題</div>
+                        <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:3}}>
+                            <div className="entry-title" style={{fontSize:17,fontWeight:800,color:'var(--text-dark)'}}>做測驗，領取專屬說明</div>
+                            <span style={{fontSize:10,fontWeight:700,background:'#FFF0E6',color:'var(--accent)',padding:'2px 8px',borderRadius:20}}>推薦</span>
+                        </div>
+                        <div className="entry-sub" style={{fontSize:12,color:'var(--text-light)'}}>24 題 · 了解您的壓力底色 · 寄至 Email</div>
                     </div>
-                    <span style={{color:'#E8600A'}}><Ico.Chevron/></span>
+                    <span style={{color:'var(--accent)',flexShrink:0}}><Ico.Chevron/></span>
                 </button>
 
-                {/* 孩子卡 */}
-                <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer" className="card-blue" style={{display:'flex',alignItems:'center',gap:14,padding:'18px 20px',textDecoration:'none'}}>
-                    <div style={{width:48,height:48,background:'#EEF4FF',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B8FC9" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                {/* 入口二：直接領取 */}
+                <button className="entry-card fade-up" onClick={()=>{setMode('direct');setStep('register');}} style={{border:'none',width:'100%',textAlign:'left',animationDelay:'0.05s'}}>
+                    <div style={{width:52,height:52,background:'linear-gradient(135deg,var(--primary),var(--primary-mid))',borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 4px 12px rgba(26,39,64,0.2)'}}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                     </div>
                     <div style={{flex:1}}>
-                        <div style={{fontSize:17,fontWeight:800,color:'#1A2F4A'}}>我是孩子</div>
-                        <div style={{fontSize:13,color:'#6080A0',marginTop:2}}>進入孩子版測驗</div>
+                        <div className="entry-title" style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:3}}>直接領取說明</div>
+                        <div className="entry-sub" style={{fontSize:12,color:'var(--text-light)'}}>填寫基本資料 · 說明寄至 Email</div>
                     </div>
-                    <span style={{color:'#5B8FC9'}}><Ico.Chevron/></span>
+                    <span style={{color:'var(--text-light)',flexShrink:0}}><Ico.Chevron/></span>
+                </button>
+
+                {/* 孩子版 */}
+                <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer" className="entry-card" style={{animationDelay:'0.1s',marginBottom:6}}>
+                    <div style={{width:52,height:52,background:'linear-gradient(135deg,#3A70B0,#5B8FC9)',borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 4px 12px rgba(58,112,176,0.25)'}}>
+                        <Ico.Smile/>
+                        <span style={{display:'none'}}></span>
+                    </div>
+                    <div style={{flex:1}}>
+                        <div className="entry-title" style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:3}}>我是孩子</div>
+                        <div className="entry-sub" style={{fontSize:12,color:'var(--text-light)'}}>前往孩子版測驗</div>
+                    </div>
+                    <span style={{color:'#3A70B0',flexShrink:0}}><Ico.Chevron/></span>
                 </a>
 
-                {/* 查詢 */}
-                <div style={{textAlign:'center',marginTop:8}}>
+                {/* 查詢過往 */}
+                <div style={{textAlign:'center',marginTop:4}}>
                     <a href={REVIEW_RECORDS_URL} target="_blank" rel="noopener noreferrer"
-                       style={{display:'inline-flex',alignItems:'center',gap:6,color:'#B08060',fontSize:13,fontWeight:600,textDecoration:'none',padding:'8px 16px',background:'#FFF0E6',borderRadius:20,border:'1px solid #F5D0B0'}}>
+                       style={{display:'inline-flex',alignItems:'center',gap:6,color:'var(--text-light)',fontSize:12,fontWeight:600,textDecoration:'none',padding:'8px 16px'}}>
                         <Ico.Search/> 查詢過往紀錄
                     </a>
                 </div>
             </div>
-            <div style={{textAlign:'center',color:'#C8A890',fontSize:11,paddingBottom:16}}>覺知心智光譜 2026 v7</div>
-        </div>
+
+            <div style={{textAlign:'center',color:'var(--text-light)',fontSize:11,paddingBottom:20,opacity:0.6}}>覺知心智光譜 2026 v8</div>
+        </Shell>
     );
 
     /* ━━━ 填資料 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    if (step==='intro') return (
-        <div className="page fade-up">
+    if (step==='register') return (
+        <Shell>
             <div className="top-header">
-                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.75)',marginBottom:6,fontWeight:600}}>成人版</div>
-                <div style={{fontSize:24,fontWeight:900,color:'#fff'}}>覺知心智光譜</div>
-                <div style={{fontSize:13,color:'rgba(255,255,255,0.85)',marginTop:8,lineHeight:1.6}}>
-                    在衝突發生的那一秒，<br/>我們往往回到最習慣的「自動反應」。<br/>請依照壓力下的直覺作答。
+                <div className="title-label" style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.5)',marginBottom:8,fontWeight:700}}>
+                    {mode==='quiz' ? '成人版測驗' : '領取心智光譜說明'}
                 </div>
-                <div className="spectrum-bar">
-                    <div style={{flex:1,background:'#E84040'}}></div>
-                    <div style={{flex:1,background:'#F5914A'}}></div>
-                    <div style={{flex:1,background:'#4CAF7D'}}></div>
-                    <div style={{flex:1,background:'#5B8FC9'}}></div>
+                <div className="title-main" style={{fontSize:24,fontWeight:900,color:'#fff'}}>
+                    {mode==='quiz' ? '填寫後進入測驗' : '填寫基本資料'}
                 </div>
+                <div className="title-sub" style={{fontSize:13,color:'rgba(255,255,255,0.6)',marginTop:8,lineHeight:1.6}}>
+                    {mode==='quiz'
+                        ? '請依照壓力下的直覺作答，\n無需過度思考。'
+                        : '填寫完成後，\n心智光譜說明將寄至您的 Email。'}
+                </div>
+                <SpectrumStrip/>
             </div>
 
             <div className="content">
                 <div className="card" style={{padding:'24px 20px'}}>
-                    <div style={{fontSize:13,fontWeight:700,color:'#E8600A',letterSpacing:1,marginBottom:16}}>填寫後開始測驗</div>
-                    <form onSubmit={handleIntroSubmit}>
+                    <form onSubmit={handleRegisterSubmit}>
+                        {/* Bot trap */}
                         <div style={{position:'absolute',opacity:0,height:0,overflow:'hidden'}}>
                             <input tabIndex="-1" autoComplete="off" value={botTrap} onChange={e=>setBotTrap(e.target.value)}/>
                         </div>
 
                         <div style={{marginBottom:14}}>
-                            <label style={{fontSize:13,fontWeight:700,color:'#7A4A2A',display:'block',marginBottom:6}}>您的姓名</label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>姓名</label>
                             <div className="input-wrap">
                                 <span className="input-icon"><Ico.User/></span>
                                 <input type="text" required className="input-field" placeholder="例如：王小明"
@@ -484,7 +698,9 @@ function App() {
                         </div>
 
                         <div style={{marginBottom:14}}>
-                            <label style={{fontSize:13,fontWeight:700,color:'#7A4A2A',display:'block',marginBottom:6}}>電子信箱</label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>電子信箱
+                                <span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>（說明將寄至此信箱）</span>
+                            </label>
                             <div className="input-wrap">
                                 <span className="input-icon"><Ico.Mail/></span>
                                 <input type="email" required className="input-field" placeholder="example@mail.com"
@@ -492,198 +708,195 @@ function App() {
                             </div>
                         </div>
 
-                        <div style={{marginBottom:20}}>
-                            <label style={{fontSize:13,fontWeight:700,color:'#7A4A2A',display:'block',marginBottom:6}}>聯繫電話</label>
+                        <div style={{marginBottom:22}}>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>聯繫電話</label>
                             <div className="input-wrap">
                                 <span className="input-icon"><Ico.Phone/></span>
                                 <input type="tel" required className="input-field" placeholder="09xxxxxxxx" maxLength="10"
                                     value={phone} onChange={e=>setPhone(e.target.value.replace(/\D/g,'').slice(0,10))}/>
                             </div>
                             {phone.length>0 && !validPhone(phone) &&
-                                <p style={{fontSize:12,color:'#E84040',marginTop:4,fontWeight:600}}>請填寫正確的手機號碼格式</p>}
+                                <p style={{fontSize:12,color:'#D63030',marginTop:4,fontWeight:600}}>請填寫正確的手機號碼格式</p>}
                         </div>
 
-                        <button type="submit" className="btn-main">
-                            開始測驗 <Ico.Chevron/>
+                        <button type="submit" className="btn-primary">
+                            {mode==='quiz' ? <><Ico.Bolt/> 開始測驗</> : <><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> 確認領取說明</>}
                         </button>
                     </form>
                 </div>
 
-                <button onClick={reset} className="btn-ghost">← 返回選擇身份</button>
-                <div style={{textAlign:'center',marginTop:20}}>
-                    <button onClick={()=>setShowEng(true)} style={{fontSize:10,color:'#D0C0B0',background:'none',border:'none',cursor:'pointer'}}>工程師</button>
+                <button onClick={reset} className="btn-ghost"><Ico.ChevronL/> 返回</button>
+
+                <div style={{textAlign:'center',marginTop:16}}>
+                    <button onClick={()=>setShowEng(true)} style={{fontSize:10,color:'var(--surface2)',background:'none',border:'none',cursor:'pointer'}}>工程師</button>
                 </div>
             </div>
 
-            {/* 工程師 modal */}
             {showEng && (
                 <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
                      onClick={()=>{setShowEng(false);setEngPwd('');}}>
                     <div className="card pop-in" style={{maxWidth:300,width:'100%',padding:24}} onClick={e=>e.stopPropagation()}>
-                        <div style={{fontSize:16,fontWeight:700,color:'#3A2010',marginBottom:12,textAlign:'center'}}>工程師測試模式</div>
+                        <div style={{fontSize:16,fontWeight:700,color:'var(--text-dark)',marginBottom:12,textAlign:'center'}}>工程師測試模式</div>
                         <input type="password" className="input-field" style={{paddingLeft:14,textAlign:'center',letterSpacing:4}}
                             placeholder="密碼" value={engPwd} onChange={e=>setEngPwd(e.target.value)}/>
-                        <button onClick={runEngineer} className="btn-main" style={{marginTop:12,fontSize:14}}>生成測試資料</button>
+                        <button onClick={runEngineer} className="btn-primary" style={{marginTop:12,fontSize:14}}>生成測試資料</button>
                     </div>
                 </div>
             )}
-        </div>
+        </Shell>
     );
 
     /* ━━━ 測驗 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     if (step==='quiz') return (
-        <div className="page" style={{background:'#2C1A08'}}>
-            {/* 進度 Header */}
-            <div style={{width:'100%',background:'#E8600A',padding:'20px 20px 16px'}}>
-                <div style={{maxWidth:480,margin:'0 auto'}}>
-                    <div style={{display:'flex',justifyContent:'space-between',fontSize:12,fontWeight:700,color:'rgba(255,255,255,0.85)',marginBottom:8}}>
-                        <span>題目 {qIdx+1} / {QUESTIONS.length}</span>
-                        <span>{progress}%</span>
-                    </div>
-                    {/* 進度條 */}
-                    <div style={{position:'relative',height:28}}>
-                        <div style={{position:'absolute',bottom:0,width:'100%',height:6,background:'rgba(255,255,255,0.25)',borderRadius:4,overflow:'hidden'}}>
-                            <div style={{height:'100%',background:'#fff',width:`${progress}%`,borderRadius:4,transition:'width 0.3s ease'}}></div>
+        <Shell>
+            <div style={{background:'var(--primary)'}}>
+                {/* 進度 Header */}
+                <div style={{background:'var(--primary)',padding:'20px 20px 16px',width:'100%'}}>
+                    <div style={{maxWidth:480,margin:'0 auto'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+                            <span style={{fontSize:12,fontWeight:700,color:'rgba(255,255,255,0.6)',letterSpacing:1}}>題目 {qIdx+1} / {QUESTIONS.length}</span>
+                            <span style={{fontSize:12,fontWeight:700,color:'rgba(255,255,255,0.6)'}}>{progress}%</span>
                         </div>
-                        {/* 愛心滑塊 */}
-                        <div style={{position:'absolute',top:0,transition:'left 0.3s ease',left:`calc(${progress}% - 12px)`}}>
-                            <div style={{background:'#fff',borderRadius:'50%',width:24,height:24,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(0,0,0,0.2)'}}>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#E8600A"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        {/* Progress bar */}
+                        <div style={{position:'relative',height:28}}>
+                            <div style={{position:'absolute',bottom:0,width:'100%',height:5,background:'rgba(255,255,255,0.12)',borderRadius:4,overflow:'hidden'}}>
+                                <div style={{height:'100%',background:'var(--accent)',width:`${progress}%`,borderRadius:4,transition:'width 0.3s ease'}}/>
+                            </div>
+                            <div style={{position:'absolute',top:0,transition:'left 0.3s ease',left:`calc(${progress}% - 12px)`}}>
+                                <div style={{background:'var(--accent)',borderRadius:'50%',width:22,height:22,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(232,96,10,0.4)'}}>
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* 題目 + 選項 */}
-            <div style={{flex:1,width:'100%',maxWidth:480,padding:'24px 20px 32px',overflowY:'auto'}} className="no-bar">
-                {/* 題目卡 */}
-                <div className="card fade-up" key={qIdx} style={{textAlign:'center',padding:'28px 20px',marginBottom:20,minHeight:130,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                    <div style={{fontSize:12,fontWeight:700,color:'#E8600A',letterSpacing:2,marginBottom:10}}>題目 {qIdx+1}</div>
-                    <div style={{fontSize:19,fontWeight:800,color:'#3A2010',lineHeight:1.55,whiteSpace:'pre-line'}}>{QUESTIONS[qIdx]}</div>
+                {/* 題目 + 選項 */}
+                <div style={{flex:1,width:'100%',padding:'20px 18px 36px',maxWidth:480,margin:'0 auto',overflowY:'auto'}} className="no-bar">
+                    {/* 題目卡 */}
+                    <div className="card slide-in" key={qIdx} style={{textAlign:'center',padding:'28px 20px',marginBottom:18,background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)',minHeight:120,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                        <div style={{fontSize:11,fontWeight:700,color:'var(--accent)',letterSpacing:2,marginBottom:10,textTransform:'uppercase'}}>題目 {qIdx+1}</div>
+                        <div className="opt-label" style={{fontSize:20,fontWeight:800,color:'#fff',lineHeight:1.55,whiteSpace:'pre-line'}}>{QUESTIONS[qIdx]}</div>
+                    </div>
+
+                    {/* 選項 */}
+                    {OPTIONS.map((o,i)=>(
+                        <button key={o.score} className="option-btn slide-in" style={{animationDelay:`${i*0.04}s`,background:'rgba(255,255,255,0.07)',border:'1px solid rgba(255,255,255,0.12)'}}
+                            onClick={()=>handleAnswer(o.score)} disabled={navigating}>
+                            <span className="opt-label" style={{fontSize:16,fontWeight:700,color:'#fff'}}>{o.label}</span>
+                            <span className="opt-badge" style={{background:'rgba(232,96,10,0.25)',color:'#F5914A',borderRadius:10,padding:'3px 12px',fontSize:12,fontWeight:700}}>{o.score} 分</span>
+                        </button>
+                    ))}
+
+                    {qIdx>0 && (
+                        <button onClick={()=>setQIdx(q=>q-1)} className="btn-ghost" style={{color:'rgba(255,255,255,0.4)',marginTop:8}}>
+                            <Ico.ChevronL/> 返回上一題
+                        </button>
+                    )}
                 </div>
-
-                {/* 選項 */}
-                {OPTIONS.map(o=>(
-                    <button key={o.score} className="option-btn fade-up" onClick={()=>handleAnswer(o.score)} disabled={navigating}>
-                        <span style={{fontSize:15,fontWeight:700,color:'#3A2010'}}>{o.label}</span>
-                        <span className="option-badge">{o.score} 分</span>
-                    </button>
-                ))}
-
-                {qIdx>0 && (
-                    <button onClick={()=>setQIdx(q=>q-1)} className="btn-ghost" style={{marginTop:8,color:'rgba(255,255,255,0.5)'}}>
-                        <Ico.ChevronL/> 返回上一題
-                    </button>
-                )}
             </div>
-        </div>
+        </Shell>
     );
 
-    /* ━━━ 確認資料 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* ━━━ 確認資料（做完測驗後） ━━━━━━━━━━━━━━━ */
     if (step==='contact') {
         const s = sortedTypes();
         return (
-            <div className="page fade-up" style={{background:'#FFF8F3'}}>
+            <Shell>
                 {/* 結果預覽 Header */}
                 <div className="top-header">
-                    <div style={{fontSize:12,color:'rgba(255,255,255,0.8)',marginBottom:6}}>您的測驗結果初步分析</div>
-                    <div style={{fontSize:26,fontWeight:900,color:'#fff'}}>{s[0].label}</div>
-                    {/* 分數條 */}
-                    <div style={{marginTop:14,maxWidth:340,margin:'14px auto 0'}}>
-                        {[
-                            {label:'開創型（紅）',color:'#E84040',track:'rgba(255,255,255,0.2)',score:scores.red},
-                            {label:'關懷型（橙）',color:'#fff',    track:'rgba(255,255,255,0.2)',score:scores.orange},
-                            {label:'協調型（綠）',color:'#69D08A', track:'rgba(255,255,255,0.2)',score:scores.green},
-                            {label:'分析型（藍）',color:'#80B8E8', track:'rgba(255,255,255,0.2)',score:scores.blue},
-                        ].map(b=>(
-                            <div key={b.label} style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
-                                <div style={{fontSize:10,color:'rgba(255,255,255,0.75)',width:60,textAlign:'left',flexShrink:0}}>{b.label}</div>
-                                <div style={{flex:1,height:5,background:b.track,borderRadius:4,overflow:'hidden'}}>
-                                    <div style={{height:'100%',background:b.color,width:`${(b.score/30)*100}%`,borderRadius:4}}></div>
-                                </div>
-                                <div style={{fontSize:10,color:'#fff',width:16,textAlign:'right',flexShrink:0}}>{b.score}</div>
-                            </div>
-                        ))}
-                    </div>
+                    {mode==='quiz' && <>
+                        <div style={{fontSize:12,color:'rgba(255,255,255,0.55)',marginBottom:6,fontWeight:600}}>測驗初步結果</div>
+                        <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:12}}>{s[0].label}</div>
+                        <div style={{maxWidth:320,margin:'0 auto'}}>
+                            <ScoreBar label="開創型（紅）" score={scores.red}    color="#D63030"/>
+                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="#F5914A"/>
+                            <ScoreBar label="協調型（綠）" score={scores.green}  color="#4CAF7D"/>
+                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="#80B8E8"/>
+                        </div>
+                    </>}
+                    {mode==='direct' && <>
+                        <div style={{fontSize:12,color:'rgba(255,255,255,0.55)',marginBottom:8,fontWeight:600,letterSpacing:2}}>領取心智光譜說明</div>
+                        <div style={{fontSize:24,fontWeight:900,color:'#fff'}}>確認您的資料</div>
+                        <div style={{fontSize:13,color:'rgba(255,255,255,0.6)',marginTop:8}}>說明將寄至您填寫的 Email</div>
+                    </>}
+                    <SpectrumStrip/>
                 </div>
 
                 <div className="content">
-                    {/* 資料確認卡 */}
                     <div className="card" style={{padding:'20px'}}>
-                        <div style={{fontSize:13,fontWeight:700,color:'#E8600A',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
-                            <Ico.Check/> 確認領取人資料
+                        <div style={{fontSize:13,fontWeight:700,color:'var(--accent)',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
+                            <Ico.Check/> 確認資料
                         </div>
+
                         <div style={{marginBottom:10}}>
-                            <label style={{fontSize:12,fontWeight:700,color:'#B08060',display:'block',marginBottom:4}}>姓名</label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:4}}>姓名</label>
                             <input className="input-field" style={{paddingLeft:14}} value={name} onChange={e=>setName(e.target.value)} placeholder="您的姓名"/>
                         </div>
                         <div style={{marginBottom:10}}>
-                            <label style={{fontSize:12,fontWeight:700,color:'#B08060',display:'block',marginBottom:4}}>Email（領取測評說明用）</label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:4}}>Email <span style={{fontWeight:400,color:'var(--text-light)'}}>（說明寄送用）</span></label>
                             <input className="input-field" style={{paddingLeft:14}} value={email} onChange={e=>setEmail(e.target.value)} placeholder="example@mail.com"/>
                         </div>
                         <div>
-                            <label style={{fontSize:12,fontWeight:700,color:'#B08060',display:'block',marginBottom:4}}>聯繫電話</label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:4}}>聯繫電話</label>
                             <input className="input-field" style={{paddingLeft:14}} value={phone}
                                 onChange={e=>setPhone(e.target.value.replace(/\D/g,'').slice(0,10))} placeholder="09xxxxxxxx" maxLength="10"/>
                         </div>
                     </div>
 
-                    <button
-                        onClick={()=>{
-                            if(!name||!email.includes('@')||!validPhone(phone)){alert('請填寫完整聯絡資料');return;}
-                            setConfirm(true);
-                        }}
-                        className="btn-main" style={{marginBottom:10,fontSize:16,padding:'17px'}}>
+                    <button onClick={()=>{
+                        if(!name||!email.includes('@')||!validPhone(phone)){alert('請填寫完整聯絡資料');return;}
+                        setConfirm(true);
+                    }} className="btn-primary" style={{marginBottom:10}}>
                         確認並領取分析說明
                     </button>
                     <button onClick={reset} className="btn-ghost">返回首頁</button>
                 </div>
 
-                {/* 來源確認 Modal */}
+                {/* 來源 Modal */}
                 {showConfirm && (
-                    <div style={{position:'fixed',inset:0,background:'rgba(58,32,16,0.7)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
+                    <div style={{position:'fixed',inset:0,background:'rgba(10,18,32,0.75)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
                          onClick={()=>setConfirm(false)}>
                         <div className="card pop-in" style={{maxWidth:360,width:'100%',padding:'28px 24px'}} onClick={e=>e.stopPropagation()}>
                             <div style={{textAlign:'center',marginBottom:16}}>
-                                <div style={{width:44,height:44,background:'#FFF0E6',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 10px'}}>
+                                <div style={{width:48,height:48,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 10px'}}>
                                     <Ico.Mail/>
                                 </div>
-                                <div style={{fontSize:17,fontWeight:800,color:'#3A2010'}}>再次確認</div>
-                                <div style={{fontSize:13,color:'#B08060',marginTop:6}}>
-                                    測評說明將寄至 <span style={{color:'#E8600A',fontWeight:700}}>{email}</span>
+                                <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)'}}>確認送出</div>
+                                <div style={{fontSize:13,color:'var(--text-mid)',marginTop:6,lineHeight:1.6}}>
+                                    說明將寄至 <span style={{color:'var(--accent)',fontWeight:700}}>{email}</span>
                                 </div>
                             </div>
 
-                            {/* 來源選擇 */}
-                            <div style={{background: refErr?'#FFF0F0':'#FFF8F3', borderRadius:14, padding:'14px 14px', border: refErr?'1.5px solid #F5C0C0':'1.5px solid #F5D0B0', marginBottom:16}}>
-                                <div style={{fontSize:13,fontWeight:700,color: refErr?'#E84040':'#7A4A2A',marginBottom:10}}>
-                                    如何得知本測驗？<span style={{fontSize:11,fontWeight:400,color:'#B08060',marginLeft:4}}>(必填)</span>
+                            {/* 來源 */}
+                            <div style={{background:refErr?'#FFF5F5':'var(--surface)',borderRadius:14,padding:'14px',border:refErr?'1.5px solid #FECACA':'1.5px solid var(--surface2)',marginBottom:16}}>
+                                <div style={{fontSize:13,fontWeight:700,color:refErr?'#D63030':'var(--text-dark)',marginBottom:10}}>
+                                    如何得知本測驗？<span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>(必填)</span>
                                 </div>
                                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
                                     {REFERRAL_OPTIONS.map(o=>(
                                         <button key={o} onClick={()=>toggleRef(o)} style={{
-                                            padding:'9px 10px', borderRadius:10, fontSize:12, fontWeight:700,
-                                            border: referral.includes(o) ? '2px solid #E8600A':'1.5px solid #F5D0B0',
-                                            background: referral.includes(o) ? '#E8600A':'#fff',
-                                            color: referral.includes(o) ? '#fff':'#7A4A2A',
-                                            cursor:'pointer', display:'flex', alignItems:'center', gap:6,
+                                            padding:'9px 10px',borderRadius:10,fontSize:12,fontWeight:700,
+                                            border: referral.includes(o)?'2px solid var(--accent)':'1.5px solid var(--surface2)',
+                                            background: referral.includes(o)?'var(--accent)':'var(--white)',
+                                            color: referral.includes(o)?'#fff':'var(--text-mid)',
+                                            cursor:'pointer',display:'flex',alignItems:'center',gap:6,
                                             transition:'all 0.15s'
                                         }}>
-                                            <div style={{width:12,height:12,borderRadius:3,border: referral.includes(o)?'1.5px solid rgba(255,255,255,0.6)':'1.5px solid #D0A888',background: referral.includes(o)?'rgba(255,255,255,0.3)':'transparent',flexShrink:0}}></div>
+                                            <div style={{width:12,height:12,borderRadius:3,border:referral.includes(o)?'1.5px solid rgba(255,255,255,0.5)':'1.5px solid var(--surface2)',background:referral.includes(o)?'rgba(255,255,255,0.25)':'transparent',flexShrink:0}}/>
                                             {o}
                                         </button>
                                     ))}
                                 </div>
-                                {refErr && <div style={{fontSize:11,color:'#E84040',marginTop:8,fontWeight:600}}>※ 請至少選擇一項</div>}
+                                {refErr && <div style={{fontSize:11,color:'#D63030',marginTop:8,fontWeight:600}}>※ 請至少選擇一項</div>}
                             </div>
 
-                            <button onClick={trySubmit} className="btn-main" style={{fontSize:16,padding:'15px'}}>確認送出</button>
-                            <button onClick={()=>setConfirm(false)} style={{width:'100%',marginTop:10,padding:10,background:'#F5EDE8',border:'none',borderRadius:12,fontSize:13,fontWeight:600,color:'#B08060',cursor:'pointer'}}>返回修改</button>
+                            <button onClick={trySubmit} className="btn-primary">確認送出</button>
+                            <button onClick={()=>setConfirm(false)} style={{width:'100%',marginTop:10,padding:10,background:'var(--surface)',border:'none',borderRadius:12,fontSize:13,fontWeight:600,color:'var(--text-mid)',cursor:'pointer'}}>返回修改</button>
                         </div>
                     </div>
                 )}
-            </div>
+            </Shell>
         );
     }
 
@@ -691,99 +904,111 @@ function App() {
     if (step==='result') {
         const s = sortedTypes();
         return (
-            <div className="page fade-up" style={{background:'#FFF8F3'}}>
+            <Shell>
                 {/* 結果 Header */}
-                <div className="top-header" style={{paddingBottom:32}}>
-                    {/* 成功勾 */}
-                    <div style={{width:52,height:52,background:'rgba(255,255,255,0.25)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px'}}>
-                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <div className="top-header" style={{paddingBottom:28}}>
+                    <div style={{width:48,height:48,background:'rgba(255,255,255,0.12)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',border:'1px solid rgba(255,255,255,0.2)'}}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
-                    <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',marginBottom:4}}>您的光譜結果</div>
-                    <div style={{fontSize:28,fontWeight:900,color:'#fff'}}>{info.label}</div>
 
-                    {/* 分數條 */}
-                    <div style={{marginTop:16,maxWidth:320,margin:'16px auto 0'}}>
-                        {[
-                            {label:'開創型',color:'#E84040',score:scores.red},
-                            {label:'關懷型',color:'#fff',    score:scores.orange},
-                            {label:'協調型',color:'#69D08A', score:scores.green},
-                            {label:'分析型',color:'#80B8E8', score:scores.blue},
-                        ].map(b=>(
-                            <div key={b.label} style={{display:'flex',alignItems:'center',gap:8,marginBottom:7}}>
-                                <div style={{fontSize:11,color:'rgba(255,255,255,0.75)',width:36,flexShrink:0}}>{b.label}</div>
-                                <div style={{flex:1,height:6,background:'rgba(255,255,255,0.2)',borderRadius:4,overflow:'hidden'}}>
-                                    <div style={{height:'100%',background:b.color,width:`${(b.score/30)*100}%`,borderRadius:4,transition:'width 1s ease'}}></div>
-                                </div>
-                                <div style={{fontSize:11,color:'#fff',width:18,textAlign:'right',fontWeight:700,flexShrink:0}}>{b.score}</div>
-                            </div>
-                        ))}
-                    </div>
+                    {mode==='quiz' ? <>
+                        <div style={{fontSize:12,color:'rgba(255,255,255,0.55)',marginBottom:6,letterSpacing:1}}>您的心智光譜</div>
+                        <div style={{fontSize:28,fontWeight:900,color:'#fff',marginBottom:4}}>{info.label}</div>
+                        <div style={{fontSize:13,color:'rgba(255,255,255,0.6)',marginBottom:14}}>說明已寄至您的信箱</div>
+                        <div style={{maxWidth:300,margin:'0 auto'}}>
+                            <ScoreBar label="開創型（紅）" score={scores.red}    color="#D63030"/>
+                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="#F5914A"/>
+                            <ScoreBar label="協調型（綠）" score={scores.green}  color="#4CAF7D"/>
+                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="#80B8E8"/>
+                        </div>
+                    </> : <>
+                        <div style={{fontSize:12,color:'rgba(255,255,255,0.55)',marginBottom:6,letterSpacing:1}}>領取成功</div>
+                        <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:6}}>心智光譜說明</div>
+                        <div style={{fontSize:13,color:'rgba(255,255,255,0.6)'}}>說明已寄至 {email}</div>
+                    </>}
+                    <SpectrumStrip/>
                 </div>
 
                 <div className="content">
-                    {/* 型別說明 */}
-                    <div style={{marginBottom:16}}>
-                        <div className="type-section" style={{borderLeftColor:'#E84040'}}>
-                            <div style={{fontSize:11,fontWeight:700,color:'#E84040',letterSpacing:1.5,marginBottom:5}}>壓力下的表現</div>
-                            <div style={{fontSize:14,color:'#3A2010',lineHeight:1.65}}>{info.stress}</div>
+                    {/* 型別說明（只在 quiz 模式顯示） */}
+                    {mode==='quiz' && info && (
+                        <div style={{marginBottom:16}}>
+                            <div className="type-section" style={{borderLeftColor:'var(--red)'}}>
+                                <div style={{fontSize:11,fontWeight:700,color:'var(--red)',letterSpacing:1.5,marginBottom:6}}>壓力下的表現</div>
+                                <div style={{fontSize:14,color:'var(--text-dark)',lineHeight:1.7}}>{info.stress}</div>
+                            </div>
+                            <div className="type-section" style={{borderLeftColor:'var(--blue)'}}>
+                                <div style={{fontSize:11,fontWeight:700,color:'var(--blue)',letterSpacing:1.5,marginBottom:6}}>您的優勢</div>
+                                <div style={{fontSize:14,color:'var(--text-dark)',lineHeight:1.7}}>{info.strength}</div>
+                            </div>
+                            <div className="type-section" style={{borderLeftColor:'var(--green)'}}>
+                                <div style={{fontSize:11,fontWeight:700,color:'var(--green)',letterSpacing:1.5,marginBottom:6}}>覺知練習</div>
+                                <div style={{fontSize:14,color:'var(--text-dark)',lineHeight:1.7}}>{info.practice}</div>
+                            </div>
                         </div>
-                        <div className="type-section blue-accent">
-                            <div style={{fontSize:11,fontWeight:700,color:'#5B8FC9',letterSpacing:1.5,marginBottom:5}}>您的優勢</div>
-                            <div style={{fontSize:14,color:'#3A2010',lineHeight:1.65}}>{info.strength}</div>
-                        </div>
-                        <div className="type-section green-accent">
-                            <div style={{fontSize:11,fontWeight:700,color:'#4CAF7D',letterSpacing:1.5,marginBottom:5}}>覺知練習</div>
-                            <div style={{fontSize:14,color:'#3A2010',lineHeight:1.65}}>{info.practice}</div>
-                        </div>
-                    </div>
+                    )}
 
-                    {/* 行動按鈕群 */}
-                    {/* LINE */}
+                    {/* 直接領取模式的說明 */}
+                    {mode==='direct' && (
+                        <div className="card" style={{textAlign:'center',padding:'24px 20px',marginBottom:16}}>
+                            <div style={{fontSize:36,marginBottom:12}}>📬</div>
+                            <div style={{fontSize:16,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>說明已寄出！</div>
+                            <div style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.7}}>
+                                請至 <span style={{fontWeight:700,color:'var(--accent)'}}>{email}</span> 查收<br/>
+                                若未收到，請檢查垃圾郵件信箱
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 行動按鈕 */}
                     <a href={LINE_ADD_FRIEND_URL} target="_blank" rel="noopener noreferrer"
-                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'#06C755',color:'#fff',borderRadius:16,padding:'15px',fontWeight:700,fontSize:15,textDecoration:'none',marginBottom:10}}>
-                        <Ico.Line/> 加入 LINE 好友，接收更多資訊
+                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'#06C755',color:'#fff',borderRadius:14,padding:'15px',fontWeight:700,fontSize:15,textDecoration:'none',marginBottom:10,boxShadow:'0 4px 12px rgba(6,199,85,0.25)'}}>
+                        <Ico.Line/> 加入 LINE，接收更多資訊
                     </a>
 
-                    {/* 孩子版 */}
+                    {mode==='direct' && (
+                        <button onClick={()=>{setMode('quiz');setStep('quiz');}}
+                            className="btn-primary" style={{marginBottom:10}}>
+                            <Ico.Bolt/> 也來做個測驗吧
+                        </button>
+                    )}
+
                     <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer"
-                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'#EEF4FF',color:'#5B8FC9',border:'1.5px solid #C8DCF0',borderRadius:14,padding:'13px',fontWeight:700,fontSize:14,textDecoration:'none',marginBottom:10}}>
+                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'var(--surface)',color:'var(--text-mid)',border:'1.5px solid var(--surface2)',borderRadius:14,padding:'13px',fontWeight:700,fontSize:14,textDecoration:'none',marginBottom:10}}>
                         <Ico.Smile/> 帶孩子也來測測看 →
                     </a>
 
-                    {/* 截圖 & 分享 */}
                     <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
                         <button onClick={()=>setShowSS(true)}
-                            style={{background:'#FFF0E6',color:'#C05A10',border:'1.5px solid #F5D0B0',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
-                            <Ico.Camera/> 提醒截圖
+                            style={{background:'var(--surface)',color:'var(--text-mid)',border:'1.5px solid var(--surface2)',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                            <Ico.Camera/> 截圖保存
                         </button>
-                        <button onClick={()=>window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(QUIZ_SHARE_URL)}`, '_blank')}
-                            style={{background:'#FFF8F3',color:'#7A4A2A',border:'1.5px solid #F5D0B0',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                        <button onClick={()=>window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(QUIZ_SHARE_URL)}`,'_blank')}
+                            style={{background:'var(--surface)',color:'var(--text-mid)',border:'1.5px solid var(--surface2)',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
                             <Ico.Share/> 分享測驗
                         </button>
                     </div>
 
-                    <button onClick={reset} className="btn-ghost" style={{color:'#C8A890',marginBottom:24}}>
-                        <Ico.Restart/> 重新開始測試
+                    <button onClick={reset} className="btn-ghost" style={{color:'var(--text-light)'}}>
+                        <Ico.Restart/> 重新開始
                     </button>
                 </div>
 
-                {/* 截圖提示 Modal */}
+                {/* 截圖提示 */}
                 {showSS && (
-                    <div style={{position:'fixed',inset:0,background:'rgba(58,32,16,0.7)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
+                    <div style={{position:'fixed',inset:0,background:'rgba(10,18,32,0.75)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
                          onClick={()=>setShowSS(false)}>
-                        <div className="card pop-in" style={{maxWidth:320,width:'100%',padding:'28px 24px',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
-                            <div style={{width:48,height:48,background:'#FFF0E6',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px'}}>
-                                <Ico.Camera/>
+                        <div className="card pop-in" style={{maxWidth:300,width:'100%',padding:'28px 24px',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
+                            <div style={{fontSize:36,marginBottom:12}}>📸</div>
+                            <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>請截圖保存</div>
+                            <div style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.7,marginBottom:20}}>
+                                請使用手機截圖功能，<br/>保存您的測驗結果。
                             </div>
-                            <div style={{fontSize:17,fontWeight:800,color:'#3A2010',marginBottom:8}}>請截圖保存</div>
-                            <div style={{fontSize:14,color:'#B08060',lineHeight:1.65,marginBottom:20}}>
-                                請使用手機截圖功能，保存您的測驗結果。
-                            </div>
-                            <button onClick={()=>setShowSS(false)} className="btn-main" style={{fontSize:15}}>我知道了</button>
+                            <button onClick={()=>setShowSS(false)} className="btn-primary" style={{fontSize:15}}>我知道了</button>
                         </div>
                     </div>
                 )}
-            </div>
+            </Shell>
         );
     }
 
