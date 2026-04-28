@@ -490,6 +490,13 @@ function App() {
     const [showSS, setShowSS]       = useState(false);
     const [engPwd, setEngPwd]       = useState('');
     const [showEng, setShowEng]     = useState(false);
+    // 歷史紀錄查詢
+    const [lookNick, setLookNick]   = useState('');
+    const [lookEmail, setLookEmail] = useState('');
+    const [lookChild, setLookChild] = useState('');
+    const [lookResult, setLookResult] = useState(null); // null | 'loading' | {data} | {error}
+    const [lookErr, setLookErr]     = useState('');
+    const [lookWho, setLookWho]     = useState(null); // null | 'adult' | 'child'
     const [uid]                     = useState(()=>'u_'+Math.random().toString(36).slice(2,9));
     const isDesktop                 = window.innerWidth >= 768;
 
@@ -503,6 +510,33 @@ function App() {
         setQIdx(0); setAnswers({}); setScores({red:0,orange:0,green:0,blue:0});
         setTotal(0); setReferral([]); setRefErr(false);
         setConfirm(false); setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap('');
+        setLookNick(''); setLookEmail(''); setLookChild(''); setLookResult(null); setLookErr(''); setLookWho(null);
+    };
+
+    const doLookup = async () => {
+        // lookWho is local to the lookup step, access via DOM state
+        // We determine who we're looking up by which field is filled
+        if (!lookNick.trim()) { setLookErr('請填寫暱稱'); return; }
+        // Determine identity from which email field is filled
+        const isAdult = !!lookEmail.trim();
+        const isChild = !!lookChild.trim();
+        if (!isAdult && !isChild) { setLookErr('請填寫信箱'); return; }
+        if (isAdult && !lookEmail.includes('@')) { setLookErr('請填寫有效的 Email'); return; }
+        if (isChild && !lookChild.includes('@')) { setLookErr('請填寫有效的孩子信箱'); return; }
+        setLookErr('');
+        setLookResult('loading');
+        try {
+            const params = new URLSearchParams({
+                nickname: lookNick.trim(),
+                email: isAdult ? lookEmail.trim() : '無',
+                childEmail: isChild ? lookChild.trim() : '無',
+            });
+            const res = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`);
+            const json = await res.json();
+            setLookResult(json);
+        } catch(e) {
+            setLookResult({error: '查詢失敗，請檢查網路連線後再試。'});
+        }
     };
 
     const handleRegisterSubmit = (e) => {
@@ -633,10 +667,10 @@ function App() {
                 </button>
 
                 {/* 查詢過往紀錄 */}
-                <a href={REVIEW_RECORDS_URL} target="_blank" rel="noopener noreferrer"
-                   style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,width:'100%',background:'rgba(0,0,0,0.05)',color:'var(--text-mid)',borderRadius:14,padding:'13px',fontSize:14,fontWeight:600,textDecoration:'none',border:'1px solid var(--surface2)'}}>
+                <button onClick={()=>setStep('lookup')}
+                   style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,width:'100%',background:'rgba(0,0,0,0.05)',color:'var(--text-mid)',borderRadius:14,padding:'13px',fontSize:14,fontWeight:600,border:'1px solid var(--surface2)',cursor:'pointer'}}>
                     <Ico.Search/> 查詢過往紀錄
-                </a>
+                </button>
             </div>
         </Shell>
     );
@@ -990,6 +1024,164 @@ function App() {
             </Shell>
         );
     }
+
+    /* ━━━ 歷史紀錄查詢 ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (step==='lookup') return (
+        <Shell>
+            <div className="top-header">
+                <div className="title-label" style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.5)',marginBottom:8,fontWeight:700}}>歷史紀錄查詢</div>
+                <div className="title-main" style={{fontSize:24,fontWeight:900,color:'#fff'}}>查詢過往測驗紀錄</div>
+                <div className="title-sub" style={{fontSize:13,color:'rgba(255,255,255,0.6)',marginTop:8,lineHeight:1.6}}>請填寫當時測驗所填的資料</div>
+                <SpectrumStrip/>
+            </div>
+
+            <div className="content">
+                {/* 身份選擇 */}
+                {!lookWho && lookResult === null && (
+                    <div style={{marginBottom:16}}>
+                        <div style={{fontSize:13,fontWeight:700,color:'var(--text-mid)',marginBottom:12,textAlign:'center'}}>請選擇您要查詢哪一筆紀錄</div>
+                        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+                            <button onClick={()=>setLookWho('adult')} style={{
+                                padding:'20px 12px',borderRadius:14,border:'1.5px solid var(--surface2)',
+                                background:'var(--white)',cursor:'pointer',textAlign:'center',transition:'all 0.15s',
+                                boxShadow:'0 1px 4px rgba(26,39,64,0.06)'
+                            }}>
+                                <div style={{fontSize:28,marginBottom:8}}>🧑</div>
+                                <div style={{fontSize:15,fontWeight:800,color:'var(--text-dark)',marginBottom:4}}>家長紀錄</div>
+                                <div style={{fontSize:11,color:'var(--text-light)'}}>以 Email 查詢</div>
+                            </button>
+                            <button onClick={()=>setLookWho('child')} style={{
+                                padding:'20px 12px',borderRadius:14,border:'1.5px solid var(--surface2)',
+                                background:'var(--white)',cursor:'pointer',textAlign:'center',transition:'all 0.15s',
+                                boxShadow:'0 1px 4px rgba(26,39,64,0.06)'
+                            }}>
+                                <div style={{fontSize:28,marginBottom:8}}>🧒</div>
+                                <div style={{fontSize:15,fontWeight:800,color:'var(--text-dark)',marginBottom:4}}>孩子紀錄</div>
+                                <div style={{fontSize:11,color:'var(--text-light)'}}>以孩子信箱查詢</div>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {lookWho && (lookResult === null || lookResult === 'loading') ? (
+                    <div className="card" style={{padding:'24px 20px'}}>
+                        {/* 身份提示列 */}
+                        <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:18,paddingBottom:14,borderBottom:'1px solid var(--surface2)'}}>
+                            <div style={{fontSize:22}}>{lookWho==='adult'?'🧑':'🧒'}</div>
+                            <div>
+                                <div style={{fontSize:14,fontWeight:800,color:'var(--text-dark)'}}>{lookWho==='adult'?'家長版紀錄':'孩子版紀錄'}</div>
+                                <button onClick={()=>{setLookWho(null);setLookErr('');setLookResult(null);setLookNick('');setLookEmail('');setLookChild('');}} style={{fontSize:11,color:'var(--text-light)',background:'none',border:'none',cursor:'pointer',padding:0,marginTop:2}}>切換身份 →</button>
+                            </div>
+                        </div>
+
+                        <div style={{marginBottom:14}}>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>當時填寫的暱稱</label>
+                            <div className="input-wrap">
+                                <span className="input-icon"><Ico.User/></span>
+                                <input type="text" className="input-field" placeholder="例如：王小明"
+                                    value={lookNick} onChange={e=>setLookNick(e.target.value)}/>
+                            </div>
+                        </div>
+
+                        {/* 家長：填 Email；孩子：填孩子信箱 */}
+                        {lookWho==='adult' ? (
+                            <div style={{marginBottom:22}}>
+                                <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>
+                                    家長 Email
+                                    <span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>（當時填寫的信箱）</span>
+                                </label>
+                                <div className="input-wrap">
+                                    <span className="input-icon"><Ico.Mail/></span>
+                                    <input type="email" className="input-field" placeholder="example@mail.com"
+                                        value={lookEmail} onChange={e=>setLookEmail(e.target.value)}/>
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{marginBottom:22}}>
+                                <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>
+                                    孩子測驗信箱
+                                </label>
+                                <div className="input-wrap">
+                                    <span className="input-icon"><Ico.Smile/></span>
+                                    <input type="email" className="input-field" placeholder="孩子的 Email"
+                                        value={lookChild} onChange={e=>setLookChild(e.target.value)}/>
+                                </div>
+                            </div>
+                        )}
+
+                        {lookErr && <div style={{fontSize:12,color:'#D63030',marginBottom:12,fontWeight:600,padding:'8px 12px',background:'#FFF5F5',borderRadius:8}}>⚠ {lookErr}</div>}
+
+                        <button className="btn-primary" onClick={doLookup} disabled={lookResult==='loading'}
+                            style={{opacity: lookResult==='loading'?0.7:1}}>
+                            {lookResult==='loading'
+                                ? <><span style={{display:'inline-block',width:16,height:16,border:'2px solid rgba(255,255,255,0.4)',borderTopColor:'#fff',borderRadius:'50%',animation:'spin 0.7s linear infinite'}}/> 查詢中…</>
+                                : <><Ico.Search/> 立即查詢紀錄</>
+                            }
+                        </button>
+                    </div>
+                ) : lookResult.error ? (
+                    <div className="card" style={{padding:'24px 20px',textAlign:'center'}}>
+                        <div style={{fontSize:36,marginBottom:12}}>😕</div>
+                        <div style={{fontSize:16,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>查無紀錄</div>
+                        <div style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.7,marginBottom:20}}>
+                            {lookResult.error === 'missing parameters' || lookResult.error === 'not found'
+                                ? '找不到符合的測驗紀錄，\n請確認填寫的資料是否正確。'
+                                : lookResult.error}
+                        </div>
+                        <button className="btn-outline" onClick={()=>setLookResult(null)}>重新查詢</button>
+                    </div>
+                ) : (
+                    <div>
+                        {/* 查詢成功 */}
+                        <div className="card" style={{padding:'20px',marginBottom:12,background:'var(--green-pale)',border:'1.5px solid #9BE3BF'}}>
+                            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+                                <div style={{width:32,height:32,background:'var(--green)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                                    <Ico.Check/>
+                                </div>
+                                <div style={{fontSize:16,fontWeight:800,color:'var(--green)'}}>找到您的紀錄</div>
+                            </div>
+                            <div style={{fontSize:13,color:'var(--text-mid)',lineHeight:2}}>
+                                <div><span style={{fontWeight:700,color:'var(--text-dark)'}}>姓名：</span>{lookResult.nickname || lookResult.name || '—'}</div>
+                                <div><span style={{fontWeight:700,color:'var(--text-dark)'}}>測驗日期：</span>{lookResult.submittedAt ? new Date(lookResult.submittedAt).toLocaleDateString('zh-TW') : lookResult.date || '—'}</div>
+                                {lookResult.mode !== 'direct' && lookResult.totalScore !== undefined && (
+                                    <div><span style={{fontWeight:700,color:'var(--text-dark)'}}>總分：</span>{lookResult.totalScore}</div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* 分數 */}
+                        {lookResult.mode !== 'direct' && (lookResult.red !== undefined) && (
+                            <div className="card" style={{padding:'20px',marginBottom:12}}>
+                                <div style={{fontSize:13,fontWeight:700,color:'var(--text-mid)',marginBottom:12}}>心智光譜分布</div>
+                                {[
+                                    {key:'red',   label:'開創型（紅）', color:'#D63030'},
+                                    {key:'orange',label:'關懷型（橙）', color:'#E8600A'},
+                                    {key:'green', label:'協調型（綠）', color:'#2E8B5A'},
+                                    {key:'blue',  label:'分析型（藍）', color:'#3A70B0'},
+                                ].map(t=>(
+                                    <div key={t.key} style={{marginBottom:10}}>
+                                        <div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:700,color:'var(--text-dark)',marginBottom:4}}>
+                                            <span>{t.label}</span>
+                                            <span style={{color:t.color}}>{lookResult[t.key] || 0}</span>
+                                        </div>
+                                        <div style={{height:6,background:'var(--surface2)',borderRadius:4,overflow:'hidden'}}>
+                                            <div style={{height:'100%',background:t.color,width:`${((lookResult[t.key]||0)/30)*100}%`,borderRadius:4,transition:'width 1s ease-out'}}/>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        <button className="btn-outline" onClick={()=>{setLookResult(null);setLookWho(null);setLookNick('');setLookEmail('');setLookChild('');}} style={{marginBottom:8}}>再查一筆</button>
+                    </div>
+                )}
+
+                <button onClick={reset} className="btn-ghost"><Ico.ChevronL/> 返回首頁</button>
+            </div>
+
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </Shell>
+    );
 
     return null;
 }
