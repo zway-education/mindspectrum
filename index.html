@@ -146,6 +146,19 @@ const SpectrumStrip = () => (<div className="spectrum-strip"><div style={{flex:1
 function ScoreBar({ label, score, color }) {
     return (<div style={{marginBottom:10}}><div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:700,color:'rgba(255,255,255,0.9)',marginBottom:4}}><span>{label}</span><span>{score}</span></div><div style={{height:6,background:'rgba(255,255,255,0.15)',borderRadius:4,overflow:'hidden'}}><div style={{height:'100%',background:color,width:`${(score/30)*100}%`,borderRadius:4,transition:'width 1s ease-out'}}/></div></div>);
 }
+const isDesktop = window.innerWidth >= 768;
+
+const Shell = ({children}) => { if (!isDesktop) return <div className="page fade-up">{children}</div>; return (<div className="page"><div className="phone-shell"><div className="phone-content no-bar">{children}</div></div></div>); };
+    if (step==='home') return (
+        <Shell>
+            <div className="top-header">
+                <div className="title-main" style={{fontSize:32,fontWeight:900,color:'#fff',lineHeight:1.2}}>覺知SEL</div>
+                <div className="title-sub" style={{fontSize:14,color:'rgba(255,255,255,0.75)',marginTop:8,fontWeight:500}}>看見自己與孩子的內在狀態</div>
+                <SpectrumStrip/>
+            </div>
+            <div className="content">
+                <button className="entry-card fade-up" onClick={()=>{setMode('quiz');setStep('register');}} style={{border:'
+
 function App() {
     const [step, setStep] = useState('home');
     const [mode, setMode] = useState('quiz');
@@ -171,7 +184,6 @@ function App() {
     const [lookErr, setLookErr] = useState('');
     const [lookWho, setLookWho] = useState(null);
     const [uid] = useState(()=>'u_'+Math.random().toString(36).slice(2,9));
-    const isDesktop = window.innerWidth >= 768;
     const sortedTypes = () => ['red','orange','green','blue'].map(id=>({id,...TYPE_INFO[id]})).sort((a,b)=>scores[b.id]-scores[a.id]);
     const reset = () => { setStep('home'); setMode('quiz'); setName(''); setEmail(''); setPhone(''); setQIdx(0); setAnswers({}); setScores({red:0,orange:0,green:0,blue:0}); setTotal(0); setReferral([]); setRefErr(false); setConfirm(false); setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap(''); setLookNick(''); setLookEmail(''); setLookChild(''); setLookResult(null); setLookErr(''); setLookWho(null); };
     const doLookup = async () => {
@@ -197,16 +209,7 @@ function App() {
     const doSubmit = () => { setConfirm(false); setStep('result'); if (botTrap) return; try { fetch(GOOGLE_SCRIPT_URL, { method:'POST', mode:'no-cors', cache:'no-cache', body: JSON.stringify({ identity:'家長', nickname:sanitize(name), email, phone, totalScore:mode==='direct'?0:total, ...(mode==='direct'?{red:0,orange:0,green:0,blue:0}:scores), answers:mode==='direct'?{}:answers, uid, mode, submittedAt:new Date().toISOString(), referral:referral.join(','), source:referral.join(',') }) }); } catch(e) { console.error(e); } };
     const top = sortedTypes()[0]; const info = top ? TYPE_INFO[top.id] : null;
     const progress = Math.round(((qIdx+1)/QUESTIONS.length)*100);
-    const Shell = ({children}) => { if (!isDesktop) return <div className="page fade-up">{children}</div>; return (<div className="page"><div className="phone-shell"><div className="phone-content no-bar">{children}</div></div></div>); };
-    if (step==='home') return (
-        <Shell>
-            <div className="top-header">
-                <div className="title-main" style={{fontSize:32,fontWeight:900,color:'#fff',lineHeight:1.2}}>覺知SEL</div>
-                <div className="title-sub" style={{fontSize:14,color:'rgba(255,255,255,0.75)',marginTop:8,fontWeight:500}}>看見自己與孩子的內在狀態</div>
-                <SpectrumStrip/>
-            </div>
-            <div className="content">
-                <button className="entry-card fade-up" onClick={()=>{setMode('quiz');setStep('register');}} style={{border:'none',width:'100%',textAlign:'left'}}>
+    one',width:'100%',textAlign:'left'}}>
                     <div style={{width:48,height:48,background:'#EEF4FF',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A70B0" strokeWidth="2" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
                     <div style={{flex:1}}><div className="entry-title" style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:2}}>我是家長</div><div className="entry-sub" style={{fontSize:12,color:'var(--text-light)'}}>進入成人版測驗</div></div>
                     <span style={{color:'var(--text-light)',flexShrink:0}}><Ico.Chevron/></span>
