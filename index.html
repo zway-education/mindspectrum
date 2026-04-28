@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'self';">
+    <title>覺知心智光譜｜了解您的原生底色</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        :root {
+            --orange: #E8600A;
+            --orange-light: #F5914A;
+            --orange-pale: #FFF0E6;
+            --orange-bg: #FFF8F3;
+            --orange-border: #F5D0B0;
+            --blue: #5B8FC9;
+            --blue-pale: #EEF4FF;
+            --blue-border: #C8DCF0;
+            --brown-dark: #3A2010;
+            --brown-mid: #7A4A2A;
+            --brown-light: #B08060;
+        }
+        * { box-sizing: border-box; }
+        body, html {
+            height: 100%; margin: 0; padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--orange-bg);
+            -webkit-user-select: none; user-select: none;
+        }
+        input, textarea { -webkit-user-select: auto; user-select: auto; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0%   { transform: scale(0.85); opacity: 0; }
+            70%  { transform: scale(1.04); }
+            100% { transform: scale(1);    opacity: 1; }
+        }
+        .fade-up   { animation: fadeUp 0.45s cubic-bezier(.22,.68,0,1.2) forwards; }
+        .pop-in    { animation: popIn 0.4s cubic-bezier(.22,.68,0,1.2) forwards; }
+
+        /* 捲軸隱藏 */
+        .no-bar { -ms-overflow-style:none; scrollbar-width:none; }
+        .no-bar::-webkit-scrollbar { display:none; }
+
+        /* 全頁容器 */
+        .page {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 頂部橘色 Header */
+        .top-header {
+            width: 100%;
+            background: var(--orange);
+            padding: 40px 24px 28px;
+            text-align: center;
+            position: relative;
+        }
+        .spectrum-bar {
+            display: flex;
+            gap: 4px;
+            margin: 14px auto 0;
+            max-width: 200px;
+            border-radius: 4px;
+            overflow: hidden;
+            height: 5px;
+        }
+
+        /* 內容區 */
+        .content {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px 20px 40px;
+            flex: 1;
+        }
+
+        /* 卡片 */
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            border: 1.5px solid var(--orange-border);
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+        .card-blue {
+            background: #fff;
+            border-radius: 20px;
+            border: 1.5px solid var(--blue-border);
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+
+        /* 按鈕 */
+        .btn-main {
+            width: 100%;
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-main:active { transform: scale(0.97); background: #C05008; }
+
+        .btn-sub {
+            width: 100%;
+            background: var(--orange-pale);
+            color: var(--orange);
+            border: 1.5px solid var(--orange-border);
+            border-radius: 14px;
+            padding: 13px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-sub:active { transform: scale(0.97); }
+
+        .btn-ghost {
+            width: 100%;
+            background: transparent;
+            color: var(--brown-light);
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* 輸入框 */
+        .input-field {
+            width: 100%;
+            padding: 13px 14px 13px 44px;
+            font-size: 15px;
+            background: var(--orange-bg);
+            border: 1.5px solid var(--orange-border);
+            border-radius: 14px;
+            outline: none;
+            color: var(--brown-dark);
+            transition: border-color 0.2s;
+        }
+        .input-field:focus { border-color: var(--orange); }
+        .input-wrap { position: relative; }
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brown-light);
+        }
+
+        /* 選項按鈕 */
+        .option-btn {
+            width: 100%;
+            background: #fff;
+            border: 1.5px solid var(--orange-border);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 10px;
+        }
+        .option-btn:active { transform: scale(0.98); background: var(--orange-pale); }
+        .option-badge {
+            background: var(--orange-pale);
+            color: var(--orange);
+            border-radius: 10px;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* 分數條 */
+        .score-bar-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease-out;
+        }
+
+        /* 結果頁型別卡 */
+        .type-section {
+            background: #fff;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--orange);
+        }
+        .type-section.blue-accent  { border-left-color: var(--blue); }
+        .type-section.green-accent { border-left-color: #4CAF7D; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+/* ── 設定區（只需改這裡）─────────────────────── */
+const GOOGLE_SCRIPT_URL  = "https://script.google.com/macros/s/AKfycbznZaOZDD91ueme98boz8OthigK2xP5Od__-OmD_Y82i10sP9Y6hYgMjv6HVdClFaIf/exec";
+const CHILD_VERSION_URL  = "https://sites.google.com/view/zwaymindspectrum2026monster/%E5%BF%83%E6%99%BA%E5%85%89%E8%AD%9C%E6%B8%AC%E9%A9%97-%E5%AD%A9%E5%AD%90%E7%89%88";
+const REVIEW_RECORDS_URL = "https://sites.google.com/view/mindtest-review/%E9%A6%96%E9%A0%81";
+const LINE_ADD_FRIEND_URL= "https://lin.ee/nnDYAZE";
+const QUIZ_SHARE_URL     = "https://zway-education.github.io/mindspectrum/";
+/* ───────────────────────────────────────────── */
+
+const TYPE_INFO = {
+    red:    { label:"紅色・開創型", stress:"習慣說「快點」、「我說了算」、「為什麼還沒做好？」", strength:"具備極強的行動力、突破力與主導感。", practice:"練習「三秒鐘留白」。強迫自己閉嘴三秒，改問：「我現在是想解決問題，還是想接住這個孩子？」", barColor:"#E84040", bgClass:"bg-red-50", borderClass:"border-red-200", textClass:"text-red-600" },
+    orange: { label:"橙色・關懷型", stress:"容易情緒波動，會說「你這樣讓媽媽很難過」、「你為什麼不理我？」", strength:"天生的雷達，對情感與連結有高度精準的感受力。", practice:"練習「劃分心理邊界」。告訴自己：「孩子的情緒是他的，我的愛不會因為他的情緒而改變。」", barColor:"#E8600A", bgClass:"bg-orange-50", borderClass:"border-orange-200", textClass:"text-orange-600" },
+    green:  { label:"綠色・協調型", stress:"追求和諧、怕衝突，習慣說「隨便啦」、「平安就好」。", strength:"關乎穩定與安全，能帶給家庭平靜的節奏感。", practice:"練習「刻意發聲」。溫柔且堅定地說出自己的底線與規則。", barColor:"#4CAF7D", bgClass:"bg-green-50", borderClass:"border-green-200", textClass:"text-green-600" },
+    blue:   { label:"藍色・分析型", stress:"重視對錯與細節，會說「這不合邏輯」、「細節要注意」。", strength:"具備強大的結構思考與分析理解能力。", practice:"啟動「Bug 感謝祭」。陪孩子一起把錯誤看作是「測試數據」並優化。", barColor:"#5B8FC9", bgClass:"bg-blue-50", borderClass:"border-blue-200", textClass:"text-blue-600" },
+};
+
+const QUESTIONS = [
+    "孩子動作慢時，我會立刻催促","出現問題時，我傾向直接\n下決定","我會先把事情處理好，再顧孩子的情緒","孩子沒做到時，我會馬上介入","我在意事情有沒有完成","我很難等孩子慢慢來",
+    "孩子情緒起伏會影響我的心情","孩子冷淡時，我會感到受傷","我在意孩子是否感受到我的愛","孩子不開心時，我會先安撫","我常反省是不是自己做錯","關係對我比規則重要",
+    "我會避免與孩子正面衝突","為了氣氛，我願意退讓","孩子反抗時，我會先冷處理","我不喜歡家庭情緒起伏","有些不同意見，我會放在心裡","我希望事情自然過去",
+    "孩子犯錯時，我會先分析原因","我在意做事的方法與細節","遇到不合理時，我會指出問題","我相信方法對了就會改善","同樣的錯誤，我不希望再發生","我常給孩子修正建議"
+];
+const CATS = ["red","red","red","red","red","red","orange","orange","orange","orange","orange","orange","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue"];
+const OPTIONS = [
+    { label:"非常像我", score:5 },
+    { label:"有點像我", score:4 },
+    { label:"普通",     score:3 },
+    { label:"不太像我", score:2 },
+    { label:"非常不像我",score:1 },
+];
+const REFERRAL_OPTIONS = ["校園講座","教師研習","覺知SEL課程","親友分享","FB/IG","其它"];
+
+const sanitize = (s) => typeof s!=='string' ? s : s.replace(/[&<>'"]/g, t=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]));
+const validPhone = (p) => /^09\d{8}$/.test(p);
+
+/* ── SVG 小圖示 ───── */
+const Ico = {
+    Chevron: ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>,
+    ChevronL:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="m15 18-6-6 6-6"/></svg>,
+    User:    ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    Mail:    ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+    Phone:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+    Search:  ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+    Check:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>,
+    Smile:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+    Restart: ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 3v6h6"/></svg>,
+    Share:   ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>,
+    Camera:  ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+    Line:    ()=><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>,
+};
+
+/* ── SpectrumBar ─── */
+function SpectrumBar({ label, score, color, trackColor }) {
+    return (
+        <div style={{marginBottom:10}}>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:700,color:'#7A4A2A',marginBottom:3}}>
+                <span>{label}</span><span>{score}</span>
+            </div>
+            <div className="score-bar-track" style={{background:trackColor}}>
+                <div className="score-bar-fill" style={{width:`${(score/30)*100}%`,background:color}}></div>
+            </div>
+        </div>
+    );
+}
+
+/* ── 主程式 ─────────────────────────────────── */
+function App() {
+    const [step, setStep]           = useState('home');
+    const [name, setName]           = useState('');
+    const [email, setEmail]         = useState('');
+    const [phone, setPhone]         = useState('');
+    const [botTrap, setBotTrap]     = useState('');
+    const [qIdx, setQIdx]           = useState(0);
+    const [answers, setAnswers]     = useState({});
+    const [scores, setScores]       = useState({red:0,orange:0,green:0,blue:0});
+    const [total, setTotal]         = useState(0);
+    const [navigating, setNav]      = useState(false);
+    const [referral, setReferral]   = useState([]);
+    const [refErr, setRefErr]       = useState(false);
+    const [showConfirm, setConfirm] = useState(false);
+    const [showSS, setShowSS]       = useState(false);
+    const [engPwd, setEngPwd]       = useState('');
+    const [showEng, setShowEng]     = useState(false);
+    const [uid]                     = useState(()=>'u_'+Math.random().toString(36).slice(2,9));
+
+    const sortedTypes = () =>
+        ['red','orange','green','blue']
+            .map(id=>({id,...TYPE_INFO[id]}))
+            .sort((a,b)=>scores[b.id]-scores[a.id]);
+
+    const reset = () => {
+        setStep('home'); setName(''); setEmail(''); setPhone('');
+        setQIdx(0); setAnswers({}); setScores({red:0,orange:0,green:0,blue:0});
+        setTotal(0); setReferral([]); setRefErr(false);
+        setConfirm(false); setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap('');
+    };
+
+    const handleIntroSubmit = (e) => {
+        e.preventDefault();
+        if (botTrap) return;
+        if (!validPhone(phone)) { alert('請填寫正確的手機號碼（如 0912345678）'); return; }
+        setStep('quiz');
+    };
+
+    const handleAnswer = (score) => {
+        if (navigating) return;
+        setNav(true);
+        const updated = {...answers, [qIdx+1]: score};
+        setAnswers(updated);
+        setTimeout(()=>{
+            if (qIdx < QUESTIONS.length - 1) {
+                setQIdx(q=>q+1); setNav(false);
+            } else {
+                let t=0, sc={red:0,orange:0,green:0,blue:0};
+                QUESTIONS.forEach((_,i)=>{
+                    const v = (i===qIdx ? score : updated[i+1]) || 0;
+                    t += v; sc[CATS[i]] += v;
+                });
+                setTotal(t); setScores(sc); setNav(false); setStep('contact');
+            }
+        }, 180);
+    };
+
+    const toggleRef = (o) => {
+        setRefErr(false);
+        setReferral(r => r.includes(o) ? r.filter(x=>x!==o) : [...r,o]);
+    };
+
+    const trySubmit = () => {
+        if (referral.length===0) { setRefErr(true); return; }
+        doSubmit();
+    };
+
+    const doSubmit = () => {
+        setConfirm(false);
+        setStep('result');
+        if (botTrap) return;
+        try {
+            fetch(GOOGLE_SCRIPT_URL, {
+                method:'POST', mode:'no-cors', cache:'no-cache',
+                body: JSON.stringify({
+                    identity:'家長', nickname:sanitize(name),
+                    email, phone, totalScore:total,
+                    ...scores, answers, uid,
+                    submittedAt: new Date().toISOString(),
+                    referral: referral.join(','),
+                    source:   referral.join(','),
+                })
+            });
+        } catch(e) { console.error(e); }
+    };
+
+    const runEngineer = () => {
+        if (engPwd !== '63811') { setShowEng(false); setEngPwd(''); return; }
+        const rid = Math.floor(Math.random()*9000)+1000;
+        let ta={}, tt=0, ts={red:0,orange:0,green:0,blue:0};
+        QUESTIONS.forEach((_,i)=>{ const v=Math.ceil(Math.random()*5); ta[i+1]=v; tt+=v; ts[CATS[i]]+=v; });
+        setName(`測試員_${rid}`); setEmail(`test${rid}@example.com`);
+        setPhone('0900000000'); setAnswers(ta); setTotal(tt); setScores(ts);
+        setShowEng(false); setEngPwd(''); setStep('contact');
+    };
+
+    const top = sortedTypes()[0];
+    const info = top ? TYPE_INFO[top.id] : null;
+    const progress = Math.round(((qIdx+1)/QUESTIONS.length)*100);
+
+    /* ━━━ 首頁 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (step==='home') return (
+        <div className="page fade-up">
+            {/* Header */}
+            <div className="top-header">
+                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.75)',marginBottom:6,fontWeight:600}}>覺知 SEL × 心智光譜</div>
+                <div style={{fontSize:30,fontWeight:900,color:'#fff',lineHeight:1.15}}>了解您的原生底色</div>
+                <div style={{fontSize:14,color:'rgba(255,255,255,0.85)',marginTop:8}}>看見自己，也看見孩子</div>
+                <div className="spectrum-bar">
+                    <div style={{flex:1,background:'#E84040'}}></div>
+                    <div style={{flex:1,background:'#F5914A'}}></div>
+                    <div style={{flex:1,background:'#4CAF7D'}}></div>
+                    <div style={{flex:1,background:'#5B8FC9'}}></div>
+                </div>
+            </div>
+
+            <div className="content">
+                {/* 家長卡 */}
+                <button onClick={()=>setStep('intro')} className="card" style={{width:'100%',textAlign:'left',cursor:'pointer',border:'1.5px solid #F5D0B0',display:'flex',alignItems:'center',gap:14,padding:'18px 20px'}}>
+                    <div style={{width:48,height:48,background:'#FFF0E6',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8600A" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <div style={{flex:1}}>
+                        <div style={{fontSize:17,fontWeight:800,color:'#3A2010'}}>我是家長</div>
+                        <div style={{fontSize:13,color:'#B08060',marginTop:2}}>進入成人版測驗 · 24題</div>
+                    </div>
+                    <span style={{color:'#E8600A'}}><Ico.Chevron/></span>
+                </button>
+
+                {/* 孩子卡 */}
+                <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer" className="card-blue" style={{display:'flex',alignItems:'center',gap:14,padding:'18px 20px',textDecoration:'none'}}>
+                    <div style={{width:48,height:48,background:'#EEF4FF',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B8FC9" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                    </div>
+                    <div style={{flex:1}}>
+                        <div style={{fontSize:17,fontWeight:800,color:'#1A2F4A'}}>我是孩子</div>
+                        <div style={{fontSize:13,color:'#6080A0',marginTop:2}}>進入孩子版測驗</div>
+                    </div>
+                    <span style={{color:'#5B8FC9'}}><Ico.Chevron/></span>
+                </a>
+
+                {/* 查詢 */}
+                <div style={{textAlign:'center',marginTop:8}}>
+                    <a href={REVIEW_RECORDS_URL} target="_blank" rel="noopener noreferrer"
+                       style={{display:'inline-flex',alignItems:'center',gap:6,color:'#B08060',fontSize:13,fontWeight:600,textDecoration:'none',padding:'8px 16px',background:'#FFF0E6',borderRadius:20,border:'1px solid #F5D0B0'}}>
+                        <Ico.Search/> 查詢過往紀錄
+                    </a>
+                </div>
+            </div>
+            <div style={{textAlign:'center',color:'#C8A890',fontSize:11,paddingBottom:16}}>覺知心智光譜 2026 v7</div>
+        </div>
+    );
+
+    /* ━━━ 填資料 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (step==='intro') return (
+        <div className="page fade-up">
+            <div className="top-header">
+                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.75)',marginBottom:6,fontWeight:600}}>成人版</div>
+                <div style={{fontSize:24,fontWeight:900,color:'#fff'}}>覺知心智光譜</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,0.85)',marginTop:8,lineHeight:1.6}}>
+                    在衝突發生的那一秒，<br/>我們往往回到最習慣的「自動反應」。<br/>請依照壓力下的直覺作答。
+                </div>
+                <div className="spectrum-bar">
+                    <div style={{flex:1,background:'#E84040'}}></div>
+                    <div style={{flex:1,background:'#F5914A'}}></div>
+                    <div style={{flex:1,background:'#4CAF7D'}}></div>
+                    <div style={{flex:1,background:'#5B8FC9'}}></div>
+                </div>
+            </div>
+
+            <div className="content">
+                <div className="card" style={{padding:'24px 20px'}}>
+                    <div style={{fontSize:13,fontWeight:700,color:'#E8600A',letterSpacing:1,marginBottom:16}}>填寫後開始測驗</div>
+                    <form onSubmit={handleIntroSubmit}>
+                        <div style={{position:'absolute',opacity:0,height:0,overflow:'hidden'}}>
+                            <input tabIndex="-1" autoComplete="off" value={botTrap} onChange={e=>setBotTrap(e.target.value)}/>
+                        </div>
+
+                        <div style={{marginBottom:14}}>
+                            <label style={{fontSize:13,fontWeight:700,color:'#7A4A2A',display:'block',marginBottom:6}}>您的姓名</label>
+                            <div className="input-wrap">
+                                <span className="input-icon"><Ico.User/></span>
+                                <input type="text" required className="input-field" placeholder="例如：王小明"
+                                    value={name} onChange={e=>setName(e.target.value)}/>
+                            </div>
+                        </div>
+
+                        <div style={{marginBottom:14}}>
+                            <label style={{fontSize:13,fontWeight:700,color:'#7A4A2A',display:'block',marginBottom:6}}>電子信箱</label>
+                            <div className="input-wrap">
+                                <span className="input-icon"><Ico.Mail/></span>
+                                <input type="email" required className="input-field" placeholder="example@mail.com"
+                                    value={email} onChange={e=>setEmail(e.target.value)}/>
+                            </div>
+                        </div>
+
+                        <div style={{marginBottom:20}}>
+                            <label style={{fontSize:13,fontWeight:700,color:'#7A4A2A',display:'block',marginBottom:6}}>聯繫電話</label>
+                            <div className="input-wrap">
+                                <span className="input-icon"><Ico.Phone/></span>
+                                <input type="tel" required className="input-field" placeholder="09xxxxxxxx" maxLength="10"
+                                    value={phone} onChange={e=>setPhone(e.target.value.replace(/\D/g,'').slice(0,10))}/>
+                            </div>
+                            {phone.length>0 && !validPhone(phone) &&
+                                <p style={{fontSize:12,color:'#E84040',marginTop:4,fontWeight:600}}>請填寫正確的手機號碼格式</p>}
+                        </div>
+
+                        <button type="submit" className="btn-main">
+                            開始測驗 <Ico.Chevron/>
+                        </button>
+                    </form>
+                </div>
+
+                <button onClick={reset} className="btn-ghost">← 返回選擇身份</button>
+                <div style={{textAlign:'center',marginTop:20}}>
+                    <button onClick={()=>setShowEng(true)} style={{fontSize:10,color:'#D0C0B0',background:'none',border:'none',cursor:'pointer'}}>工程師</button>
+                </div>
+            </div>
+
+            {/* 工程師 modal */}
+            {showEng && (
+                <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
+                     onClick={()=>{setShowEng(false);setEngPwd('');}}>
+                    <div className="card pop-in" style={{maxWidth:300,width:'100%',padding:24}} onClick={e=>e.stopPropagation()}>
+                        <div style={{fontSize:16,fontWeight:700,color:'#3A2010',marginBottom:12,textAlign:'center'}}>工程師測試模式</div>
+                        <input type="password" className="input-field" style={{paddingLeft:14,textAlign:'center',letterSpacing:4}}
+                            placeholder="密碼" value={engPwd} onChange={e=>setEngPwd(e.target.value)}/>
+                        <button onClick={runEngineer} className="btn-main" style={{marginTop:12,fontSize:14}}>生成測試資料</button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+
+    /* ━━━ 測驗 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (step==='quiz') return (
+        <div className="page" style={{background:'#2C1A08'}}>
+            {/* 進度 Header */}
+            <div style={{width:'100%',background:'#E8600A',padding:'20px 20px 16px'}}>
+                <div style={{maxWidth:480,margin:'0 auto'}}>
+                    <div style={{display:'flex',justifyContent:'space-between',fontSize:12,fontWeight:700,color:'rgba(255,255,255,0.85)',marginBottom:8}}>
+                        <span>題目 {qIdx+1} / {QUESTIONS.length}</span>
+                        <span>{progress}%</span>
+                    </div>
+                    {/* 進度條 */}
+                    <div style={{position:'relative',height:28}}>
+                        <div style={{position:'absolute',bottom:0,width:'100%',height:6,background:'rgba(255,255,255,0.25)',borderRadius:4,overflow:'hidden'}}>
+                            <div style={{height:'100%',background:'#fff',width:`${progress}%`,borderRadius:4,transition:'width 0.3s ease'}}></div>
+                        </div>
+                        {/* 愛心滑塊 */}
+                        <div style={{position:'absolute',top:0,transition:'left 0.3s ease',left:`calc(${progress}% - 12px)`}}>
+                            <div style={{background:'#fff',borderRadius:'50%',width:24,height:24,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(0,0,0,0.2)'}}>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#E8600A"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 題目 + 選項 */}
+            <div style={{flex:1,width:'100%',maxWidth:480,padding:'24px 20px 32px',overflowY:'auto'}} className="no-bar">
+                {/* 題目卡 */}
+                <div className="card fade-up" key={qIdx} style={{textAlign:'center',padding:'28px 20px',marginBottom:20,minHeight:130,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                    <div style={{fontSize:12,fontWeight:700,color:'#E8600A',letterSpacing:2,marginBottom:10}}>題目 {qIdx+1}</div>
+                    <div style={{fontSize:19,fontWeight:800,color:'#3A2010',lineHeight:1.55,whiteSpace:'pre-line'}}>{QUESTIONS[qIdx]}</div>
+                </div>
+
+                {/* 選項 */}
+                {OPTIONS.map(o=>(
+                    <button key={o.score} className="option-btn fade-up" onClick={()=>handleAnswer(o.score)} disabled={navigating}>
+                        <span style={{fontSize:15,fontWeight:700,color:'#3A2010'}}>{o.label}</span>
+                        <span className="option-badge">{o.score} 分</span>
+                    </button>
+                ))}
+
+                {qIdx>0 && (
+                    <button onClick={()=>setQIdx(q=>q-1)} className="btn-ghost" style={{marginTop:8,color:'rgba(255,255,255,0.5)'}}>
+                        <Ico.ChevronL/> 返回上一題
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+
+    /* ━━━ 確認資料 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (step==='contact') {
+        const s = sortedTypes();
+        return (
+            <div className="page fade-up" style={{background:'#FFF8F3'}}>
+                {/* 結果預覽 Header */}
+                <div className="top-header">
+                    <div style={{fontSize:12,color:'rgba(255,255,255,0.8)',marginBottom:6}}>您的測驗結果初步分析</div>
+                    <div style={{fontSize:26,fontWeight:900,color:'#fff'}}>{s[0].label}</div>
+                    {/* 分數條 */}
+                    <div style={{marginTop:14,maxWidth:340,margin:'14px auto 0'}}>
+                        {[
+                            {label:'開創型（紅）',color:'#E84040',track:'rgba(255,255,255,0.2)',score:scores.red},
+                            {label:'關懷型（橙）',color:'#fff',    track:'rgba(255,255,255,0.2)',score:scores.orange},
+                            {label:'協調型（綠）',color:'#69D08A', track:'rgba(255,255,255,0.2)',score:scores.green},
+                            {label:'分析型（藍）',color:'#80B8E8', track:'rgba(255,255,255,0.2)',score:scores.blue},
+                        ].map(b=>(
+                            <div key={b.label} style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
+                                <div style={{fontSize:10,color:'rgba(255,255,255,0.75)',width:60,textAlign:'left',flexShrink:0}}>{b.label}</div>
+                                <div style={{flex:1,height:5,background:b.track,borderRadius:4,overflow:'hidden'}}>
+                                    <div style={{height:'100%',background:b.color,width:`${(b.score/30)*100}%`,borderRadius:4}}></div>
+                                </div>
+                                <div style={{fontSize:10,color:'#fff',width:16,textAlign:'right',flexShrink:0}}>{b.score}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="content">
+                    {/* 資料確認卡 */}
+                    <div className="card" style={{padding:'20px'}}>
+                        <div style={{fontSize:13,fontWeight:700,color:'#E8600A',marginBottom:14,display:'flex',alignItems:'center',gap:6}}>
+                            <Ico.Check/> 確認領取人資料
+                        </div>
+                        <div style={{marginBottom:10}}>
+                            <label style={{fontSize:12,fontWeight:700,color:'#B08060',display:'block',marginBottom:4}}>姓名</label>
+                            <input className="input-field" style={{paddingLeft:14}} value={name} onChange={e=>setName(e.target.value)} placeholder="您的姓名"/>
+                        </div>
+                        <div style={{marginBottom:10}}>
+                            <label style={{fontSize:12,fontWeight:700,color:'#B08060',display:'block',marginBottom:4}}>Email（領取測評說明用）</label>
+                            <input className="input-field" style={{paddingLeft:14}} value={email} onChange={e=>setEmail(e.target.value)} placeholder="example@mail.com"/>
+                        </div>
+                        <div>
+                            <label style={{fontSize:12,fontWeight:700,color:'#B08060',display:'block',marginBottom:4}}>聯繫電話</label>
+                            <input className="input-field" style={{paddingLeft:14}} value={phone}
+                                onChange={e=>setPhone(e.target.value.replace(/\D/g,'').slice(0,10))} placeholder="09xxxxxxxx" maxLength="10"/>
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={()=>{
+                            if(!name||!email.includes('@')||!validPhone(phone)){alert('請填寫完整聯絡資料');return;}
+                            setConfirm(true);
+                        }}
+                        className="btn-main" style={{marginBottom:10,fontSize:16,padding:'17px'}}>
+                        確認並領取分析說明
+                    </button>
+                    <button onClick={reset} className="btn-ghost">返回首頁</button>
+                </div>
+
+                {/* 來源確認 Modal */}
+                {showConfirm && (
+                    <div style={{position:'fixed',inset:0,background:'rgba(58,32,16,0.7)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
+                         onClick={()=>setConfirm(false)}>
+                        <div className="card pop-in" style={{maxWidth:360,width:'100%',padding:'28px 24px'}} onClick={e=>e.stopPropagation()}>
+                            <div style={{textAlign:'center',marginBottom:16}}>
+                                <div style={{width:44,height:44,background:'#FFF0E6',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 10px'}}>
+                                    <Ico.Mail/>
+                                </div>
+                                <div style={{fontSize:17,fontWeight:800,color:'#3A2010'}}>再次確認</div>
+                                <div style={{fontSize:13,color:'#B08060',marginTop:6}}>
+                                    測評說明將寄至 <span style={{color:'#E8600A',fontWeight:700}}>{email}</span>
+                                </div>
+                            </div>
+
+                            {/* 來源選擇 */}
+                            <div style={{background: refErr?'#FFF0F0':'#FFF8F3', borderRadius:14, padding:'14px 14px', border: refErr?'1.5px solid #F5C0C0':'1.5px solid #F5D0B0', marginBottom:16}}>
+                                <div style={{fontSize:13,fontWeight:700,color: refErr?'#E84040':'#7A4A2A',marginBottom:10}}>
+                                    如何得知本測驗？<span style={{fontSize:11,fontWeight:400,color:'#B08060',marginLeft:4}}>(必填)</span>
+                                </div>
+                                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+                                    {REFERRAL_OPTIONS.map(o=>(
+                                        <button key={o} onClick={()=>toggleRef(o)} style={{
+                                            padding:'9px 10px', borderRadius:10, fontSize:12, fontWeight:700,
+                                            border: referral.includes(o) ? '2px solid #E8600A':'1.5px solid #F5D0B0',
+                                            background: referral.includes(o) ? '#E8600A':'#fff',
+                                            color: referral.includes(o) ? '#fff':'#7A4A2A',
+                                            cursor:'pointer', display:'flex', alignItems:'center', gap:6,
+                                            transition:'all 0.15s'
+                                        }}>
+                                            <div style={{width:12,height:12,borderRadius:3,border: referral.includes(o)?'1.5px solid rgba(255,255,255,0.6)':'1.5px solid #D0A888',background: referral.includes(o)?'rgba(255,255,255,0.3)':'transparent',flexShrink:0}}></div>
+                                            {o}
+                                        </button>
+                                    ))}
+                                </div>
+                                {refErr && <div style={{fontSize:11,color:'#E84040',marginTop:8,fontWeight:600}}>※ 請至少選擇一項</div>}
+                            </div>
+
+                            <button onClick={trySubmit} className="btn-main" style={{fontSize:16,padding:'15px'}}>確認送出</button>
+                            <button onClick={()=>setConfirm(false)} style={{width:'100%',marginTop:10,padding:10,background:'#F5EDE8',border:'none',borderRadius:12,fontSize:13,fontWeight:600,color:'#B08060',cursor:'pointer'}}>返回修改</button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    /* ━━━ 結果頁 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (step==='result') {
+        const s = sortedTypes();
+        return (
+            <div className="page fade-up" style={{background:'#FFF8F3'}}>
+                {/* 結果 Header */}
+                <div className="top-header" style={{paddingBottom:32}}>
+                    {/* 成功勾 */}
+                    <div style={{width:52,height:52,background:'rgba(255,255,255,0.25)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px'}}>
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',marginBottom:4}}>您的光譜結果</div>
+                    <div style={{fontSize:28,fontWeight:900,color:'#fff'}}>{info.label}</div>
+
+                    {/* 分數條 */}
+                    <div style={{marginTop:16,maxWidth:320,margin:'16px auto 0'}}>
+                        {[
+                            {label:'開創型',color:'#E84040',score:scores.red},
+                            {label:'關懷型',color:'#fff',    score:scores.orange},
+                            {label:'協調型',color:'#69D08A', score:scores.green},
+                            {label:'分析型',color:'#80B8E8', score:scores.blue},
+                        ].map(b=>(
+                            <div key={b.label} style={{display:'flex',alignItems:'center',gap:8,marginBottom:7}}>
+                                <div style={{fontSize:11,color:'rgba(255,255,255,0.75)',width:36,flexShrink:0}}>{b.label}</div>
+                                <div style={{flex:1,height:6,background:'rgba(255,255,255,0.2)',borderRadius:4,overflow:'hidden'}}>
+                                    <div style={{height:'100%',background:b.color,width:`${(b.score/30)*100}%`,borderRadius:4,transition:'width 1s ease'}}></div>
+                                </div>
+                                <div style={{fontSize:11,color:'#fff',width:18,textAlign:'right',fontWeight:700,flexShrink:0}}>{b.score}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="content">
+                    {/* 型別說明 */}
+                    <div style={{marginBottom:16}}>
+                        <div className="type-section" style={{borderLeftColor:'#E84040'}}>
+                            <div style={{fontSize:11,fontWeight:700,color:'#E84040',letterSpacing:1.5,marginBottom:5}}>壓力下的表現</div>
+                            <div style={{fontSize:14,color:'#3A2010',lineHeight:1.65}}>{info.stress}</div>
+                        </div>
+                        <div className="type-section blue-accent">
+                            <div style={{fontSize:11,fontWeight:700,color:'#5B8FC9',letterSpacing:1.5,marginBottom:5}}>您的優勢</div>
+                            <div style={{fontSize:14,color:'#3A2010',lineHeight:1.65}}>{info.strength}</div>
+                        </div>
+                        <div className="type-section green-accent">
+                            <div style={{fontSize:11,fontWeight:700,color:'#4CAF7D',letterSpacing:1.5,marginBottom:5}}>覺知練習</div>
+                            <div style={{fontSize:14,color:'#3A2010',lineHeight:1.65}}>{info.practice}</div>
+                        </div>
+                    </div>
+
+                    {/* 行動按鈕群 */}
+                    {/* LINE */}
+                    <a href={LINE_ADD_FRIEND_URL} target="_blank" rel="noopener noreferrer"
+                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'#06C755',color:'#fff',borderRadius:16,padding:'15px',fontWeight:700,fontSize:15,textDecoration:'none',marginBottom:10}}>
+                        <Ico.Line/> 加入 LINE 好友，接收更多資訊
+                    </a>
+
+                    {/* 孩子版 */}
+                    <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer"
+                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'#EEF4FF',color:'#5B8FC9',border:'1.5px solid #C8DCF0',borderRadius:14,padding:'13px',fontWeight:700,fontSize:14,textDecoration:'none',marginBottom:10}}>
+                        <Ico.Smile/> 帶孩子也來測測看 →
+                    </a>
+
+                    {/* 截圖 & 分享 */}
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
+                        <button onClick={()=>setShowSS(true)}
+                            style={{background:'#FFF0E6',color:'#C05A10',border:'1.5px solid #F5D0B0',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                            <Ico.Camera/> 提醒截圖
+                        </button>
+                        <button onClick={()=>window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(QUIZ_SHARE_URL)}`, '_blank')}
+                            style={{background:'#FFF8F3',color:'#7A4A2A',border:'1.5px solid #F5D0B0',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                            <Ico.Share/> 分享測驗
+                        </button>
+                    </div>
+
+                    <button onClick={reset} className="btn-ghost" style={{color:'#C8A890',marginBottom:24}}>
+                        <Ico.Restart/> 重新開始測試
+                    </button>
+                </div>
+
+                {/* 截圖提示 Modal */}
+                {showSS && (
+                    <div style={{position:'fixed',inset:0,background:'rgba(58,32,16,0.7)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
+                         onClick={()=>setShowSS(false)}>
+                        <div className="card pop-in" style={{maxWidth:320,width:'100%',padding:'28px 24px',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
+                            <div style={{width:48,height:48,background:'#FFF0E6',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px'}}>
+                                <Ico.Camera/>
+                            </div>
+                            <div style={{fontSize:17,fontWeight:800,color:'#3A2010',marginBottom:8}}>請截圖保存</div>
+                            <div style={{fontSize:14,color:'#B08060',lineHeight:1.65,marginBottom:20}}>
+                                請使用手機截圖功能，保存您的測驗結果。
+                            </div>
+                            <button onClick={()=>setShowSS(false)} className="btn-main" style={{fontSize:15}}>我知道了</button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    return null;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
