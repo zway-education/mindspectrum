@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>覺知素養教育xSEL：心智光譜測驗</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -326,6 +329,185 @@
             .option-btn { padding: 17px 20px; }
             .entry-card { padding: 20px 24px; }
         }
+
+        /* ═══════════════════════════════════════
+           孩子版 (ChildApp) 專用樣式
+           ═══════════════════════════════════════ */
+        @keyframes child-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+        .arrow-bounce { animation: child-bounce 1s infinite; }
+
+        @keyframes child-bounce-once { 0% { transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0); } }
+        .animate-bounce-once { animation: child-bounce-once 0.6s ease-out forwards; }
+
+        @keyframes child-pop-in { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .animate-pop-in { animation: child-pop-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes color-sweep { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        .animate-rainbow {
+            background-image: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4B0082, #9400D3, #ff0000);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: color-sweep 3s linear infinite;
+            text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes child-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        .animate-breathe { animation: child-breathe 1.5s ease-in-out infinite; }
+
+        @keyframes child-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: child-float 3s ease-in-out infinite; }
+
+        @keyframes child-spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin-slow { animation: child-spin-slow 10s linear infinite; }
+
+        .nes-scrollbar::-webkit-scrollbar { width: 8px; }
+        .nes-scrollbar::-webkit-scrollbar-track { background: #eee; }
+        .nes-scrollbar::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+
+        .speech-bubble-tail {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid white;
+            z-index: 40;
+        }
+        .speech-bubble-tail::before {
+            content: ''; position: absolute; top: -3px; left: -13px;
+            width: 0; height: 0;
+            border-left: 13px solid transparent; border-right: 13px solid transparent; border-bottom: 13px solid black;
+            z-index: -1;
+        }
+
+        .zhuyin-mode-on {
+            font-family: "BiauKai", "DFKai-SB", "KaiTi", "MoE Standard Kai", "Noto Serif TC", serif !important;
+            font-weight: bold;
+        }
+        .zhuyin-grid {
+            display: grid;
+            grid-template-columns: repeat(5, max-content);
+            justify-content: center;
+            justify-items: center;
+            row-gap: 0px;
+            column-gap: 2px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        .zhuyin-char-block {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 2.8rem;
+            height: 3.0rem;
+            margin: 0 0 -10px 0;
+            vertical-align: middle;
+        }
+        .zhuyin-punct-block {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.8rem;
+            height: 3.0rem;
+            margin: 0 0 -10px 0;
+            vertical-align: middle;
+        }
+        .zhuyin-main-char { font-size: 1.4em; line-height: 1; }
+        .zhuyin-punct-char {
+            font-size: 1.4em; line-height: 1;
+            font-family: "BiauKai", "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+            font-weight: bold;
+        }
+        .zhuyin-phonetic-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 0.8em;
+            margin-left: 2px;
+            position: relative;
+            height: 100%;
+        }
+        .zhuyin-symbol {
+            font-family: "BiauKai", "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+            font-size: 0.55em;
+            line-height: 1;
+            color: #333;
+            font-weight: 900;
+        }
+        .zhuyin-tone {
+            position: absolute;
+            right: -0.8em;
+            font-family: "BiauKai", "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+            font-size: 0.65em;
+            color: #000;
+            font-weight: 900;
+            top: 48%;
+            transform: translateY(-50%);
+            text-shadow: 0.5px 0 0 #000;
+        }
+        .zhuyin-light-tone {
+            font-family: "BiauKai", "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+            font-size: 0.55em;
+            color: #000;
+            font-weight: 900;
+            margin-bottom: -2px;
+            text-shadow: 0.5px 0 0 #000;
+        }
+
+        .battle-btn {
+            background: white;
+            border: 2px solid black;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 3px 3px 0 #000;
+            width: 100%;
+            height: 76px;
+            gap: 2px;
+        }
+        .battle-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
+        .battle-btn-5 { border-color: #c53030; background: linear-gradient(160deg,#fff5f5,#ffe0e0); }
+        .battle-btn-4 { border-color: #c05621; background: linear-gradient(160deg,#fffaf0,#feebc8); }
+        .battle-btn-3 { border-color: #718096; background: linear-gradient(160deg,#f7fafc,#edf2f7); }
+        .battle-btn-2 { border-color: #2b6cb0; background: linear-gradient(160deg,#ebf8ff,#bee3f8); }
+        .battle-btn-1 { border-color: #276749; background: linear-gradient(160deg,#f0fff4,#c6f6d5); }
+
+        @keyframes space-drift {
+            0% { background-position: 0 0, 40px 60px, 130px 270px; }
+            100% { background-position: 550px 550px, 390px 410px, 380px 520px; }
+        }
+        @keyframes sun-float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, 10px); }
+            100% { transform: translate(0, 0); }
+        }
+        .bg-space {
+            background-color: #1a1a2e;
+            background-image:
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            position: relative;
+            animation: space-drift 60s linear infinite;
+        }
+        .bg-space::before {
+            content: '';
+            position: absolute;
+            top: 50px; right: 30px;
+            width: 24px; height: 24px;
+            background: #FDB813;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #FDB813;
+            z-index: 0;
+            animation: sun-float 20s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -449,6 +631,818 @@ function Shell({children}) {
 }
 
 /* ════════════════════════════════
+   孩子版常數與元件
+════════════════════════════════ */
+
+const CHILD_GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWvf1ulhsDkTdMT0Pckea-L32Q31Az-g09LrjIbfOBcMWg1k8Gnt9bumCQ4Id1bcdq/exec";
+
+const MONSTER_DATA = [
+  { id: 0, name: "嗶嗶小子", noun: "高頻能量 嗶嗶小子", img: "https://i.ibb.co/zW10PLVL/Beep-Boop.png", type: "fire", zhuyin: "<ruby>嗶<rt>ㄅㄧˋ</rt></ruby><ruby>嗶<rt>ㄅㄧˋ</rt></ruby><ruby>小<rt>ㄒㄧㄠˇ</rt></ruby><ruby>子<rt>ㄗˇ</rt></ruby>" },
+  { id: 1, name: "火花史萊姆", noun: "躁動火花 史萊姆", img: "https://i.ibb.co/Pz6QfL3t/Spark-Slime.png", type: "fire", zhuyin: "<ruby>火<rt>ㄏㄨㄛˇ</rt></ruby><ruby>花<rt>ㄏㄨㄚ</rt></ruby><ruby>史<rt>ㄕˇ</rt></ruby><ruby>萊<rt>ㄌㄞˊ</rt></ruby><ruby>姆<rt>ㄇㄨˇ</rt></ruby>" },
+  { id: 2, name: "迪斯可球怪", noun: "閃耀舞廳 迪斯可球", img: "https://i.ibb.co/F4psYTDw/Disco-Orb.png", type: "electric", zhuyin: "<ruby>迪<rt>ㄉㄧˊ</rt></ruby><ruby>斯<rt>ㄙ</rt></ruby><ruby>可<rt>ㄎㄜˇ</rt></ruby><ruby>球<rt>ㄑㄧㄡˊ</rt></ruby><ruby>怪<rt>ㄍㄨㄞˋ</rt></ruby>" },
+  { id: 3, name: "擴音喇叭鳥", noun: "聲波轟炸 擴音鳥", img: "https://i.ibb.co/fVSwHqyq/Megaphone-Bird-WAAAA.png", type: "fire", zhuyin: "<ruby>擴<rt>ㄎㄨㄛˋ</rt></ruby><ruby>音<rt>ㄧㄣ</rt></ruby><ruby>喇<rt>ㄌㄚˇ</rt></ruby><ruby>叭<rt>ㄅㄚ</rt></ruby><ruby>鳥<rt>ㄋㄧㄠˇ</rt></ruby>" },
+  { id: 4, name: "火箭衝衝", noun: "極速升空 火箭衝衝", img: "https://i.ibb.co/cKJmfk3G/Rocket-Zoom.png", type: "fire", zhuyin: "<ruby>火<rt>ㄏㄨㄛˇ</rt></ruby><ruby>箭<rt>ㄐㄧㄢˋ</rt></ruby><ruby>衝<rt>ㄔㄨㄥ</rt></ruby><ruby>衝<rt>ㄔㄨㄥ</rt></ruby>" },
+  { id: 5, name: "苔石龜", noun: "靜謐磐石 苔石龜", img: "https://i.ibb.co/7xN8V7Cr/Mossy-Pebble-Turtle.png", type: "grass", zhuyin: "<ruby>苔<rt>ㄊㄞˊ</rt></ruby><ruby>石<rt>ㄕˊ</rt></ruby><ruby>龜<rt>ㄍㄨㄟ</rt></ruby>" },
+  { id: 6, name: "書本蟲", noun: "博學多聞 書本蟲", img: "https://i.ibb.co/SXnb5XNG/Bookwyrm.png", type: "water", zhuyin: "<ruby>書<rt>ㄕㄨ</rt></ruby><ruby>本<rt>ㄅㄣˇ</rt></ruby><ruby>蟲<rt>ㄔㄨㄥˊ</rt></ruby>" },
+  { id: 7, name: "隱形斗篷幽靈", noun: "羞澀隱者 斗篷幽靈", img: "https://i.ibb.co/wr7Tbs6p/Cloak-Ghost.png", type: "water", zhuyin: "<ruby>隱<rt>ㄧㄣˇ</rt></ruby><ruby>形<rt>ㄒㄧㄥˊ</rt></ruby><ruby>斗<rt>ㄉㄡˇ</rt></ruby><ruby>篷<rt>ㄆㄥˊ</rt></ruby><ruby>幽<rt>ㄧㄡ</rt></ruby><ruby>靈<rt>ㄌㄧㄥˊ</rt></ruby>" },
+  { id: 8, name: "雲朵瞌睡蟲", noun: "夢境漂浮 瞌睡蟲", img: "https://i.ibb.co/xSqyX047/Cloud-Snoozer.png", type: "grass", zhuyin: "<ruby>雲<rt>ㄩㄣˊ</rt></ruby><ruby>朵<rt>ㄉㄨㄛˇ</rt></ruby><ruby>瞌<rt>ㄎㄜ</rt></ruby><ruby>睡<rt>ㄕㄨㄟˋ</rt></ruby><ruby>蟲<rt>ㄔㄨㄥˊ</rt></ruby>" },
+  { id: 9, name: "冰塊方塊", noun: "絕對零度 冰塊方塊", img: "https://i.ibb.co/FqbkZZSM/Ice-Cube.png", type: "water", zhuyin: "<ruby>冰<rt>ㄅㄧㄥ</rt></ruby><ruby>塊<rt>ㄎㄨㄞˋ</rt></ruby><ruby>方<rt>ㄈㄤ</rt></ruby><ruby>塊<rt>ㄎㄨㄞˋ</rt></ruby>" },
+  { id: 10, name: "愛心雨雲", noun: "溫柔雨露 愛心雨雲", img: "https://i.ibb.co/MDC7DX86/Heart-Rain-Cloud.png", type: "electric", zhuyin: "<ruby>愛<rt>ㄞˋ</rt></ruby><ruby>心<rt>ㄒㄧㄣ</rt></ruby><ruby>雨<rt>ㄩˇ</rt></ruby><ruby>雲<rt>ㄩㄣˊ</rt></ruby>" },
+  { id: 11, name: "擁抱棉花糖", noun: "甜美療癒 棉花糖", img: "https://i.ibb.co/6c81zn40/Hug-Mallow.png", type: "electric", zhuyin: "<ruby>擁<rt>ㄩㄥˇ</rt></ruby><ruby>抱<rt>ㄅㄠˋ</rt></ruby><ruby>棉<rt>ㄇㄧㄢˊ</rt></ruby><ruby>花<rt>ㄏㄨㄚ</rt></ruby><ruby>糖<rt>ㄊㄤˊ</rt></ruby>" },
+  { id: 12, name: "變色情緒果凍", noun: "七彩波動 情緒果凍", img: "https://i.ibb.co/Df1pZ0wz/Mood-Jelly.png", type: "electric", zhuyin: "<ruby>變<rt>ㄅㄧㄢˋ</rt></ruby><ruby>色<rt>ㄙㄜˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>緒<rt>ㄒㄩˋ</rt></ruby><ruby>果<rt>ㄍㄨㄛˇ</rt></ruby><ruby>凍<rt>ㄉㄨㄥˋ</rt></ruby>" },
+  { id: 13, name: "淚眼洋蔥", noun: "敏感內心 淚眼洋蔥", img: "https://i.ibb.co/m5grrmFM/Teeny-Onion.png", type: "electric", zhuyin: "<ruby>淚<rt>ㄌㄟˋ</rt></ruby><ruby>眼<rt>ㄧㄢˇ</rt></ruby><ruby>洋<rt>ㄧㄤˊ</rt></ruby><ruby>蔥<rt>ㄘㄨㄥ</rt></ruby>" },
+  { id: 14, name: "暖暖茶壺", noun: "暖心時刻 暖暖茶壺", img: "https://i.ibb.co/fdgXqcvN/Care-Pot.png", type: "electric", zhuyin: "<ruby>暖<rt>ㄋㄨㄢˇ</rt></ruby><ruby>暖<rt>ㄋㄨㄢˇ</rt></ruby><ruby>茶<rt>ㄔㄚˊ</rt></ruby><ruby>壺<rt>ㄏㄨˊ</rt></ruby>" },
+  { id: 15, name: "計算機機器人", noun: "精確運算 計算機", img: "https://i.ibb.co/Ld0dybyr/Calc-Bot-OK.png", type: "water", zhuyin: "<ruby>計<rt>ㄐㄧˋ</rt></ruby><ruby>算<rt>ㄙㄨㄢˋ</rt></ruby><ruby>機<rt>ㄐㄧ</rt></ruby><ruby>機<rt>ㄐㄧ</rt></ruby><ruby>器<rt>ㄑㄧˋ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby>" },
+  { id: 16, name: "齒輪貓頭鷹", noun: "精密結構 齒輪梟", img: "https://i.ibb.co/ycFcFwcp/Gear-Owl.png", type: "water", zhuyin: "<ruby>齒<rt>ㄔˇ</rt></ruby><ruby>輪<rt>ㄌㄨㄣˊ</rt></ruby><ruby>貓<rt>ㄇㄠ</rt></ruby><ruby>頭<rt>ㄊㄡˊ</rt></ruby><ruby>鷹<rt>ㄧㄥ</rt></ruby>" },
+  { id: 17, name: "聰明大腦", noun: "智慧中樞 聰明大腦", img: "https://i.ibb.co/PvF5cbZ4/Brainy-Float.png", type: "water", zhuyin: "<ruby>聰<rt>ㄘㄨㄥ</rt></ruby><ruby>明<rt>ㄇㄧㄥˊ</rt></ruby><ruby>大<rt>ㄉㄚˋ</rt></ruby><ruby>腦<rt>ㄋㄠˇ</rt></ruby>" },
+  { id: 18, name: "俄羅斯方塊獸", noun: "完美秩序 方塊獸", img: "https://i.ibb.co/hJcwzJqn/Tetris-Mon.png", type: "grass", zhuyin: "<ruby>俄<rt>ㄜˊ</rt></ruby><ruby>羅<rt>ㄌㄨㄛˊ</rt></ruby><ruby>斯<rt>ㄙ</rt></ruby><ruby>方<rt>ㄈㄤ</rt></ruby><ruby>塊<rt>ㄎㄨㄞˋ</rt></ruby><ruby>獸<rt>ㄕㄡˋ</rt></ruby>" },
+  { id: 19, name: "檢查清單板", noun: "計畫通 檢查清單", img: "https://i.ibb.co/Jw8y8yvN/Checklist-Board.png", type: "grass", zhuyin: "<ruby>檢<rt>ㄐㄧㄢˇ</rt></ruby><ruby>查<rt>ㄔㄚˊ</rt></ruby><ruby>清<rt>ㄑㄧㄥ</rt></ruby><ruby>單<rt>ㄉㄢ</rt></ruby><ruby>板<rt>ㄅㄢˇ</rt></ruby>" },
+  { id: 20, name: "星空夢想家", noun: "無限星河 夢想家", img: "https://i.ibb.co/5WsXxH1L/Starry-Dreamer.png", type: "water", zhuyin: "<ruby>星<rt>ㄒㄧㄥ</rt></ruby><ruby>空<rt>ㄎㄨㄥ</rt></ruby><ruby>夢<rt>ㄇㄥˋ</rt></ruby><ruby>想<rt>ㄒㄧㄤˇ</rt></ruby><ruby>家<rt>ㄐㄧㄚ</rt></ruby>" },
+  { id: 21, name: "顏料潑灑怪", noun: "創意爆發 顏料怪", img: "https://i.ibb.co/rKdG2Bqd/Splat-Phantom.png", type: "fire", zhuyin: "<ruby>顏<rt>ㄧㄢˊ</rt></ruby><ruby>料<rt>ㄌㄧㄠˋ</rt></ruby><ruby>潑<rt>ㄆㄛ</rt></ruby><ruby>灑<rt>ㄙㄚˇ</rt></ruby><ruby>怪<rt>ㄍㄨㄞˋ</rt></ruby>" },
+  { id: 22, name: "飄浮大眼睛", noun: "洞察先機 大眼怪", img: "https://i.ibb.co/msDNCP5/Floating-Eye-dea.png", type: "water", zhuyin: "<ruby>飄<rt>ㄆㄧㄠ</rt></ruby><ruby>浮<rt>ㄈㄨˊ</rt></ruby><ruby>大<rt>ㄉㄚˋ</rt></ruby><ruby>眼<rt>ㄧㄢˇ</rt></ruby><ruby>睛<rt>ㄐㄧㄥ</rt></ruby>" },
+  { id: 23, name: "抽象拼貼獸", noun: "獨特視角 拼貼獸", img: "https://i.ibb.co/LzpmV7DS/Abstract-Collage.png", type: "fire", zhuyin: "<ruby>抽<rt>ㄔㄡ</rt></ruby><ruby>象<rt>ㄒㄧㄤˋ</rt></ruby><ruby>拼<rt>ㄆㄧㄣ</rt></ruby><ruby>貼<rt>ㄊㄧㄝ</rt></ruby><ruby>獸<rt>ㄕㄡˋ</rt></ruby>" },
+  { id: 24, name: "音符蝌蚪", noun: "美妙旋律 音符蝌蚪", img: "https://i.ibb.co/B2wcjQzM/Musical-Tadpole.png", type: "electric", zhuyin: "<ruby>音<rt>ㄧㄣ</rt></ruby><ruby>符<rt>ㄈㄨˊ</rt></ruby><ruby>蝌<rt>ㄎㄜ</rt></ruby><ruby>蚪<rt>ㄉㄡˇ</rt></ruby>" },
+  { id: 25, name: "發抖果凍", noun: "謹慎小心 發抖果凍", img: "https://i.ibb.co/NgYRHNBM/Shiver-Jelly.png", type: "grass", zhuyin: "<ruby>發<rt>ㄈㄚ</rt></ruby><ruby>抖<rt>ㄉㄡˇ</rt></ruby><ruby>果<rt>ㄍㄨㄛˇ</rt></ruby><ruby>凍<rt>ㄉㄨㄥˋ</rt></ruby>" },
+  { id: 26, name: "寄居蟹堡壘", noun: "絕對防禦 寄居蟹", img: "https://i.ibb.co/TBp5wcHz/Hermit-Fortress.png", type: "grass", zhuyin: "<ruby>寄<rt>ㄐㄧˋ</rt></ruby><ruby>居<rt>ㄐㄩ</rt></ruby><ruby>蟹<rt>ㄒㄧㄝˋ</rt></ruby><ruby>堡<rt>ㄅㄠˇ</rt></ruby><ruby>壘<rt>ㄌㄟˇ</rt></ruby>" },
+  { id: 27, name: "問號尾巴", noun: "探索未知 問號狐", img: "https://i.ibb.co/1GvXcq61/Question-Tail.png", type: "water", zhuyin: "<ruby>問<rt>ㄨㄣˋ</rt></ruby><ruby>號<rt>ㄏㄠˋ</rt></ruby><ruby>尾<rt>ㄨㄟˇ</rt></ruby><ruby>巴<rt>ㄅㄚ˙</rt></ruby>" },
+  { id: 28, name: "變形怪百變怪", noun: "適應萬變 百變怪", img: "https://i.ibb.co/70JWg1T/Ditto-Blob.png", type: "electric", zhuyin: "<ruby>變<rt>ㄅㄧㄢˋ</rt></ruby><ruby>形<rt>ㄒㄧㄥˊ</rt></ruby><ruby>怪<rt>ㄍㄨㄞˋ</rt></ruby><ruby>百<rt>ㄅㄞˇ</rt></ruby><ruby>變<rt>ㄅㄧㄢˋ</rt></ruby><ruby>怪<rt>ㄍㄨㄞˋ</rt></ruby>" },
+  { id: 29, name: "警報仙人掌", noun: "高度警戒 仙人掌", img: "https://i.ibb.co/XkMc5Gxd/Alarm-Cactus.png", type: "fire", zhuyin: "<ruby>警<rt>ㄐㄧㄥˇ</rt></ruby><ruby>報<rt>ㄅㄠˋ</rt></ruby><ruby>仙<rt>ㄒㄧㄢ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>掌<rt>ㄓㄤˇ</rt></ruby>" }
+];
+
+const getMonsterImg = (id) => MONSTER_DATA[id] ? MONSTER_DATA[id].img : MONSTER_DATA[0].img;
+
+const INTRO_BG_URL = "https://i.ibb.co/gbPj3CZv/Gemini-Generated-Image-ghygqcghygqcghyg.png";
+const TALK_BG_URL = "https://i.ibb.co/YFDpZvGr/Gemini-Generated-Image-wq8l7vwq8l7vwq8l.png";
+const INTRO_COLORS = ['bg-indigo-900', 'bg-red-900', 'bg-emerald-900', 'bg-slate-900', 'bg-purple-900', 'bg-cyan-900', 'bg-rose-900', 'bg-amber-900'];
+
+const QUESTIONS_DATA_SOURCE = [
+  { text: "做事情時，我希望可以快點完成", zhuyin: "<ruby>做<rt>ㄗㄨㄛˋ</rt></ruby><ruby>事<rt>ㄕˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>希<rt>ㄒㄧ</rt></ruby><ruby>望<rt>ㄨㄤˋ</rt></ruby><ruby>可<rt>ㄎㄜˇ</rt></ruby><ruby>以<rt>ㄧˇ</rt></ruby><ruby>快<rt>ㄎㄨㄞˋ</rt></ruby><ruby>點<rt>ㄉㄧㄢˇ</rt></ruby><ruby>完<rt>ㄨㄢˊ</rt></ruby><ruby>成<rt>ㄔㄥˊ</rt></ruby>" },
+  { text: "遇到問題時，我會想自己直接決定怎麼做", zhuyin: "<ruby>遇<rt>ㄩˋ</rt></ruby><ruby>到<rt>ㄉㄠˋ</rt></ruby><ruby>問<rt>ㄨㄣˋ</rt></ruby><ruby>題<rt>ㄊㄧˊ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>想<rt>ㄒㄧㄤˇ</rt></ruby><ruby>自<rt>ㄗˋ</rt></ruby><ruby>己<rt>ㄐㄧˇ</rt></ruby><ruby>直<rt>ㄓˊ</rt></ruby><ruby>接<rt>ㄐㄧㄝ</rt></ruby><ruby>決<rt>ㄐㄩㄝˊ</rt></ruby><ruby>定<rt>ㄉㄧㄥˋ</rt></ruby><ruby>怎<rt>ㄗㄣˇ</rt></ruby><ruby>麼<rt>˙ㄇㄜ</rt></ruby><ruby>做<rt>ㄗㄨㄛˋ</rt></ruby>" },
+  { text: "我比較在意事情能不能解決，而不是當下的感受", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>比<rt>ㄅㄧˇ</rt></ruby><ruby>較<rt>ㄐㄧㄠˋ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>意<rt>ㄧˋ</rt></ruby><ruby>事<rt>ㄕˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>能<rt>ㄋㄥˊ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>能<rt>ㄋㄥˊ</rt></ruby><ruby>解<rt>ㄐㄧㄝˇ</rt></ruby><ruby>決<rt>ㄐㄩㄝˊ</rt></ruby>，<ruby>而<rt>ㄦˊ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby><ruby>當<rt>ㄉㄤ</rt></ruby><ruby>下<rt>ㄒㄧㄚˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>感<rt>ㄍㄢˇ</rt></ruby><ruby>受<rt>ㄕㄡˋ</rt></ruby>" },
+  { text: "覺得別人太慢時，我會想自己來", zhuyin: "<ruby>覺<rt>ㄐㄩㄝˊ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby><ruby>別<rt>ㄅㄧㄝˊ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>太<rt>ㄊㄞˋ</rt></ruby><ruby>慢<rt>ㄇㄢˋ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>想<rt>ㄒㄧㄤˇ</rt></ruby><ruby>自<rt>ㄗˋ</rt></ruby><ruby>己<rt>ㄐㄧˇ</rt></ruby><ruby>來<rt>ㄌㄞˊ</rt></ruby>" },
+  { text: "我在意事情有沒有做到或完成", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>意<rt>ㄧˋ</rt></ruby><ruby>事<rt>ㄕˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>有<rt>ㄧㄡˇ</rt></ruby><ruby>沒<rt>ㄇㄟˊ</rt></ruby><ruby>有<rt>ㄧㄡˇ</rt></ruby><ruby>做<rt>ㄗㄨㄛˋ</rt></ruby><ruby>到<rt>ㄉㄠˋ</rt></ruby><ruby>或<rt>ㄏㄨㄛˋ</rt></ruby><ruby>完<rt>ㄨㄢˊ</rt></ruby><ruby>成<rt>ㄔㄥˊ</rt></ruby>" },
+  { text: "等待會讓我很不耐煩", zhuyin: "<ruby>等<rt>ㄉㄥˇ</rt></ruby><ruby>待<rt>ㄉㄞˋ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>讓<rt>ㄖㄤˋ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>耐<rt>ㄋㄞˋ</rt></ruby><ruby>煩<rt>ㄈㄢˊ</rt></ruby>" },
+  { text: "我的心情很容易被身邊的人影響", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>心<rt>ㄒㄧㄣ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>容<rt>ㄖㄨㄥˊ</rt></ruby><ruby>易<rt>ㄧˋ</rt></ruby><ruby>被<rt>ㄅㄟˋ</rt></ruby><ruby>身<rt>ㄕㄣ</rt></ruby><ruby>邊<rt>ㄅㄧㄢ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>影<rt>ㄧㄥˇ</rt></ruby><ruby>響<rt>ㄒㄧㄤˇ</rt></ruby>" },
+  { text: "別人不理我時，我會覺得難過", zhuyin: "<ruby>別<rt>ㄅㄧㄝˊ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>理<rt>ㄌㄧˇ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>覺<rt>ㄐㄩㄝˊ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby><ruby>難<rt>ㄋㄢˊ</rt></ruby><ruby>過<rt>ㄍㄨㄛˋ</rt></ruby>" },
+  { text: "我很在意別人喜不喜歡我", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>意<rt>ㄧˋ</rt></ruby><ruby>別<rt>ㄅㄧㄝˊ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>喜<rt>ㄒㄧˇ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>喜<rt>ㄒㄧˇ</rt></ruby><ruby>歡<rt>ㄏㄨㄢ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby>" },
+  { text: "只要氣氛不好，我就會覺得不舒服", zhuyin: "<ruby>只<rt>ㄓˇ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby><ruby>氣<rt>ㄑㄧˋ</rt></ruby><ruby>氛<rt>ㄈㄣ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>好<rt>ㄏㄠˇ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>就<rt>ㄐㄧㄡˋ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>覺<rt>ㄐㄩㄝˊ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>舒<rt>ㄕㄨ</rt></ruby><ruby>服<rt>ㄈㄨˊ</rt></ruby>" },
+  { text: "別人不開心時，我會覺得是不是我做錯了", zhuyin: "<ruby>別<rt>ㄅㄧㄝˊ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>開<rt>ㄎㄞ</rt></ruby><ruby>心<rt>ㄒㄧㄣ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>覺<rt>ㄐㄩㄝˊ</rt></ruby><ruby>得<rt>˙ㄉㄜ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>是<rt>ㄕˋ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>做<rt>ㄗㄨㄛˋ</rt></ruby><ruby>錯<rt>ㄘㄨㄛˋ</rt></ruby><ruby>了<rt>˙ㄌㄜ</rt></ruby>" },
+  { text: "對我來說，好關係比守規則重要", zhuyin: "<ruby>對<rt>ㄉㄨㄟˋ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>來<rt>ㄌㄞˊ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby>，<ruby>好<rt>ㄏㄠˇ</rt></ruby><ruby>關<rt>ㄍㄨㄢ</rt></ruby><ruby>係<rt>ㄒㄧˋ</rt></ruby><ruby>比<rt>ㄅㄧˇ</rt></ruby><ruby>守<rt>ㄕㄡˇ</rt></ruby><ruby>規<rt>ㄍㄨㄟ</rt></ruby><ruby>則<rt>ㄗㄜˊ</rt></ruby><ruby>重<rt>ㄓㄨㄥˋ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby>" },
+  { text: "我不喜歡和別人起衝突", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>喜<rt>ㄒㄧˇ</rt></ruby><ruby>歡<rt>ㄏㄨㄢ</rt></ruby><ruby>和<rt>ㄏㄢˋ</rt></ruby><ruby>別<rt>ㄅㄧㄝˊ</rt></ruby><ruby>人<rt>ㄖㄣˊ</rt></ruby><ruby>起<rt>ㄑㄧˇ</rt></ruby><ruby>衝<rt>ㄔㄨㄥ</rt></ruby><ruby>突<rt>ㄊㄨˊ</rt></ruby>" },
+  { text: "為了不要吵架，我常選擇退讓", zhuyin: "<ruby>為<rt>ㄨㄟˋ</rt></ruby><ruby>了<rt>˙ㄌㄜ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby><ruby>吵<rt>ㄔㄠˇ</rt></ruby><ruby>架<rt>ㄐㄧㄚˋ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>常<rt>ㄔㄤˊ</rt></ruby><ruby>選<rt>ㄒㄩㄢˇ</rt></ruby><ruby>擇<rt>ㄗㄜˊ</rt></ruby><ruby>退<rt>ㄊㄨㄟˋ</rt></ruby><ruby>讓<rt>ㄖㄤˋ</rt></ruby>" },
+  { text: "遇到衝突時，我會選擇先不說話", zhuyin: "<ruby>遇<rt>ㄩˋ</rt></ruby><ruby>到<rt>ㄉㄠˋ</rt></ruby><ruby>衝<rt>ㄔㄨㄥ</rt></ruby><ruby>突<rt>ㄊㄨˊ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>選<rt>ㄒㄩㄢˇ</rt></ruby><ruby>擇<rt>ㄗㄜˊ</rt></ruby><ruby>先<rt>ㄒㄧㄢ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby><ruby>話<rt>ㄏㄨㄚˋ</rt></ruby>" },
+  { text: "我希望事情可以和平地過去", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>希<rt>ㄒㄧ</rt></ruby><ruby>望<rt>ㄨㄤˋ</rt></ruby><ruby>事<rt>ㄕˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>可<rt>ㄎㄜˇ</rt></ruby><ruby>以<rt>ㄧˇ</rt></ruby><ruby>和<rt>ㄏㄜˊ</rt></ruby><ruby>平<rt>ㄆㄧㄥˊ</rt></ruby><ruby>地<rt>˙ㄉㄜ</rt></ruby><ruby>過<rt>ㄍㄨㄛˋ</rt></ruby><ruby>去<rt>ㄑㄩˋ</rt></ruby>" },
+  { text: "即使我不同意，也不一定會說出口", zhuyin: "<ruby>即<rt>ㄐㄧˊ</rt></ruby><ruby>使<rt>ㄕˇ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>同<rt>ㄊㄨㄥˊ</rt></ruby><ruby>意<rt>ㄧˋ</rt></ruby>，<ruby>也<rt>ㄧㄝˇ</rt></ruby><ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>一<rt>ㄧ</rt></ruby><ruby>定<rt>ㄉㄧㄥˋ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>說<rt>ㄕㄨㄛ</rt></ruby><ruby>出<rt>ㄔㄨ</rt></ruby><ruby>口<rt>ㄎㄡˇ</rt></ruby>" },
+  { text: "我喜歡穩定、不太變動的狀態", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>喜<rt>ㄒㄧˇ</rt></ruby><ruby>歡<rt>ㄏㄨㄢ</rt></ruby><ruby>穩<rt>ㄨㄣˇ</rt></ruby><ruby>定<rt>ㄉㄧㄥˋ</rt></ruby>、<ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>太<rt>ㄊㄞˋ</rt></ruby><ruby>變<rt>ㄅㄧㄢˋ</rt></ruby><ruby>動<rt>ㄉㄨㄥˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>狀<rt>ㄓㄨㄤˋ</rt></ruby><ruby>態<rt>ㄊㄞˋ</rt></ruby>" },
+  { text: "遇到問題時，我會先想原因", zhuyin: "<ruby>遇<rt>ㄩˋ</rt></ruby><ruby>到<rt>ㄉㄠˋ</rt></ruby><ruby>問<rt>ㄨㄣˋ</rt></ruby><ruby>題<rt>ㄊㄧˊ</rt></ruby><ruby>時<rt>ㄕˊ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>先<rt>ㄒㄧㄢ</rt></ruby><ruby>想<rt>ㄒㄧㄤˇ</rt></ruby><ruby>原<rt>ㄩㄢˊ</rt></ruby><ruby>因<rt>ㄧㄣ</rt></ruby>" },
+  { text: "我在意事情有沒有照正確的方法來做", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>意<rt>ㄧˋ</rt></ruby><ruby>事<rt>ㄕˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>有<rt>ㄧㄡˇ</rt></ruby><ruby>沒<rt>ㄇㄟˊ</rt></ruby><ruby>有<rt>ㄧㄡˇ</rt></ruby><ruby>照<rt>ㄓㄠˋ</rt></ruby><ruby>正<rt>ㄓㄥˋ</rt></ruby><ruby>確<rt>ㄑㄩㄝˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>方<rt>ㄈㄤ</rt></ruby><ruby>法<rt>ㄈㄚˇ</rt></ruby><ruby>來<rt>ㄌㄞˊ</rt></ruby><ruby>做<rt>ㄗㄨㄛˋ</rt></ruby>" },
+  { text: "不合理的地方會讓我很在意", zhuyin: "<ruby>不<rt>ㄅㄨˋ</rt></ruby><ruby>合<rt>ㄏㄜˊ</rt></ruby><ruby>理<rt>ㄌㄧˇ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>地<rt>ㄉㄧˋ</rt></ruby><ruby>方<rt>ㄈㄤ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>讓<rt>ㄖㄤˋ</rt></ruby><ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>很<rt>ㄏㄣˇ</rt></ruby><ruby>在<rt>ㄗㄞˋ</rt></ruby><ruby>意<rt>ㄧˋ</rt></ruby>" },
+  { text: "我喜歡把事情想清楚再行動", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>喜<rt>ㄒㄧˇ</rt></ruby><ruby>歡<rt>ㄏㄨㄢ</rt></ruby><ruby>把<rt>ㄅㄚˇ</rt></ruby><ruby>事<rt>ㄕˋ</rt></ruby><ruby>情<rt>ㄑㄧㄥˊ</rt></ruby><ruby>想<rt>ㄒㄧㄤˇ</rt></ruby><ruby>清<rt>ㄑㄧㄥ</rt></ruby><ruby>楚<rt>ㄔㄨˇ</rt></ruby><ruby>再<rt>ㄗㄞˋ</rt></ruby><ruby>行<rt>ㄒㄧㄥˊ</rt></ruby><ruby>動<rt>ㄉㄨㄥˋ</rt></ruby>" },
+  { text: "同樣的錯誤，我希望不要再犯", zhuyin: "<ruby>同<rt>ㄊㄨㄥˊ</rt></ruby><ruby>樣<rt>ㄧㄤˋ</rt></ruby><ruby>的<rt>˙ㄉㄜ</rt></ruby><ruby>錯<rt>ㄘㄨㄛˋ</rt></ruby><ruby>誤<rt>ㄨˋ</rt></ruby>，<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>希<rt>ㄒㄧ</rt></ruby><ruby>望<rt>ㄨㄤˋ</rt></ruby><ruby>不<rt>ㄅㄨˊ</rt></ruby><ruby>要<rt>ㄧㄠˋ</rt></ruby><ruby>再<rt>ㄗㄞˋ</rt></ruby><ruby>犯<rt>ㄈㄢˋ</rt></ruby>" },
+  { text: "我會一直思考怎麼做才能更好", zhuyin: "<ruby>我<rt>ㄨㄛˇ</rt></ruby><ruby>會<rt>ㄏㄨㄟˋ</rt></ruby><ruby>一<rt>ㄧ</rt></ruby><ruby>直<rt>ㄓˊ</rt></ruby><ruby>思<rt>ㄙ</rt></ruby><ruby>考<rt>ㄎㄠˇ</rt></ruby><ruby>怎<rt>ㄗㄣˇ</rt></ruby><ruby>麼<rt>˙ㄇㄜ</rt></ruby><ruby>做<rt>ㄗㄨㄛˋ</rt></ruby><ruby>才<rt>ㄘㄞˊ</rt></ruby><ruby>能<rt>ㄋㄥˊ</rt></ruby><ruby>更<rt>ㄍㄥˋ</rt></ruby><ruby>好<rt>ㄏㄠˇ</rt></ruby>" }
+];
+
+const renderZhuyinBlock = (zhuyinHtml) => {
+  const regex = /<ruby>(.*?)<rt>(.*?)<\/rt><\/ruby>|([^<]+)/g;
+  let match;
+  const parts = [];
+  while ((match = regex.exec(zhuyinHtml)) !== null) {
+    if (match[1]) {
+      const char = match[1];
+      let fullZhuyin = match[2];
+      let lightTone = '';
+      let tone = '';
+      let symbols = fullZhuyin;
+      if (fullZhuyin.startsWith('˙')) {
+        lightTone = '˙';
+        symbols = fullZhuyin.substring(1);
+      } else {
+        const lastChar = fullZhuyin.slice(-1);
+        if (['ˊ', 'ˇ', 'ˋ'].includes(lastChar)) {
+          tone = lastChar;
+          symbols = fullZhuyin.slice(0, -1);
+        }
+      }
+      const symbolList = symbols.split('');
+      parts.push(
+        <span key={parts.length} className="zhuyin-char-block">
+          <span className="zhuyin-main-char">{char}</span>
+          <span className="zhuyin-phonetic-col">
+            {lightTone && <span className="zhuyin-light-tone">{lightTone}</span>}
+            {symbolList.map((s, idx) => (<span key={idx} className="zhuyin-symbol">{s}</span>))}
+            {tone && <span className="zhuyin-tone">{tone}</span>}
+          </span>
+        </span>
+      );
+    } else if (match[0]) {
+      const chars = match[0].split('');
+      chars.forEach(char => {
+        if (char.trim() === '') return;
+        parts.push(
+          <span key={parts.length} className="zhuyin-punct-block">
+            <span className="zhuyin-punct-char">{char}</span>
+          </span>
+        );
+      });
+    }
+  }
+  return parts;
+};
+
+const BASE_RPG_DATA = QUESTIONS_DATA_SOURCE.map((data, i) => {
+  let type = 'normal';
+  if (i < 6) type = 'fire';
+  else if (i < 12) type = 'electric';
+  else if (i < 18) type = 'grass';
+  else type = 'water';
+  return { id: i + 1, type, text: data.text, zhuyin: data.zhuyin };
+});
+
+const RESULT_MONSTER_POOLS = {
+  fire: [MONSTER_DATA[0], MONSTER_DATA[1], MONSTER_DATA[3], MONSTER_DATA[4], MONSTER_DATA[21], MONSTER_DATA[23], MONSTER_DATA[29]],
+  electric: [MONSTER_DATA[2], MONSTER_DATA[10], MONSTER_DATA[11], MONSTER_DATA[12], MONSTER_DATA[13], MONSTER_DATA[14], MONSTER_DATA[24], MONSTER_DATA[28]],
+  grass: [MONSTER_DATA[5], MONSTER_DATA[8], MONSTER_DATA[18], MONSTER_DATA[19], MONSTER_DATA[25], MONSTER_DATA[26]],
+  water: [MONSTER_DATA[6], MONSTER_DATA[7], MONSTER_DATA[9], MONSTER_DATA[15], MONSTER_DATA[16], MONSTER_DATA[17], MONSTER_DATA[20], MONSTER_DATA[22], MONSTER_DATA[27]]
+};
+
+const CHILD_TYPE_INFO = {
+  fire: {
+    name: "紅色學生",
+    typeName: "紅色開創型",
+    color: "text-red-600", bg: "bg-red-100", border: "border-red-600", textColor: "text-red-900",
+    noun: "小英雄行動派",
+    core: "行動導向的「小英雄行動派」",
+    traits: "壓力下：容易著急，想馬上完成，等待讓你很不耐煩。",
+    behavior: "你的優勢：行動力超強，是讓事情真正發生的那個人！",
+    advice: "覺知練習：想衝動前先停三秒，問自己：準備好了嗎？\n小技巧：等待＝替下一步充電。"
+  },
+  electric: {
+    name: "橙色學生",
+    typeName: "橙色關懷型",
+    color: "text-orange-600", bg: "bg-orange-100", border: "border-orange-600", textColor: "text-orange-900",
+    noun: "情感雷達王",
+    core: "重視連結的「情感雷達王」",
+    traits: "壓力下：容易被別人的情緒影響，氣氛不對就渾身不對勁。",
+    behavior: "你的優勢：超靈敏情緒雷達，讓身邊的人感到被理解！",
+    advice: "覺知練習：提醒自己：別人的情緒是別人的功課，不代表我不好。\n小提醒：你的心情值得被保護。"
+  },
+  grass: {
+    name: "綠色學生",
+    typeName: "綠色協調型",
+    color: "text-green-600", bg: "bg-green-100", border: "border-green-600", textColor: "text-green-900",
+    noun: "穩定守護者",
+    core: "守護和平的「穩定守護者」",
+    traits: "壓力下：最怕衝突，常說「算了沒關係」，但心裡其實有感覺。",
+    behavior: "你的優勢：大家的定心丸，讓身邊的人都感到安全！",
+    advice: "覺知練習：練習溫柔說出感受，不用大聲也不用爭輸贏。\n試試說：「我覺得…我希望…」"
+  },
+  water: {
+    name: "藍色學生",
+    typeName: "藍色分析型",
+    color: "text-blue-600", bg: "bg-blue-100", border: "border-blue-600", textColor: "text-blue-900",
+    noun: "邏輯分析師",
+    core: "思考導向的「邏輯分析師」",
+    traits: "壓力下：反覆思考「這樣對嗎？」腦子停不下來，不容易放過自己的錯。",
+    behavior: "你的優勢：超強分析引擎，能看見別人注意不到的細節！",
+    advice: "覺知練習：把錯誤當學習資料，告訴自己：這只是升級中的測試版！\n小技巧：說一句「謝謝這個 Bug」。"
+  }
+};
+
+const Typewriter = ({ text, speed = 40, isTyping, onComplete }) => {
+  const [displayLen, setDisplayLen] = useState(0);
+  useEffect(() => setDisplayLen(0), [text]);
+  useEffect(() => {
+    if (!isTyping) { setDisplayLen(text.length); return; }
+    if (displayLen < text.length) {
+      const timer = setTimeout(() => setDisplayLen(prev => prev + 1), speed);
+      return () => clearTimeout(timer);
+    } else { if (isTyping && onComplete) onComplete(); }
+  }, [displayLen, isTyping, text, speed, onComplete]);
+  return <span>{text.substring(0, displayLen)}</span>;
+};
+
+/* ════════════════════════════════
+   ChildApp 元件
+════════════════════════════════ */
+function ChildApp({ onBack }) {
+  const { useMemo } = React;
+  const [scene, setScene] = useState('intro');
+  const [dialogueQueue, setDialogueQueue] = useState([]);
+  const [currentDialogue, setCurrentDialogue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const [userData, setUserData] = useState({ name: '', role: '孩子', session: '', parentCheck: false });
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [currentQIndex, setCurrentQIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const [showStartModal, setShowStartModal] = useState(true);
+  const [showGuideModal, setShowGuideModal] = useState(false);
+  const [showScreenshotModal, setShowScreenshotModal] = useState(false);
+
+  const [pokemonName, setPokemonName] = useState('???');
+  const [pokemonLevel, setPokemonLevel] = useState(5);
+  const [resultPokemon, setResultPokemon] = useState(null);
+  const [finalResult, setFinalResult] = useState(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [selectedScore, setSelectedScore] = useState(null);
+  const [isZhuyinMode, setIsZhuyinMode] = useState(false);
+
+  useEffect(() => {
+    MONSTER_DATA.forEach(monster => {
+      const img = new Image();
+      img.src = monster.img;
+    });
+  }, []);
+
+  const randomWildIndices = useMemo(() => {
+    const indices = Array.from({ length: 30 }, (_, i) => i);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    return indices.slice(0, 24);
+  }, []);
+
+  const introBgClass = useMemo(() => INTRO_COLORS[Math.floor(Math.random() * INTRO_COLORS.length)], []);
+
+  const playSound = (type) => { if (navigator.vibrate && (type === 'hit' || type === 'select')) navigator.vibrate(type === 'hit' ? 50 : 10); };
+
+  useEffect(() => {
+    if (scene === 'battle') {
+      const monsterIdx = randomWildIndices[currentQIndex];
+      const monster = MONSTER_DATA[monsterIdx];
+      setPokemonName(monster.name);
+      setPokemonLevel(Math.floor(Math.random() * 95) + 5);
+    }
+  }, [currentQIndex, scene, randomWildIndices]);
+
+  useEffect(() => {
+    if (dialogueQueue.length > 0) { setCurrentDialogue(dialogueQueue[0]); setIsTyping(true); }
+    else if (scene === 'intro_talk') setScene('input_name');
+  }, [dialogueQueue, scene]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const scrollableDivs = document.querySelectorAll('.overflow-y-auto');
+    scrollableDivs.forEach(div => div.scrollTop = 0);
+  }, [scene]);
+
+  const handleClickDialogue = () => {
+    if (isTyping) {
+      setIsTyping(false);
+    } else {
+      playSound('select');
+      if (dialogueQueue.length > 1) {
+        setDialogueQueue(prev => prev.slice(1));
+      } else {
+        setScene('input_name');
+      }
+    }
+  };
+
+  const handleStartClick = () => { playSound('select'); startGame(); };
+  const handleModalConfirm = () => { playSound('select'); setShowStartModal(false); };
+
+  const startGame = () => {
+    setScene('intro_talk');
+    setDialogueQueue([
+      "測測看，你是哪一種底色的學生？\n我是心智光譜的守護者。",
+      "在壓力、被催促、被要求或被比較的那一刻，\n我們常會不自覺回到最熟悉的「自動反應」。",
+      "請依照你在緊張、被要求或不順時的\n「第一直覺反應」作答。",
+      "看看你的原生底色是什麼？\n準備好了嗎？我們出發吧！"
+    ]);
+  };
+
+  const handleNameSubmit = (e) => {
+    e.preventDefault();
+    if (!userData.name) return;
+    playSound('select');
+    setScene('battle');
+  };
+
+  const handleBattleOption = (score) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setSelectedScore(score);
+    playSound('hit');
+    const q = BASE_RPG_DATA[currentQIndex];
+    if (!q) return;
+    setQuizAnswers(prev => ({ ...prev, [q.id]: score }));
+    setTimeout(() => {
+      if (currentQIndex < BASE_RPG_DATA.length - 1) {
+        setCurrentQIndex(prev => prev + 1);
+        setSelectedScore(null);
+        setIsTransitioning(false);
+      } else {
+        const currentAnswers = { ...quizAnswers, [q.id]: score };
+        let scores = { fire: 0, electric: 0, grass: 0, water: 0 };
+        BASE_RPG_DATA.forEach(q => {
+          const s = currentAnswers[q.id] || 0;
+          if (q.type === 'fire') scores.fire += s;
+          if (q.type === 'electric') scores.electric += s;
+          if (q.type === 'grass') scores.grass += s;
+          if (q.type === 'water') scores.water += s;
+        });
+        const types = [
+          { id: 'fire', score: scores.fire },
+          { id: 'electric', score: scores.electric },
+          { id: 'grass', score: scores.grass },
+          { id: 'water', score: scores.water }
+        ];
+        types.sort((a, b) => b.score - a.score);
+        const winnerTypeId = types[0].id;
+        const pool = RESULT_MONSTER_POOLS[winnerTypeId];
+        const randomPoke = pool[Math.floor(Math.random() * pool.length)];
+        setFinalResult({ scores: types, mainTypeId: winnerTypeId, subTypeId: types[1].id, pokemon: randomPoke });
+        setResultPokemon(randomPoke);
+        const totalScore = types.reduce((s, t) => s + t.score, 0);
+        const scoreMap = {};
+        types.forEach(t => scoreMap[t.id] = t.score);
+        fetch(CHILD_GOOGLE_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            nickname: userData.name, identity: "孩子",
+            email: "無", phone: "無", session: "無", parentCheck: "已確認",
+            totalScore, red: scoreMap.fire, orange: scoreMap.electric,
+            green: scoreMap.grass, blue: scoreMap.water,
+            answers: { ...quizAnswers, [q.id]: score },
+            resultPokemon: randomPoke.name,
+            uid: 'trainer_' + Math.random().toString(36).substr(2, 9),
+            submittedAt: new Date().toISOString()
+          })
+        }).catch(() => {});
+        setScene('dex');
+        setIsTransitioning(false);
+      }
+    }, 400);
+  };
+
+  const handlePrevious = () => {
+    if (isTransitioning || currentQIndex <= 0) return;
+    setIsTransitioning(true);
+    playSound('select');
+    setTimeout(() => { setCurrentQIndex(prev => prev - 1); setIsTransitioning(false); }, 300);
+  };
+
+  const handleFinalSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+    if (!finalResult) { alert("發生錯誤：結果尚未產生"); return; }
+    setLoading(true);
+    const totalScore = finalResult.scores.reduce((sum, item) => sum + item.score, 0);
+    const scoreMap = {};
+    finalResult.scores.forEach(item => scoreMap[item.id] = item.score);
+    const sheetData = {
+      nickname: userData.name, identity: "孩子",
+      email: "無", phone: "無", session: "無", parentCheck: "已確認",
+      totalScore, red: scoreMap.fire, orange: scoreMap.electric,
+      green: scoreMap.grass, blue: scoreMap.water,
+      answers: quizAnswers,
+      resultPokemon: finalResult.pokemon.name,
+      uid: 'trainer_' + Math.random().toString(36).substr(2, 9),
+      submittedAt: new Date().toISOString()
+    };
+    const submitPromise = fetch(CHILD_GOOGLE_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(sheetData)
+    });
+    const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve("timeout"), 3000));
+    try {
+      await Promise.race([submitPromise, timeoutPromise]);
+      setScene('dex');
+    } catch (error) {
+      console.error(error);
+      alert("連線不穩定，但您可以繼續查看分析結果！");
+      setScene('dex');
+    } finally { setLoading(false); }
+  };
+
+  const handleRestart = () => {
+    playSound('select');
+    setUserData({ name: '', role: '孩子', session: '', parentCheck: false });
+    setQuizAnswers({});
+    setCurrentQIndex(0);
+    setLoading(false);
+    setShowStartModal(true);
+    setShowGuideModal(false);
+    setShowScreenshotModal(false);
+    setResultPokemon(null);
+    setFinalResult(null);
+    setErrorMsg('');
+    setIsTransitioning(false);
+    setDialogueQueue([]);
+    setCurrentDialogue('');
+    setIsTyping(false);
+    setScene('intro');
+  };
+
+  if (scene === 'intro') {
+    return (
+      <div className={`h-full w-full ${introBgClass} flex flex-col items-center justify-center p-6 text-white relative transition-colors duration-1000`} style={{fontFamily:"'DotGothic16', sans-serif"}}>
+        <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{backgroundImage: `url('${INTRO_BG_URL}')`}}></div>
+        <div className="z-10 text-center space-y-6 animate-bounce-once w-full max-w-md px-4">
+          <h1 className="font-bold drop-shadow-[4px_4px_0_rgba(0,0,0,1)] leading-tight">
+            <span className="block text-xl md:text-2xl text-white mb-1">覺知SEL</span>
+            <span className="block text-4xl md:text-6xl text-yellow-400 mb-2">覺知心智光譜</span>
+            <span className="block text-lg md:text-xl text-yellow-300">像素怪獸版</span>
+          </h1>
+          <div className="relative w-full flex flex-col items-center gap-6 min-h-[300px] justify-center">
+            {!showStartModal && (
+              <>
+                <div className="w-32 h-32 mx-auto bg-white rounded-full flex items-center justify-center shadow-[4px_4px_0_rgba(0,0,0,0.5)] overflow-hidden relative">
+                  <img src={getMonsterImg(28)} className="w-24 h-24 object-contain" alt="Start" style={{imageRendering: 'pixelated'}} />
+                </div>
+                <button onClick={handleStartClick} className="px-8 py-4 bg-white text-black font-bold text-xl border-4 border-gray-400 hover:bg-gray-200 active:translate-y-1 shadow-[4px_4px_0_#000] animate-breathe">
+                  <span className="text-sm md:text-base animate-rainbow font-extrabold block mb-1">按 START 開始冒險</span>
+                  <span className="text-2xl tracking-widest">START</span>
+                </button>
+              </>
+            )}
+            {showStartModal && (
+              <div className="bg-white/95 border-4 border-black p-6 rounded-xl shadow-[8px_8px_0_rgba(0,0,0,0.5)] w-full max-w-sm mx-auto animate-pop-in text-gray-800 flex flex-col items-center">
+                <div className="text-5xl mb-3 animate-float"></div>
+                <div className="text-base font-black mb-2 text-center text-gray-900 tracking-widest">任務說明</div>
+                <div className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 mb-5 space-y-2">
+                  <p className="text-sm text-gray-700 leading-relaxed"> 這是一個關於「你自己」的探索任務</p>
+                  <p className="text-sm text-gray-700 leading-relaxed">⚡ 遇到 24 隻怪獸，每隻怪獸帶來一個問題</p>
+                  <p className="text-sm text-gray-700 leading-relaxed"> 依照你的<span className="font-black text-red-600">第一直覺</span>作答，不用想太久</p>
+                  <p className="text-sm text-gray-700 leading-relaxed"> 最後發現你的心智光譜底色！</p>
+                </div>
+                <button onClick={handleModalConfirm} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-black text-lg py-3 border-4 border-yellow-700 rounded-lg active:translate-y-1 shadow-[4px_4px_0_#000] transition-colors tracking-widest">
+                  ▶ 開始冒險！
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="absolute bottom-4 text-center w-full px-2">
+          <div className="text-xs text-gray-500 mb-1">© 覺知心智光譜2026_v2</div>
+          <div className="text-[10px] text-gray-400 opacity-70 leading-tight">
+            此測驗僅供教育練習使用，非官方內容。<br/>
+            Pixel Art Monsters © 2026
+          </div>
+          <button onClick={() => onBack && onBack()} style={{fontSize:11,color:'rgba(255,255,255,0.5)',background:'none',border:'none',cursor:'pointer',marginTop:4}}>← 返回首頁</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (scene === 'intro_talk') {
+    return (
+      <div className="h-full w-full bg-white flex flex-col p-4" onClick={handleClickDialogue} style={{fontFamily:"'DotGothic16', sans-serif"}}>
+        <div className="flex-1 border-4 border-black mb-4 relative flex items-center justify-center overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url('${TALK_BG_URL}')` }}>
+          <div className="absolute inset-0 bg-white/70 pointer-events-none"></div>
+          <div className="relative w-full h-full flex items-center justify-center">
+            <div className="relative bg-gray-800 p-2 rounded-xl border-b-4 border-r-4 border-gray-900 shadow-xl scale-90">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-20 h-6 flex justify-between px-2 -z-10">
+                <div className="w-0.5 h-8 bg-gray-400 rotate-[-30deg] origin-bottom border border-gray-600"></div>
+                <div className="w-0.5 h-8 bg-gray-400 rotate-[30deg] origin-bottom border border-gray-600"></div>
+              </div>
+              <div className="bg-gray-700 p-1.5 rounded-lg border-2 border-gray-600 shadow-inner">
+                <div className="relative bg-white w-48 h-48 rounded-md overflow-hidden border-2 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.15)] flex items-center justify-center">
+                  <div className="absolute inset-0 z-20 pointer-events-none opacity-10" style={{backgroundImage: 'linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)', backgroundSize: '100% 4px'}}></div>
+                  <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent pointer-events-none z-20"></div>
+                  <img src={getMonsterImg(20)} className="w-4/5 h-4/5 object-contain relative z-0" alt="Guide" style={{imageRendering: 'pixelated'}} />
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-1 px-1">
+                <div className="flex space-x-1"><div className="w-8 h-1.5 bg-gray-950 rounded-full"></div></div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-gray-600 rounded-full border-b border-black"></div>
+                  <div className="w-3 h-3 bg-gray-600 rounded-full border-b border-black"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="h-1/3 border-4 border-black bg-white p-4 relative cursor-pointer hover:bg-gray-50 shadow-[4px_4px_0_#000]">
+          <div className="border-2 border-dashed border-gray-400 h-full p-4 text-xl md:text-2xl font-black leading-loose tracking-wider text-indigo-900 drop-shadow-sm flex items-start overflow-y-auto">
+            <Typewriter text={currentDialogue} speed={30} isTyping={isTyping} onComplete={() => setIsTyping(false)} />
+            {!isTyping && <div className="absolute bottom-4 right-4 text-red-500 arrow-bounce text-2xl">▼</div>}
+          </div>
+        </div>
+        <p className="text-center text-gray-400 text-xs mt-2 animate-pulse"> 點擊對話框繼續...</p>
+      </div>
+    );
+  }
+
+  if (scene === 'input_name') {
+    return (
+      <div className="h-full w-full bg-gray-100 flex flex-col items-center justify-center p-6" style={{fontFamily:"'DotGothic16', sans-serif"}}>
+        <div className="w-full max-w-sm bg-white border-4 border-black p-6 shadow-[8px_8px_0_rgba(0,0,0,0.2)]">
+          <h2 className="text-xl mb-6 text-center border-b-4 border-gray-200 pb-2">訓練家註冊</h2>
+          <form onSubmit={handleNameSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm mb-2">你的名字是？</label>
+              <input type="text" className="w-full bg-gray-100 border-2 border-black p-3 font-bold focus:bg-white outline-none" placeholder="小光" value={userData.name} onChange={e => setUserData({...userData, name: e.target.value})} autoFocus required />
+            </div>
+            <button type="submit" className="w-full bg-blue-500 text-white border-b-4 border-blue-700 py-3 mt-8 active:border-b-0 active:translate-y-1">決定！</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  if (scene === 'battle') {
+    const question = BASE_RPG_DATA[currentQIndex];
+    if (!question) return null;
+    const maxHP = BASE_RPG_DATA.length;
+    const progress = ((currentQIndex + 1) / maxHP) * 100;
+    const wildMonsterIdx = randomWildIndices[currentQIndex];
+    const wildMonsterImg = getMonsterImg(wildMonsterIdx);
+    const currentMonster = MONSTER_DATA[wildMonsterIdx];
+    return (
+      <div id="battle-screen" className="h-full w-full bg-space flex flex-col relative transition-opacity duration-100" style={{fontFamily:"'DotGothic16', sans-serif"}}>
+        <div className="p-2 pt-4 flex justify-between items-center text-xs font-bold relative z-20">
+          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-3 py-1 border-2 border-gray-400 border-b-gray-600 border-r-gray-600 rounded shadow-md">
+            <div className="w-3 h-3 rounded-full bg-red-500 border border-red-700 shadow-inner animate-pulse"></div>
+            <span className="text-gray-800 text-sm tracking-widest">BATTLE <span className="text-red-600">{currentQIndex + 1}</span>/{BASE_RPG_DATA.length}</span>
+          </div>
+          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-2 py-1 border-2 border-gray-400 border-b-gray-600 border-r-gray-600 rounded shadow-md">
+            <span className="font-black text-yellow-600 text-sm drop-shadow-[1px_1px_0_rgba(0,0,0,0.5)]">HP</span>
+            <div className="w-32 h-4 bg-gray-800 border-2 border-gray-500 border-t-black border-l-black rounded-full relative overflow-hidden">
+              <div className={`h-full transition-all duration-500 ease-out flex items-center relative ${progress > 50 ? 'bg-yellow-400' : progress > 60 ? 'bg-green-500' : progress > 30 ? 'bg-blue-400' : 'bg-blue-300'}`} style={{ width: `${progress}%` }}>
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-white opacity-30"></div>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsZhuyinMode(!isZhuyinMode)}
+            className={`ml-2 px-2 py-1 rounded border-2 text-xs font-bold transition-colors shadow-md ${isZhuyinMode ? 'bg-yellow-400 border-yellow-600 text-black' : 'bg-gray-200 border-gray-400 text-gray-600'}`}
+          >
+            {isZhuyinMode ? '注音 ON' : '注音 OFF'}
+          </button>
+        </div>
+        <div className="flex-1 flex flex-col relative overflow-hidden">
+          <div className="flex-1 flex items-center justify-center min-h-0 p-2">
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="relative bg-gray-800 p-3 rounded-2xl border-b-8 border-r-8 border-gray-900 shadow-2xl">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-8 flex justify-between px-4 -z-10">
+                  <div className="w-1 h-10 bg-gray-400 rotate-[-30deg] origin-bottom border border-gray-600"></div>
+                  <div className="w-1 h-10 bg-gray-400 rotate-[30deg] origin-bottom border border-gray-600"></div>
+                </div>
+                <div className="bg-gray-700 p-2 rounded-xl border-4 border-gray-600 shadow-inner">
+                  <div className="relative bg-white w-64 h-56 md:w-80 md:h-64 rounded-lg overflow-hidden border-4 border-black shadow-[inset_0_0_30px_rgba(0,0,0,0.15)]">
+                    <div className="absolute inset-0 z-20 pointer-events-none opacity-10" style={{backgroundImage: 'linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)', backgroundSize: '100% 4px'}}></div>
+                    <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent pointer-events-none z-20"></div>
+                    {!isZhuyinMode && (
+                      <div className="absolute top-2 left-2 z-10 bg-black/50 text-white px-2 py-1 rounded text-xs backdrop-blur-md border border-white/30 font-bold min-w-[60px]">
+                        <div className="text-center">{pokemonName}</div>
+                        <div className="text-yellow-300 text-center mt-0.5">Lv.{pokemonLevel}</div>
+                      </div>
+                    )}
+                    {isZhuyinMode && (
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 bg-white/80 text-black px-4 py-1 rounded-full text-sm font-bold border-2 border-black shadow-sm whitespace-nowrap flex gap-2">
+                        <span>{pokemonName}</span>
+                        <span className="text-orange-600">Lv.{pokemonLevel}</span>
+                      </div>
+                    )}
+                    <div className="w-full h-full flex items-center justify-center animate-float">
+                      <div className="absolute bottom-8 w-32 h-4 bg-black/10 rounded-full blur-md scale-x-75 animate-pulse"></div>
+                      <img src={wildMonsterImg} className="w-4/5 h-4/5 object-contain relative z-0" alt="Monster" style={{imageRendering: 'pixelated'}} />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-2 px-2">
+                  <div className="flex space-x-1">
+                    <div className="w-12 h-2 bg-gray-950 rounded-full"></div>
+                    <div className="w-12 h-2 bg-gray-950 rounded-full"></div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-[10px] text-gray-400 font-black tracking-widest">MONSTER-VISION</div>
+                    <div className="w-4 h-4 bg-gray-600 rounded-full border-b-2 border-black cursor-pointer active:translate-y-px"></div>
+                    <div className="w-4 h-4 bg-gray-600 rounded-full border-b-2 border-black cursor-pointer active:translate-y-px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="z-30 p-4 pb-2 w-full flex justify-center">
+            <div className="bg-white border-4 border-black py-2 px-4 shadow-xl min-h-[80px] flex items-center justify-center relative rounded-xl w-full">
+              <div className="speech-bubble-tail"></div>
+              <div className={`w-full flex flex-wrap justify-start items-center content-center ${isZhuyinMode ? 'zhuyin-grid zhuyin-mode-on' : 'text-center'}`} style={{maxWidth: '100%', margin: '0 auto'}}>
+                {isZhuyinMode ? (
+                  renderZhuyinBlock(question.zhuyin)
+                ) : (
+                  <p className="w-full text-xl md:text-2xl leading-relaxed font-bold text-gray-900 tracking-wide text-center">
+                    {question.text}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-800 p-4 border-t-4 border-black pb-6 relative z-20">
+          <div className="grid grid-cols-5 gap-1.5 w-full mb-4">
+            {[
+              {score:5, label:"非常像我", cls:"battle-btn-5", selBg:"#c53030"},
+              {score:4, label:"有點像我", cls:"battle-btn-4", selBg:"#c05621"},
+              {score:3, label:"普通",     cls:"battle-btn-3", selBg:"#4a5568"},
+              {score:2, label:"不太像我", cls:"battle-btn-2", selBg:"#2b6cb0"},
+              {score:1, label:"不像我",   cls:"battle-btn-1", selBg:"#276749"},
+            ].map(({score, label, cls, selBg}) => {
+              const isSel = selectedScore === score;
+              return (
+                <button key={score} onClick={() => handleBattleOption(score)}
+                  className={`battle-btn ${cls}`}
+                  style={isSel ? {background:selBg, borderColor:selBg, transform:'translate(2px,2px)', boxShadow:'1px 1px 0 #000'} : {}}>
+                  <span style={{fontSize:'20px', fontWeight:900, lineHeight:1, color: isSel?'#fff':'#1a202c'}}>{score}</span>
+                  <span style={{fontSize:'9px', fontWeight:700, color: isSel?'rgba(255,255,255,0.9)':'#4a5568', textAlign:'center', lineHeight:1.2}}>{label}</span>
+                  {isSel && <span style={{fontSize:'8px', color:'rgba(255,255,255,0.8)', fontWeight:900}}>選擇中</span>}
+                </button>
+              );
+            })}
+          </div>
+          {currentQIndex > 0 ? (
+            <button onClick={handlePrevious} className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded border-2 border-gray-500 active:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+              <span>◀</span> 思考 / 上一題
+            </button>
+          ) : (<div className="h-[52px]"></div>)}
+        </div>
+      </div>
+    );
+  }
+
+  if (scene === 'contact') {
+    if (!finalResult) return <div>載入中...</div>;
+    const pokemon = finalResult.pokemon;
+    const mainType = CHILD_TYPE_INFO[finalResult.mainTypeId];
+    return (
+      <div className="h-full w-full bg-white flex flex-col items-center p-6 overflow-y-auto" style={{fontFamily:"'DotGothic16', sans-serif"}}>
+        <div className="w-full max-w-sm border-4 border-black bg-white shadow-[8px_8px_0_#333]">
+          <div className="bg-blue-600 text-white p-3 text-center border-b-4 border-black">
+            <h2 className="text-xl">登入名人堂</h2>
+          </div>
+          <form className="p-6 space-y-4" onSubmit={handleFinalSubmit} noValidate>
+            <div className="text-center mb-4">
+              {resultPokemon && <img src={resultPokemon.img} className="w-48 h-48 mx-auto animate-bounce-once object-contain" alt={resultPokemon.name} style={{imageRendering: 'pixelated'}} />}
+              <div className="text-sm mt-4 p-4 bg-gray-50 rounded-xl border-2 border-gray-200 text-left shadow-sm">
+                <p className="font-bold text-center mb-2 text-gray-500 tracking-widest text-xs">您的光譜測驗結果為</p>
+                <div className={`text-xl font-bold text-center mb-1 ${mainType.color}`}>{mainType.typeName}</div>
+                <h3 className={`text-2xl font-black text-center mb-4 text-black tracking-wider`}>{pokemon.noun}</h3>
+                <div className="text-center text-xs text-gray-400">登入後查看詳細分析</div>
+              </div>
+            </div>
+            {errorMsg && <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm font-bold animate-pulse"><p>⚠ {errorMsg}</p></div>}
+            <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200 text-center shadow-inner">
+              <p className="text-sm font-bold text-gray-500 mb-1">準備以以下訓練家身份登錄：</p>
+              <p className="text-2xl font-black text-blue-800 tracking-widest">{userData.name}</p>
+            </div>
+            <button type="submit" disabled={loading} className="w-full bg-green-500 hover:bg-green-600 border-b-4 border-green-700 text-white font-bold py-3 px-4 rounded mt-4 active:translate-y-1 active:border-b-0 disabled:opacity-50">
+              {loading ? "圖鑑登記中，請稍候..." : "確認姓名並查看圖鑑"}
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  if (scene === 'dex') {
+    if (!finalResult) return <div>載入中...</div>;
+    const results = finalResult.scores;
+    const mainType = CHILD_TYPE_INFO[finalResult.mainTypeId];
+    const pokemon = finalResult.pokemon;
+    const statsOrder = ['fire', 'electric', 'grass', 'water'];
+    const displayStats = statsOrder.map(id => results.find(r => r.id === id));
+    return (
+      <div className="h-full w-full bg-red-600 flex flex-col p-4 overflow-y-auto nes-scrollbar" style={{fontFamily:"'DotGothic16', sans-serif"}}>
+        <div className="bg-white rounded-lg border-4 border-black p-1 shadow-inner flex flex-col mb-4" id="resultCard">
+          <div className="flex gap-2 mb-2 p-2 border-b border-gray-200">
+            <div className="w-6 h-6 rounded-full bg-blue-500 border-2 border-white shadow animate-pulse"></div>
+            <div className="w-3 h-3 rounded-full bg-red-500 border border-red-700 shadow-inner animate-pulse"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500 border border-yellow-700 shadow-inner animate-pulse"></div>
+          </div>
+          <div className="bg-green-100 border-4 border-gray-400 p-4 rounded mb-4 flex-1">
+            <div className="text-center mb-4">
+              <p className="text-xs text-gray-600 mb-1">分析結果 No.{(pokemon.id + 1).toString().padStart(3, '0')}</p>
+              <h3 className={`text-lg font-black ${mainType.color} mb-1`}>{mainType.typeName}</h3>
+              <h2 className={`text-2xl font-bold ${mainType.textColor}`}>{pokemon.noun}</h2>
+            </div>
+            <div className="flex justify-center my-6 relative">
+              <div className={`w-40 h-40 bg-white rounded-full flex items-center justify-center shadow-xl overflow-hidden relative`}>
+                <div className="absolute inset-0 bg-white opacity-20 animate-spin-slow"></div>
+                <img src={pokemon.img} className="w-32 h-32 object-contain transform scale-125" alt={pokemon.name} style={{imageRendering: 'pixelated'}} />
+              </div>
+              <div className="absolute -bottom-2 bg-black text-white px-3 py-1 text-xs rounded-full border border-white">{pokemon.name}</div>
+            </div>
+            <div className="bg-white/90 border-2 border-black p-5 rounded-lg mb-4 text-justify font-medium tracking-wide text-gray-800 shadow-sm space-y-4">
+              <div className="border-b-2 border-gray-200 pb-3 mb-2">
+                <h4 className="text-xs font-bold text-gray-400 mb-1 uppercase tracking-widest">核心特質</h4>
+                <p className={`text-xl md:text-2xl font-black leading-relaxed ${mainType.color}`}>{mainType.core}</p>
+              </div>
+              <div>
+                <h4 className={`text-lg font-bold mb-1 ${mainType.color}`}>壓力下的表現</h4>
+                <p className={`text-base md:text-lg font-medium ${mainType.textColor} leading-relaxed whitespace-pre-line`}>{mainType.traits}</p>
+              </div>
+              <div>
+                <h4 className={`text-lg font-bold mb-1 ${mainType.color}`}>你的優勢</h4>
+                <p className={`text-base md:text-lg font-medium ${mainType.textColor} leading-relaxed whitespace-pre-line`}>{mainType.behavior}</p>
+              </div>
+              <div className={`${mainType.bg} p-4 rounded-xl border-2 ${mainType.border.replace('text-', 'border-').replace('600', '200')}`}>
+                <h4 className={`text-lg font-black mb-2 ${mainType.color}`}>覺知練習</h4>
+                {mainType.advice.split('\n').map((line, i) => {
+                  const isTip = line.startsWith('小') || line.startsWith('試');
+                  return isTip
+                    ? <div key={i} className={`mt-2 rounded-xl px-3 py-2 text-sm font-bold border ${mainType.bg} border-current/20 ${mainType.textColor}`}>{line}</div>
+                    : <p key={i} className={`text-base font-bold leading-relaxed ${mainType.textColor} ${i>0?'mt-1':''}`}>{line}</p>;
+                })}
+              </div>
+            </div>
+            <div className="bg-gray-100 p-3 rounded-lg border-2 border-gray-400 border-b-gray-600 border-r-gray-600 shadow-inner mb-4">
+              <p className="text-xs font-bold border-b-2 border-gray-300 pb-1 mb-2 text-gray-700">種族值 (STATS)</p>
+              {displayStats.map((r) => (
+                <div key={r.id} className="flex items-center text-xs mb-2 last:mb-0">
+                  <span className="w-12 font-bold text-gray-600">{CHILD_TYPE_INFO[r.id].name.substr(0,2)}</span>
+                  <div className="flex-1 h-4 bg-gray-800 border-2 border-gray-500 border-t-black border-l-black rounded-full relative overflow-hidden">
+                    <div className={`h-full transition-all duration-1000 ease-out relative ${CHILD_TYPE_INFO[r.id].bg.replace('bg-', 'bg-').replace('100', '500')}`} style={{ width: `${(r.score/30)*100}%` }}>
+                      <div className="absolute top-0 left-0 w-full h-1/2 bg-white opacity-30"></div>
+                    </div>
+                  </div>
+                  <span className="ml-2 w-5 text-right font-bold text-gray-800">{r.score}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div id="saveButtons" className="flex flex-col gap-2 mt-auto">
+          <button onClick={handleRestart} className="w-full bg-gray-800 text-white py-3 font-bold border-4 border-gray-600 hover:bg-black active:border-gray-900"> 重新開始遊戲</button>
+          <button
+            onClick={() => { playSound('select'); setShowScreenshotModal(true); }}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 font-bold border-4 border-purple-800 active:bg-purple-900"
+          >
+            提醒截圖
+          </button>
+          <button onClick={() => { playSound('select'); setShowGuideModal(true); }} className="block w-full text-center bg-blue-600 text-white py-3 font-bold border-4 border-blue-800 hover:bg-blue-700 active:border-blue-900 no-underline"> 覺知小語</button>
+          <button onClick={() => onBack && onBack()} className="w-full bg-white text-gray-700 py-3 font-bold border-4 border-gray-400 hover:bg-gray-100 active:bg-gray-200 mt-1">← 返回首頁</button>
+        </div>
+        {showGuideModal && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 animate-pop-in">
+            <div className="bg-white border-4 border-black p-6 rounded-xl max-w-sm w-full relative">
+              <button onClick={() => setShowGuideModal(false)} className="absolute top-2 right-2 text-gray-500 hover:text-black font-bold text-2xl"></button>
+              <h3 className="text-xl font-black text-indigo-700 mb-4 text-center border-b-2 border-indigo-100 pb-2">給學生的覺知小語</h3>
+              <div className="space-y-4 text-gray-700 leading-relaxed font-medium">
+                <div className="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4 text-center">
+                  <p className="text-base font-black text-indigo-900 leading-relaxed">
+                    「你不是哪一種顏色，<br/>你只是正在用這一種方式面對世界。」
+                  </p>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  在 AI 時代，正確答案不再稀缺——<br/>
+                  真正重要的是：你能不能<span className="font-black text-gray-900">看見自己</span>、<span className="font-black text-gray-900">理解自己</span>，並一步步成為更穩定的自己。
+                </p>
+                <div className="border-t-2 border-dashed border-gray-200 pt-3 space-y-2">
+                  <p className="text-xs font-black text-gray-500 tracking-widest">★ 覺知三步驟 ★</p>
+                  <div className="flex items-start gap-2">
+                    <span className="text-base"></span>
+                    <p className="text-sm"><span className="font-black">覺察：</span>注意到自己現在的反應</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-base"></span>
+                    <p className="text-sm"><span className="font-black">暫停：</span>在反應前給自己一個呼吸的空間</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-base"></span>
+                    <p className="text-sm"><span className="font-black">選擇：</span>用自己想要的方式回應</p>
+                  </div>
+                </div>
+                <p className="text-xs text-center text-gray-400 font-bold">每一次練習，都讓你更靠近那個最棒的自己 </p>
+              </div>
+              <button onClick={() => setShowGuideModal(false)} className="w-full bg-gray-800 text-white font-bold py-3 mt-6 rounded-lg active:bg-black">我知道了！</button>
+            </div>
+          </div>
+        )}
+        {showScreenshotModal && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 animate-pop-in">
+            <div className="bg-white border-4 border-black p-6 rounded-xl max-w-sm w-full relative text-center">
+              <div className="text-5xl mb-4"></div>
+              <h3 className="text-xl font-black text-gray-800 mb-2">記得截圖喔！</h3>
+              <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-3 mb-4 text-left space-y-1">
+                <p className="text-sm font-bold text-yellow-800">截圖要包含：</p>
+                <p className="text-sm text-gray-700"> <span className="font-bold text-red-600">你的光譜類型</span>（例：紅色開創型）</p>
+                <p className="text-sm text-gray-700"> <span className="font-bold text-blue-600">四色分數條</span>（STATS 種族值）</p>
+                <p className="text-sm text-gray-700"> <span className="font-bold text-green-600">你的怪獸夥伴</span>圖片</p>
+              </div>
+              <p className="text-xs text-gray-500 mb-4">截圖後可以拿去跟爸媽分享，看看你們的底色有沒有相同的地方！</p>
+              <button onClick={() => setShowScreenshotModal(false)} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg border-b-4 border-green-700 active:border-b-0 active:translate-y-1">好，我截圖了！</button>
+              <div style={{marginTop:10,padding:'10px 14px',background:'#EEF2FF',borderRadius:10,border:'1px solid #C7D2FE',textAlign:'center'}}>
+                <div style={{fontSize:11,fontWeight:700,color:'#4F46E5',marginBottom:2}}>截完圖可以給爸媽看</div>
+                <div style={{fontSize:10,color:'#6366F1'}}>家長版有親子底色配對分析！</div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return null;
+}
+
+/* ════════════════════════════════
    Main App
 ════════════════════════════════ */
 function App() {
@@ -480,6 +1474,7 @@ function App() {
     const [lookErr, setLookErr]     = useState('');
     const [lookWho, setLookWho]     = useState(null);
     const [uid]                     = useState(()=>'u_'+Math.random().toString(36).slice(2,9));
+    const [showChildApp, setShowChildApp] = useState(false);
 
     const sortedTypes = () =>
         ['red','orange','green','blue']
@@ -593,6 +1588,9 @@ function App() {
     const info = top ? TYPE_INFO[top.id] : null;
     const progress = Math.round(((qIdx+1)/QUESTIONS.length)*100);
 
+    /* ─────────── CHILD APP ─────────── */
+    if (showChildApp) return <ChildApp onBack={() => setShowChildApp(false)} />;
+
     /* ─────────── HOME ─────────── */
     if (step==='home') return (
         <Shell>
@@ -643,7 +1641,7 @@ function App() {
                 </button>
 
                 {/* 我是孩子 */}
-                <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer" className="entry-card" style={{animationDelay:'0.05s'}}>
+                <button className="entry-card" style={{animationDelay:'0.05s', textDecoration:'none', cursor:'pointer'}} onClick={() => setShowChildApp(true)}>
                     <div style={{width:48,height:48,background:'var(--green-pale)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid rgba(56,161,105,0.2)'}}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.75" strokeLinecap="round">
                             <circle cx="12" cy="12" r="10"/>
@@ -657,7 +1655,7 @@ function App() {
                         <div style={{fontSize:12,color:'var(--text-light)',fontWeight:400}}>進入孩子版測驗</div>
                     </div>
                     <span style={{color:'var(--border-mid)',flexShrink:0}}><Ico.Chevron/></span>
-                </a>
+                </button>
 
                 {/* 測驗特點 */}
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,margin:'14px 0'}}>
