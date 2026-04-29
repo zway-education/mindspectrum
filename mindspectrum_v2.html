@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>覺知心智光譜｜了解您的原生底色</title>
+    <title>覺知素養教育xSEL：心智光譜測驗</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -12,27 +12,36 @@
 
     <style>
         :root {
-            --cream:        #FBF8F3;
-            --charcoal:     #2D2D2D;
-            --charcoal-mid: #484848;
-            --yellow:       #F5C400;
-            --yellow-dark:  #D4A900;
-            --yellow-pale:  #FFFBE0;
-            --yellow-soft:  #FFF5B0;
-            --white:        #FFFFFF;
-            --surface:      #F3F0EA;
-            --border:       #E5E0D6;
-            --text-dark:    #2D2D2D;
-            --text-mid:     #6B6560;
-            --text-light:   #9B958C;
-            --red:          #D63030;
-            --orange:       #E8600A;
-            --green:        #2E8B5A;
-            --blue:         #3A70B0;
-            --red-pale:     #FFF0F0;
-            --orange-pale:  #FFF0E6;
-            --green-pale:   #F0FAF4;
-            --blue-pale:    #EEF4FF;
+            --bg:        #EEF2FF;
+            --surface:   #E8EDFF;
+            --card:      #FFFFFF;
+            --border:    #DDE3FF;
+            --border-mid:#B8C4FF;
+            --text-dark: #1E1B4B;
+            --text-mid:  #6B7280;
+            --text-light:#9CA3AF;
+            --accent:    #6366F1;
+            --accent-dark:#4F46E5;
+            --accent-pale:#EEF2FF;
+            --red:    #E53E3E;
+            --orange: #DD6B20;
+            --green:  #38A169;
+            --blue:   #3182CE;
+            --red-pale:    #FFF4F4;
+            --orange-pale: #FFF6EE;
+            --green-pale:  #F0FAF5;
+            --blue-pale:   #EEF5FF;
+            --white:   #FFFFFF;
+            /* backward compat */
+            --charcoal:     var(--accent);
+            --charcoal-mid: var(--accent-dark);
+            --yellow:       var(--accent);
+            --yellow-dark:  var(--accent-dark);
+            --yellow-pale:  var(--accent-pale);
+            --yellow-soft:  var(--surface);
+            --cream:        var(--bg);
+            --blue2:        var(--accent);
+            --navy:         var(--accent-dark);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,93 +49,67 @@
         body, html {
             height: 100%;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
-            background: var(--cream);
+            background: var(--bg);
             -webkit-user-select: none;
             user-select: none;
             color: var(--text-dark);
         }
         input, textarea { -webkit-user-select: auto; user-select: auto; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popIn {
-            0%   { transform: scale(0.88); opacity: 0; }
-            70%  { transform: scale(1.03); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(16px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { 0% { transform: scale(0.88); opacity: 0; } 70% { transform: scale(1.03); } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes slideIn     { from { opacity: 0; transform: translateX(16px); }  to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInBack { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .fade-up  { animation: fadeUp 0.4s cubic-bezier(.22,.68,0,1.15) both; }
-        .pop-in   { animation: popIn 0.38s cubic-bezier(.22,.68,0,1.2) both; }
-        .slide-in { animation: slideIn 0.35s cubic-bezier(.22,.68,0,1.15) both; }
+        .fade-up       { animation: fadeUp     0.4s  cubic-bezier(.22,.68,0,1.15) both; }
+        .pop-in        { animation: popIn      0.38s cubic-bezier(.22,.68,0,1.2)  both; }
+        .slide-in      { animation: slideIn    0.3s  cubic-bezier(.22,.68,0,1.15) both; }
+        .slide-in-back { animation: slideInBack 0.3s cubic-bezier(.22,.68,0,1.15) both; }
 
-        /* ── Hover states (pointer devices only) ── */
         @media (hover: hover) {
-            .entry-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(45,45,45,0.12); }
-            .option-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
-            .btn-primary:hover { background: var(--yellow-dark); }
-            .btn-secondary:hover { background: #111; }
-            .btn-outline:hover { background: var(--surface); border-color: var(--charcoal); color: var(--text-dark); }
-            .btn-ghost:hover { color: var(--text-mid); }
-            .identity-card:hover { border-color: var(--yellow); box-shadow: 0 4px 16px rgba(45,45,45,0.1); }
+            .entry-card:hover    { background: var(--surface); }
+            .option-btn:hover    { background: var(--accent-pale); }
+            .btn-primary:hover   { background: var(--accent-dark); }
+            .btn-secondary:hover { background: var(--surface); }
+            .btn-outline:hover   { background: var(--surface); border-color: var(--border-mid); }
+            .btn-ghost:hover     { color: var(--text-mid); }
+            .identity-card:hover { background: var(--surface); border-color: var(--border-mid); }
         }
 
         .no-bar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-bar::-webkit-scrollbar { display: none; }
 
-        /* ── Page layout ── */
         .page {
             min-height: 100vh;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: var(--cream);
+            background: var(--bg);
         }
 
-        /* ── Header ── */
+        /* ── Header: card bg + spectrum strip as top border ── */
         .top-header {
             width: 100%;
-            background: var(--charcoal);
-            padding: 44px 24px 36px;
+            background: var(--card);
+            padding: 52px 24px 32px;
             text-align: center;
             position: relative;
             overflow: hidden;
-        }
-        .top-header::before {
-            content: '';
-            position: absolute;
-            top: -80px; right: -60px;
-            width: 240px; height: 240px;
-            border-radius: 50%;
-            background: rgba(245,196,0,0.05);
-        }
-        .top-header::after {
-            content: '';
-            position: absolute;
-            bottom: -60px; left: -30px;
-            width: 180px; height: 180px;
-            border-radius: 50%;
-            background: rgba(245,196,0,0.04);
+            border-bottom: 1px solid var(--border);
         }
 
+        /* ── Spectrum strip: full-width coloured top band ── */
         .spectrum-strip {
             display: flex;
-            height: 3px;
-            margin: 20px auto 0;
-            max-width: 100px;
-            border-radius: 2px;
-            overflow: hidden;
-            gap: 2px;
+            width: 100%;
+            height: 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        /* ── Content ── */
         .content {
             width: 100%;
             max-width: 480px;
@@ -134,41 +117,21 @@
             flex: 1;
         }
 
-        /* ── Cards ── */
         .card {
-            background: var(--white);
-            border-radius: 20px;
+            background: var(--card);
+            border-radius: 14px;
             padding: 22px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 14px rgba(45,45,45,0.07);
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(99,102,241,0.07);
         }
 
-        /* ── Buttons ── */
         .btn-primary {
             width: 100%;
-            background: var(--yellow);
-            color: var(--charcoal);
-            border: none;
-            border-radius: 14px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.16s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            letter-spacing: 0.3px;
-        }
-        .btn-primary:active { transform: scale(0.97); background: var(--yellow-dark); }
-
-        .btn-secondary {
-            width: 100%;
-            background: var(--charcoal);
+            background: var(--accent);
             color: #fff;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 16px;
             font-size: 16px;
             font-weight: 700;
@@ -179,14 +142,32 @@
             justify-content: center;
             gap: 8px;
         }
-        .btn-secondary:active { transform: scale(0.97); background: #111; }
+        .btn-primary:active { transform: scale(0.97); background: var(--accent-dark); }
+
+        .btn-secondary {
+            width: 100%;
+            background: transparent;
+            color: var(--text-dark);
+            border: 1.5px solid var(--text-dark);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.16s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-secondary:active { transform: scale(0.97); }
 
         .btn-outline {
             width: 100%;
             background: transparent;
             color: var(--text-mid);
-            border: 1.5px solid var(--border);
-            border-radius: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 13px;
             font-size: 14px;
             font-weight: 600;
@@ -214,23 +195,19 @@
             gap: 4px;
         }
 
-        /* ── Inputs ── */
         .input-field {
             width: 100%;
             padding: 13px 14px 13px 44px;
             font-size: 15px;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
+            background: var(--accent-pale);
+            border: 1px solid var(--border);
+            border-radius: 10px;
             outline: none;
             color: var(--text-dark);
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s;
             font-family: inherit;
         }
-        .input-field:focus {
-            border-color: var(--yellow);
-            box-shadow: 0 0 0 3px rgba(245,196,0,0.18);
-        }
+        .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
         .input-wrap { position: relative; }
         .input-icon {
             position: absolute;
@@ -240,70 +217,60 @@
             color: var(--text-light);
         }
 
-        /* ── Entry cards ── */
         .entry-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 12px;
+            background: var(--card);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 16px;
             text-decoration: none;
-            transition: all 0.18s;
-            box-shadow: 0 2px 12px rgba(45,45,45,0.07);
-            border: none;
+            transition: background 0.15s;
+            border: 1px solid var(--border);
             width: 100%;
             text-align: left;
+            box-shadow: 0 2px 10px rgba(99,102,241,0.06);
         }
-        .entry-card:active { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(45,45,45,0.10); }
+        .entry-card:active { background: var(--surface); }
 
-        /* ── Identity selection cards (lookup) ── */
         .identity-card {
-            padding: 20px 12px;
-            borderRadius: 20px;
-            border: 1.5px solid var(--border);
-            background: var(--white);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--card);
             cursor: pointer;
             text-align: center;
-            transition: all 0.18s;
-            box-shadow: 0 2px 10px rgba(45,45,45,0.05);
-            border-radius: 20px;
+            transition: all 0.15s;
+            box-shadow: 0 2px 10px rgba(99,102,241,0.06);
         }
-        .identity-card:active { border-color: var(--yellow); }
+        .identity-card:active { background: var(--surface); }
 
         /* ── Quiz option buttons ── */
         .option-btn {
             width: 100%;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 15px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             transition: all 0.15s;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        .option-btn:active {
-            transform: scale(0.98);
-            background: rgba(245,196,0,0.18);
-            border-color: rgba(245,196,0,0.5);
-        }
+        .option-btn:active { transform: scale(0.98); background: var(--surface); }
 
-        /* ── Type result sections ── */
         .type-section {
-            background: var(--white);
-            border-radius: 16px;
+            background: var(--card);
+            border-radius: 0;
             padding: 16px 18px;
             margin-bottom: 10px;
-            border-left: 4px solid var(--yellow);
-            box-shadow: 0 1px 8px rgba(45,45,45,0.05);
+            border: none;
+            border-left: 3px solid var(--border);
         }
 
-        /* ── Divider ── */
         .divider {
             display: flex;
             align-items: center;
@@ -317,7 +284,6 @@
             background: var(--border);
         }
 
-        /* ── Yellow tag/pill ── */
         .tag-yellow {
             display: inline-flex;
             align-items: center;
@@ -325,48 +291,40 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 700;
-            background: var(--yellow-pale);
-            color: var(--charcoal);
+            background: var(--surface);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
         }
 
-        /* ── Desktop shell ── */
         @media (min-width: 768px) {
-            body { background: #1A1A1A; }
-
+            body { background: #E0E7FF; }
             .page {
                 min-height: 100vh;
-                background: #1A1A1A;
+                background: #E0E7FF;
                 justify-content: center;
                 align-items: center;
                 padding: 24px;
             }
-
             .phone-shell {
                 width: 100%;
                 max-width: 520px;
-                background: var(--cream);
-                border-radius: 36px;
+                background: var(--card);
+                border-radius: 32px;
                 overflow: hidden;
-                box-shadow:
-                    0 48px 120px rgba(0,0,0,0.65),
-                    0 0 0 1px rgba(255,255,255,0.07),
-                    inset 0 0 0 1px rgba(255,255,255,0.04);
+                border: 1px solid #C7D2FE;
+                box-shadow: 0 32px 80px rgba(99,102,241,0.18), 0 0 0 1px rgba(255,255,255,0.8);
                 max-height: 92vh;
                 display: flex;
                 flex-direction: column;
             }
-            .phone-content {
-                overflow-y: auto;
-                flex: 1;
-            }
+            .phone-content { overflow-y: auto; flex: 1; }
             .phone-content.no-bar { -ms-overflow-style: none; scrollbar-width: none; }
             .phone-content.no-bar::-webkit-scrollbar { display: none; }
-
-            .top-header { padding: 52px 32px 44px; }
+            .top-header { padding: 52px 32px 36px; }
             .content { padding: 28px 24px 64px; max-width: 100%; }
             .btn-primary, .btn-secondary { font-size: 17px; padding: 18px; }
             .option-btn { padding: 17px 20px; }
-            .entry-card { padding: 24px; }
+            .entry-card { padding: 20px 24px; }
         }
     </style>
 </head>
@@ -383,10 +341,10 @@ const LINE_ADD_FRIEND_URL = "https://lin.ee/nnDYAZE";
 const QUIZ_SHARE_URL      = "https://zway-education.github.io/mindspectrum/";
 
 const TYPE_INFO = {
-    red:    { label:"紅色・開創型", emoji:"🔴", stress:"習慣說「快點」、「我說了算」、「為什麼還沒做好？」", strength:"具備極強的行動力、突破力與主導感。", practice:"練習「三秒鐘留白」。強迫自己閉嘴三秒，改問：「我現在是想解決問題，還是想接住這個孩子？」", barColor:"#D63030", bgColor:"#FFF0F0" },
-    orange: { label:"橙色・關懷型", emoji:"🟠", stress:"容易情緒波動，會說「你這樣讓媽媽很難過」、「你為什麼不理我？」", strength:"天生的雷達，對情感與連結有高度精準的感受力。", practice:"練習「劃分心理邊界」。告訴自己：「孩子的情緒是他的，我的愛不會因為他的情緒而改變。」", barColor:"#E8600A", bgColor:"#FFF0E6" },
-    green:  { label:"綠色・協調型", emoji:"🟢", stress:"追求和諧、怕衝突，習慣說「隨便啦」、「平安就好」。", strength:"關乎穩定與安全，能帶給家庭平靜的節奏感。", practice:"練習「刻意發聲」。溫柔且堅定地說出自己的底線與規則。", barColor:"#2E8B5A", bgColor:"#F0FAF4" },
-    blue:   { label:"藍色・分析型", emoji:"🔵", stress:"重視對錯與細節，會說「這不合邏輯」、「細節要注意」。", strength:"具備強大的結構思考與分析理解能力。", practice:"啟動「Bug 感謝祭」。陪孩子一起把錯誤看作是「測試數據」並優化。", barColor:"#3A70B0", bgColor:"#EEF4FF" },
+    red:    { label:"紅色・開創型", title:"紅色家長：追求效率的「小英雄守護者」", stress:"習慣說「快點」、「我說了算」、「為什麼還沒做好？」", strength:"具備極強的行動力、突破力與主導感。", practice:"練習「三秒鐘留白」。強迫自己閉嘴三秒，改問：「我現在是想解決問題，還是想接住這個孩子？」", barColor:"#D63030", darkColor:"#9B2121", bgColor:"#FFF0F0", borderColor:"rgba(214,48,48,0.18)" },
+    orange: { label:"橙色・關懷型", title:"橙色家長：渴望連結的「共情大師」", stress:"容易情緒波動，會說「你這樣讓媽媽很難過」、「你為什麼不理我？」", strength:"天生的雷達，對情感與連結有高度精準的感受力。", practice:"練習「劃分心理邊界」。告訴自己：「孩子的情緒是他的，我的愛不會因為他的情緒而改變。」", barColor:"#E8600A", darkColor:"#B84A00", bgColor:"#FFF0E6", borderColor:"rgba(232,96,10,0.18)" },
+    green:  { label:"綠色・協調型", title:"綠色家長：守護穩定的「定海神針」", stress:"追求和諧、怕衝突，習慣說「隨便啦」、「平安就好」。", strength:"關乎穩定與安全，能帶給家庭平靜的節奏感。", practice:"練習「刻意發聲」。溫柔且堅定地說出自己的底線與規則。", barColor:"#2E8B5A", darkColor:"#1A6B42", bgColor:"#F0FAF4", borderColor:"rgba(46,139,90,0.18)" },
+    blue:   { label:"藍色・分析型", title:"藍色家長：追求邏輯的「數據優化大師」", stress:"重視對錯與細節，會說「這不合邏輯」、「細節要注意」。", strength:"具備強大的結構思考與分析理解能力。", practice:"啟動「Bug 感謝祭」。陪孩子一起把錯誤看作是「測試數據」並優化。", barColor:"#3A70B0", darkColor:"#2A5A9A", bgColor:"#EEF4FF", borderColor:"rgba(58,112,176,0.18)" },
 };
 
 const QUESTIONS = [
@@ -404,6 +362,19 @@ const OPTIONS = [
     { label:"非常不像我",score:1 },
 ];
 const REFERRAL_OPTIONS = ["校園講座","教師研習","覺知SEL課程","親友分享","FB/IG","其它"];
+
+const AGE_GROUPS = [
+    { key:'0-3',  label:'0–3 歲',  sublabel:'感官連結期' },
+    { key:'4-6',  label:'4–6 歲',  sublabel:'情緒學習期' },
+    { key:'7-12', label:'7–12 歲', sublabel:'自我認同期' },
+    { key:'teen', label:'青少年',   sublabel:'自主拉鋸期' },
+];
+const AGE_TIPS = {
+    '0-3':  ['身體接觸是最強語言：多抱、多對視，讓孩子感受安全', '情緒命名從現在開始：「你現在很傷心」讓孩子學會認識感受', '固定作息是根基，不是管控，給孩子內在的穩定感'],
+    '4-6':  ['情緒溫度計：用 1–5 分幫孩子說出心情大小', '一起編故事解決衝突，讓孩子當主角找答案', '不評判感受，只引導行為：「生氣可以，打人不行」'],
+    '7-12': ['給孩子家庭會議的發言權，讓他參與真實決定', '用提問代替說教：「你覺得下次可以怎麼做？」', '讓孩子承擔小錯誤的自然後果，培養責任感'],
+    'teen': ['對話時間比說教時間多三倍，先聽再說', '不評價朋友圈，只關注孩子本身的感受', '讓孩子知道：即使你不認同他的選擇，你依然站在他那邊'],
+};
 
 const sanitize = s => typeof s!=='string' ? s : s.replace(/[&<>'"]/g, t=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]));
 const validPhone = p => /^09\d{8}$/.test(p);
@@ -424,27 +395,32 @@ const Ico = {
     Gift:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
     Bolt:   ()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
     Line:   ()=><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>,
+    Warning:    ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+    Inbox:      ()=><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>,
+    SearchOff:  ()=><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 8l6 6M14 8l-6 6"/></svg>,
+    PersonAdult:()=><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    PersonChild:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="8" r="3"/></svg>,
 };
 
-/* ── Spectrum strip ── */
+/* ── Spectrum strip: full-width absolute top band ── */
 const SpectrumStrip = () => (
     <div className="spectrum-strip">
-        <div style={{flex:1,background:'#D63030'}}/>
-        <div style={{flex:1,background:'#E8600A'}}/>
-        <div style={{flex:1,background:'#2E8B5A'}}/>
-        <div style={{flex:1,background:'#3A70B0'}}/>
+        <div style={{flex:1,background:'#C0392B'}}/>
+        <div style={{flex:1,background:'#D46011'}}/>
+        <div style={{flex:1,background:'#1E8449'}}/>
+        <div style={{flex:1,background:'#1A6FA8'}}/>
     </div>
 );
 
-/* ── Score bar (for dark header) ── */
+/* ── Score bar (light bg) ── */
 function ScoreBar({ label, score, color }) {
     return (
         <div style={{marginBottom:10}}>
-            <div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:700,color:'rgba(255,255,255,0.85)',marginBottom:4}}>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:13,fontWeight:600,color:'var(--text-mid)',marginBottom:5}}>
                 <span>{label}</span>
-                <span style={{fontVariantNumeric:'tabular-nums'}}>{score}</span>
+                <span style={{fontVariantNumeric:'tabular-nums',fontWeight:700,color:'var(--text-dark)'}}>{score}</span>
             </div>
-            <div style={{height:5,background:'rgba(255,255,255,0.14)',borderRadius:4,overflow:'hidden'}}>
+            <div style={{height:4,background:'var(--border)',borderRadius:4,overflow:'hidden'}}>
                 <div style={{height:'100%',background:color,width:`${(score/30)*100}%`,borderRadius:4,transition:'width 1s ease-out'}}/>
             </div>
         </div>
@@ -456,7 +432,11 @@ const isDesktop = window.innerWidth >= 768;
 
 /* ── Shell (defined outside App to keep identity stable) ── */
 function Shell({children}) {
-    if (!isDesktop) return <div className="page fade-up">{children}</div>;
+    if (!isDesktop) return (
+        <div className="page fade-up">
+            {children}
+        </div>
+    );
     return (
         <div className="page">
             <div className="phone-shell">
@@ -481,6 +461,8 @@ function App() {
     const [scores, setScores]       = useState({red:0,orange:0,green:0,blue:0});
     const [total, setTotal]         = useState(0);
     const [navigating, setNav]      = useState(false);
+    const [navDir, setNavDir]       = useState('fwd');
+    const [childAge, setChildAge]   = useState(null);
     const [referral, setReferral]   = useState([]);
     const [refErr, setRefErr]       = useState(false);
     const [showConfirm, setConfirm] = useState(false);
@@ -506,6 +488,7 @@ function App() {
         setTotal(0); setReferral([]); setRefErr(false);
         setConfirm(false); setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap('');
         setLookNick(''); setLookEmail(''); setLookChild(''); setLookResult(null); setLookErr(''); setLookWho(null);
+        setNavDir('fwd'); setChildAge(null);
     };
 
     const doLookup = async () => {
@@ -543,6 +526,7 @@ function App() {
     const handleAnswer = (score) => {
         if (navigating) return;
         setNav(true);
+        setNavDir('fwd');
         const updated = {...answers, [qIdx+1]: score};
         setAnswers(updated);
         setTimeout(()=>{
@@ -610,18 +594,29 @@ function App() {
         <Shell>
             {/* Header */}
             <div className="top-header">
-                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.4)',marginBottom:10,fontWeight:700,textTransform:'uppercase'}}>覺知 SEL</div>
-                <div style={{fontSize:36,fontWeight:900,color:'#fff',lineHeight:1.15,marginBottom:6}}>心智光譜</div>
-                <div style={{fontSize:14,color:'rgba(255,255,255,0.6)',fontWeight:500,lineHeight:1.6}}>看見自己與孩子的內在狀態</div>
                 <SpectrumStrip/>
+                {/* Bar chart logo */}
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:12,marginBottom:14}}>
+                    <div style={{display:'flex',alignItems:'flex-end',gap:4}}>
+                        <div style={{width:8,height:28,background:'var(--red)',borderRadius:'3px 3px 0 0'}}/>
+                        <div style={{width:8,height:18,background:'var(--orange)',borderRadius:'3px 3px 0 0'}}/>
+                        <div style={{width:8,height:36,background:'var(--green)',borderRadius:'3px 3px 0 0'}}/>
+                        <div style={{width:8,height:24,background:'var(--blue)',borderRadius:'3px 3px 0 0'}}/>
+                    </div>
+                    <div style={{textAlign:'left'}}>
+                        <div style={{fontSize:28,fontWeight:900,color:'var(--text-dark)',lineHeight:1.05,letterSpacing:'-0.5px'}}>心智光譜</div>
+                        <div style={{fontSize:9,color:'var(--accent)',letterSpacing:'2.5px',fontWeight:700,textTransform:'uppercase',marginTop:3}}>MIND SPECTRUM · SEL</div>
+                    </div>
+                </div>
+                <div style={{fontSize:13,color:'var(--text-mid)',fontWeight:400,lineHeight:1.6}}>看見自己與孩子的內在狀態</div>
             </div>
 
             {/* Content */}
             <div className="content">
                 {/* 我是家長 */}
                 <button className="entry-card fade-up" onClick={()=>{setMode('quiz');setStep('register');}}>
-                    <div style={{width:50,height:50,background:'#FFFBE0',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid rgba(245,196,0,0.25)'}}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4A900" strokeWidth="2" strokeLinecap="round">
+                    <div style={{width:48,height:48,background:'var(--accent-pale)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid var(--border)'}}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" strokeWidth="1.75" strokeLinecap="round">
                             <rect x="2" y="7" width="20" height="14" rx="2"/>
                             <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
                             <line x1="12" y1="12" x2="12" y2="16"/>
@@ -629,16 +624,16 @@ function App() {
                         </svg>
                     </div>
                     <div style={{flex:1}}>
-                        <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:3}}>我是家長</div>
-                        <div style={{fontSize:12,color:'var(--text-light)',fontWeight:500}}>進入成人版測驗</div>
+                        <div style={{fontSize:17,fontWeight:700,color:'var(--text-dark)',marginBottom:3}}>我是家長</div>
+                        <div style={{fontSize:12,color:'var(--text-light)',fontWeight:400}}>進入成人版測驗</div>
                     </div>
-                    <span style={{color:'var(--text-light)',flexShrink:0}}><Ico.Chevron/></span>
+                    <span style={{color:'var(--border-mid)',flexShrink:0}}><Ico.Chevron/></span>
                 </button>
 
                 {/* 我是孩子 */}
                 <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer" className="entry-card" style={{animationDelay:'0.05s'}}>
-                    <div style={{width:50,height:50,background:'#F0FAF4',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid rgba(46,139,90,0.2)'}}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2E8B5A" strokeWidth="2" strokeLinecap="round">
+                    <div style={{width:48,height:48,background:'var(--green-pale)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid rgba(56,161,105,0.2)'}}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.75" strokeLinecap="round">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
                             <line x1="9" y1="9" x2="9.01" y2="9"/>
@@ -646,25 +641,25 @@ function App() {
                         </svg>
                     </div>
                     <div style={{flex:1}}>
-                        <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:3}}>我是孩子</div>
-                        <div style={{fontSize:12,color:'var(--text-light)',fontWeight:500}}>進入孩子版測驗</div>
+                        <div style={{fontSize:17,fontWeight:700,color:'var(--text-dark)',marginBottom:3}}>我是孩子</div>
+                        <div style={{fontSize:12,color:'var(--text-light)',fontWeight:400}}>進入孩子版測驗</div>
                     </div>
-                    <span style={{color:'var(--text-light)',flexShrink:0}}><Ico.Chevron/></span>
+                    <span style={{color:'var(--border-mid)',flexShrink:0}}><Ico.Chevron/></span>
                 </a>
 
                 {/* 次要行動列 */}
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginTop:4}}>
                     <button onClick={()=>{setMode('direct');setStep('register');}}
-                        style={{background:'var(--charcoal)',color:'#fff',border:'none',borderRadius:14,padding:'14px 10px',fontSize:14,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7,boxShadow:'0 3px 12px rgba(45,45,45,0.16)',transition:'all 0.16s'}}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        style={{background:'var(--accent)',color:'#fff',border:'none',borderRadius:12,padding:'14px 10px',fontSize:13,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7,transition:'all 0.16s'}}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                         </svg>
-                        領取說明
+                        領取光譜說明
                     </button>
                     <button onClick={()=>setStep('lookup')}
-                        style={{display:'flex',alignItems:'center',justifyContent:'center',gap:7,background:'var(--white)',color:'var(--text-mid)',borderRadius:14,padding:'14px 10px',fontSize:14,fontWeight:600,border:'1.5px solid var(--border)',cursor:'pointer',transition:'all 0.15s',boxShadow:'0 1px 6px rgba(45,45,45,0.05)'}}>
-                        <Ico.Search/> 查詢紀錄
+                        style={{display:'flex',alignItems:'center',justifyContent:'center',gap:7,background:'var(--card)',color:'var(--text-mid)',borderRadius:12,padding:'14px 10px',fontSize:13,fontWeight:600,border:'1px solid var(--border)',cursor:'pointer',transition:'all 0.15s'}}>
+                        <Ico.Search/> 查詢過往紀錄
                     </button>
                 </div>
             </div>
@@ -675,21 +670,36 @@ function App() {
     if (step==='register') return (
         <Shell>
             <div className="top-header">
-                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.4)',marginBottom:10,fontWeight:700,textTransform:'uppercase'}}>
-                    {mode==='quiz' ? '成人版測驗' : '領取心智光譜說明'}
+                <SpectrumStrip/>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:10}}>
+                    <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
+                        <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                        <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                        <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                        <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                    </div>
+                    <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>
+                        {mode==='quiz' ? '覺知SEL' : '說明領取'}
+                    </div>
                 </div>
-                <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:8}}>
-                    {mode==='quiz' ? '填寫後進入測驗' : '填寫基本資料'}
+                <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:8}}>
+                    {mode==='quiz' ? '覺知心智光譜 - 家長' : '填寫基本資料'}
                 </div>
-                <div style={{fontSize:13,color:'rgba(255,255,255,0.55)',lineHeight:1.7}}>
+                <div style={{fontSize:13,color:'var(--text-mid)',lineHeight:1.7}}>
                     {mode==='quiz'
-                        ? '請依照壓力下的直覺作答，\n無需過度思考。'
+                        ? '看見自己與孩子的內在狀態'
                         : '填寫完成後，\n心智光譜說明將寄至您的 Email。'}
                 </div>
-                <SpectrumStrip/>
             </div>
 
             <div className="content">
+                {/* 介紹說明框 (quiz mode only) */}
+                {mode==='quiz' && (
+                    <div style={{background:'var(--surface)',borderRadius:16,padding:'18px 20px',marginBottom:16,border:'1px solid var(--border)'}}>
+                        <div style={{fontSize:16,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>測測看，您是哪一種底色的家長？</div>
+                        <div style={{fontSize:13,color:'var(--text-mid)',lineHeight:1.75}}>在衝突發生的那一秒，我們往往會回到最習慣的「自動反應」。請依照壓力下的直覺反應作答。</div>
+                    </div>
+                )}
                 <div className="card" style={{padding:'28px 22px'}}>
                     <form onSubmit={handleRegisterSubmit}>
                         {/* Honeypot */}
@@ -699,7 +709,7 @@ function App() {
 
                         {/* 姓名 */}
                         <div style={{marginBottom:16}}>
-                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:7}}>姓名</label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:7}}>您的姓名</label>
                             <div className="input-wrap">
                                 <span className="input-icon"><Ico.User/></span>
                                 <input type="text" required className="input-field" placeholder="例如：王小明"
@@ -710,7 +720,7 @@ function App() {
                         {/* Email */}
                         <div style={{marginBottom:16}}>
                             <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:7}}>
-                                電子信箱
+                                您的信箱
                                 <span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>（說明將寄至此信箱）</span>
                             </label>
                             <div className="input-wrap">
@@ -719,6 +729,33 @@ function App() {
                                     value={email} onChange={e=>setEmail(e.target.value)}/>
                             </div>
                         </div>
+
+                        {/* 孩子年齡（quiz mode only, optional） */}
+                        {mode==='quiz' && (
+                            <div style={{marginBottom:16}}>
+                                <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:8}}>
+                                    孩子的年齡
+                                    <span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>（選填，用於顯示分齡建議）</span>
+                                </label>
+                                <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8}}>
+                                    {AGE_GROUPS.map(ag=>{
+                                        const sel = childAge===ag.key;
+                                        return (
+                                            <button key={ag.key} type="button"
+                                                onClick={()=>setChildAge(sel?null:ag.key)}
+                                                style={{
+                                                    padding:'10px 4px',borderRadius:12,border:`1.5px solid ${sel?'var(--accent)':'var(--border)'}`,
+                                                    background: sel?'var(--accent-pale)':'var(--card)',
+                                                    cursor:'pointer',textAlign:'center',transition:'all 0.15s'
+                                                }}>
+                                                <div style={{fontSize:12,fontWeight:800,color:sel?'var(--accent)':'var(--text-dark)'}}>{ag.label}</div>
+                                                <div style={{fontSize:10,color:sel?'var(--accent)':'var(--text-light)',marginTop:2}}>{ag.sublabel}</div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
 
                         {/* 電話 */}
                         <div style={{marginBottom:24}}>
@@ -765,59 +802,90 @@ function App() {
     /* ─────────── QUIZ ─────────── */
     if (step==='quiz') return (
         <Shell>
-            <div style={{background:'var(--charcoal)',minHeight:'100%',display:'flex',flexDirection:'column'}}>
+            <div style={{background:'var(--card)',minHeight:'100%',display:'flex',flexDirection:'column'}}>
                 {/* Progress header */}
-                <div style={{background:'var(--charcoal)',padding:'24px 20px 18px',width:'100%',flexShrink:0}}>
-                    <div style={{maxWidth:480,margin:'0 auto'}}>
-                        {/* Counter + % */}
-                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-                            <span style={{fontSize:12,fontWeight:700,color:'rgba(255,255,255,0.5)',letterSpacing:1}}>題目 {qIdx+1} / {QUESTIONS.length}</span>
-                            <span style={{fontSize:12,fontWeight:700,color:'var(--yellow)'}}>{progress}%</span>
+                <div style={{background:'var(--accent-pale)',width:'100%',flexShrink:0,borderBottom:'1px solid var(--border)'}}>
+                    <div style={{maxWidth:480,margin:'0 auto',padding:'12px 18px 10px'}}>
+                        {/* Counter + label */}
+                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                            <span style={{fontSize:11,fontWeight:700,color:'var(--text-light)',letterSpacing:'1px',textTransform:'uppercase'}}>整體進度</span>
+                            <span style={{fontSize:11,fontWeight:700,color:'#6366F1',fontFamily:'monospace'}}>{qIdx+1} / {QUESTIONS.length}</span>
                         </div>
-                        {/* Progress bar */}
-                        <div style={{position:'relative',height:28}}>
-                            <div style={{position:'absolute',bottom:0,width:'100%',height:4,background:'rgba(255,255,255,0.1)',borderRadius:4,overflow:'hidden'}}>
-                                <div style={{height:'100%',background:'var(--yellow)',width:`${progress}%`,borderRadius:4,transition:'width 0.3s ease'}}/>
-                            </div>
-                            <div style={{position:'absolute',bottom:-1,transition:'left 0.3s ease',left:`calc(${progress}% - 11px)`}}>
-                                <div style={{background:'var(--yellow)',borderRadius:'50%',width:20,height:20,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 2px 8px rgba(245,196,0,0.45)'}}>
-                                    <svg width="9" height="9" viewBox="0 0 24 24" fill="#2D2D2D"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                                </div>
-                            </div>
+                        {/* Progress bar — style5 inspired */}
+                        <div style={{height:5,background:'var(--border)',border:'1px solid var(--border-mid)',borderRadius:0,overflow:'hidden'}}>
+                            <div style={{height:'100%',background:'#6366F1',width:`${progress}%`,transition:'width 0.3s ease'}}/>
                         </div>
                     </div>
                 </div>
 
                 {/* Question + Options */}
-                <div style={{flex:1,width:'100%',padding:'8px 18px 40px',maxWidth:480,margin:'0 auto',overflowY:'auto'}} className="no-bar">
+                <div style={{flex:1,width:'100%',maxWidth:480,margin:'0 auto',overflowY:'auto'}} className="no-bar">
                     {/* Question card */}
-                    <div className="slide-in" key={qIdx} style={{
-                        background:'rgba(255,255,255,0.07)',
-                        border:'1px solid rgba(255,255,255,0.12)',
-                        borderRadius:20,
-                        textAlign:'center',
-                        padding:'28px 20px',
-                        marginBottom:20,
-                        minHeight:120,
-                        display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'
-                    }}>
-                        <div style={{fontSize:11,fontWeight:700,color:'var(--yellow)',letterSpacing:2,marginBottom:10,textTransform:'uppercase'}}>題目 {qIdx+1}</div>
-                        <div style={{fontSize:20,fontWeight:800,color:'#fff',lineHeight:1.6,whiteSpace:'pre-line'}}>{QUESTIONS[qIdx]}</div>
+                    <div className={navDir==='back' ? 'slide-in-back' : 'slide-in'} key={`q-${qIdx}-${navDir}`} style={{background:'var(--card)',padding:'20px 20px 0'}}>
+                        {/* Category chip */}
+                        <div style={{marginBottom:14}}>
+                            <span style={{
+                                fontSize:11,fontWeight:700,padding:'3px 10px',
+                                background: CATS[qIdx]==='red'?'#FFF4F4':CATS[qIdx]==='orange'?'#FFF6EE':CATS[qIdx]==='green'?'#F0FAF5':'#EEF5FF',
+                                color: CATS[qIdx]==='red'?'var(--red)':CATS[qIdx]==='orange'?'var(--orange)':CATS[qIdx]==='green'?'var(--green)':'var(--blue)',
+                                border: `1px solid ${CATS[qIdx]==='red'?'rgba(192,57,43,0.25)':CATS[qIdx]==='orange'?'rgba(212,96,17,0.25)':CATS[qIdx]==='green'?'rgba(30,132,73,0.25)':'rgba(26,111,168,0.25)'}`,
+                                borderRadius:4
+                            }}>
+                                {CATS[qIdx]==='red'?'開創型・紅':CATS[qIdx]==='orange'?'關懷型・橙':CATS[qIdx]==='green'?'協調型・綠':'分析型・藍'}
+                            </span>
+                        </div>
+                        <div style={{fontSize:18,fontWeight:700,color:'var(--text-dark)',lineHeight:1.65,whiteSpace:'pre-line',paddingBottom:16,borderBottom:'2px solid var(--border)'}}>
+                            {QUESTIONS[qIdx]}
+                        </div>
+                        <div style={{fontSize:11,color:'var(--text-light)',padding:'10px 0 4px'}}>請選擇最符合您真實狀況的選項</div>
                     </div>
 
-                    {/* Options */}
-                    {OPTIONS.map((o,i)=>(
-                        <button key={o.score} className="option-btn slide-in" style={{animationDelay:`${i*0.04}s`}}
-                            onClick={()=>handleAnswer(o.score)} disabled={navigating}>
-                            <span style={{fontSize:16,fontWeight:700,color:'#fff'}}>{o.label}</span>
-                            <span style={{background:'rgba(245,196,0,0.18)',color:'var(--yellow)',borderRadius:10,padding:'3px 12px',fontSize:12,fontWeight:700}}>{o.score} 分</span>
-                        </button>
-                    ))}
+                    {/* Options — table-row style */}
+                    <div style={{background:'var(--card)',paddingBottom:8}}>
+                        {OPTIONS.map((o,i)=>{
+                            const letters = ['A','B','C','D','E'];
+                            const selected = answers[qIdx+1] === o.score;
+                            return (
+                                <button key={o.score}
+                                    className={`option-btn ${navDir==='back'?'slide-in-back':'slide-in'}`}
+                                    style={{
+                                        animationDelay:`${i*0.04}s`,
+                                        borderRadius:0,
+                                        borderLeft: selected ? '3px solid var(--accent)' : '3px solid transparent',
+                                        borderRight:'none',
+                                        borderBottom:'1px solid var(--border)',
+                                        padding:'14px 13px 14px 13px',
+                                        marginBottom:0,
+                                        display:'flex',alignItems:'center',gap:12,
+                                        background: selected ? 'var(--accent-pale)' : 'var(--card)',
+                                        transition:'background 0.15s'
+                                    }}
+                                    onClick={()=>handleAnswer(o.score)} disabled={navigating}>
+                                    <span style={{
+                                        width:28,height:28,
+                                        background: selected ? 'var(--accent)' : 'var(--accent-pale)',
+                                        border: selected ? 'none' : '1px solid var(--border)',
+                                        borderRadius:4,display:'flex',alignItems:'center',justifyContent:'center',
+                                        fontSize:12,fontWeight:800,
+                                        color: selected ? '#fff' : 'var(--accent)',
+                                        flexShrink:0,fontFamily:'monospace',
+                                        transition:'all 0.15s'
+                                    }}>
+                                        {letters[i]}
+                                    </span>
+                                    <span style={{fontSize:15,fontWeight: selected?700:600, color: selected?'var(--accent-dark)':'var(--text-dark)',flex:1,textAlign:'left'}}>{o.label}</span>
+                                    <span style={{fontSize:12,fontWeight:700,color: selected?'var(--accent)':'var(--text-light)'}}>{o.score} 分</span>
+                                </button>
+                            );
+                        })}
+                    </div>
 
                     {qIdx>0 && (
-                        <button onClick={()=>setQIdx(q=>q-1)} className="btn-ghost" style={{color:'rgba(255,255,255,0.35)',marginTop:6}}>
-                            <Ico.ChevronL/> 返回上一題
-                        </button>
+                        <div style={{padding:'4px 16px 16px'}}>
+                            <button onClick={()=>{ setNavDir('back'); setQIdx(q=>q-1); }} className="btn-ghost" style={{color:'var(--text-light)'}}>
+                                <Ico.ChevronL/> 返回上一題
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
@@ -830,22 +898,38 @@ function App() {
         return (
             <Shell>
                 <div className="top-header">
+                    <SpectrumStrip/>
                     {mode==='quiz' && <>
-                        <div style={{fontSize:12,color:'rgba(255,255,255,0.5)',marginBottom:8,fontWeight:600}}>測驗初步結果</div>
-                        <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:14}}>{s[0].label}</div>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:8}}>
+                            <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
+                                <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                            </div>
+                            <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>測驗初步結果</div>
+                        </div>
+                        <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:14}}>{s[0].label}</div>
                         <div style={{maxWidth:300,margin:'0 auto'}}>
-                            <ScoreBar label="開創型（紅）" score={scores.red}    color="#D63030"/>
-                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="#E8600A"/>
-                            <ScoreBar label="協調型（綠）" score={scores.green}  color="#4CAF7D"/>
-                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="#80B8E8"/>
+                            <ScoreBar label="開創型（紅）" score={scores.red}    color="var(--red)"/>
+                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="var(--orange)"/>
+                            <ScoreBar label="協調型（綠）" score={scores.green}  color="var(--green)"/>
+                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="var(--blue)"/>
                         </div>
                     </>}
                     {mode==='direct' && <>
-                        <div style={{fontSize:11,color:'rgba(255,255,255,0.45)',marginBottom:10,fontWeight:700,letterSpacing:2,textTransform:'uppercase'}}>領取心智光譜說明</div>
-                        <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:6}}>確認您的資料</div>
-                        <div style={{fontSize:13,color:'rgba(255,255,255,0.55)'}}>說明將寄至您填寫的 Email</div>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:10}}>
+                            <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
+                                <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                            </div>
+                            <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>領取心智光譜說明</div>
+                        </div>
+                        <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:6}}>確認您的資料</div>
+                        <div style={{fontSize:13,color:'var(--text-mid)'}}>說明將寄至您填寫的 Email</div>
                     </>}
-                    <SpectrumStrip/>
                 </div>
 
                 <div className="content">
@@ -886,7 +970,7 @@ function App() {
                          onClick={()=>setConfirm(false)}>
                         <div className="card pop-in" style={{maxWidth:360,width:'100%',padding:'28px 24px'}} onClick={e=>e.stopPropagation()}>
                             <div style={{textAlign:'center',marginBottom:18}}>
-                                <div style={{width:52,height:52,background:'var(--yellow-pale)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',border:'2px solid rgba(245,196,0,0.3)'}}>
+                                <div style={{width:52,height:52,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',border:'1.5px solid var(--border)'}}>
                                     <Ico.Mail/>
                                 </div>
                                 <div style={{fontSize:18,fontWeight:800,color:'var(--text-dark)'}}>確認送出</div>
@@ -904,13 +988,13 @@ function App() {
                                     {REFERRAL_OPTIONS.map(o=>(
                                         <button key={o} onClick={()=>toggleRef(o)} style={{
                                             padding:'9px 10px',borderRadius:10,fontSize:12,fontWeight:700,
-                                            border: referral.includes(o)?'2px solid var(--yellow)':'1.5px solid var(--border)',
-                                            background: referral.includes(o)?'var(--yellow)':'var(--white)',
-                                            color: referral.includes(o)?'var(--charcoal)':'var(--text-mid)',
+                                            border: referral.includes(o)?'2px solid var(--accent)':'1.5px solid var(--border)',
+                                            background: referral.includes(o)?'var(--accent)':'var(--card)',
+                                            color: referral.includes(o)?'#fff':'var(--text-mid)',
                                             cursor:'pointer',display:'flex',alignItems:'center',gap:6,
                                             transition:'all 0.15s'
                                         }}>
-                                            <div style={{width:12,height:12,borderRadius:3,border:referral.includes(o)?'1.5px solid rgba(0,0,0,0.15)':'1.5px solid var(--border)',background:referral.includes(o)?'rgba(0,0,0,0.1)':'transparent',flexShrink:0}}/>
+                                            <div style={{width:12,height:12,borderRadius:3,border:referral.includes(o)?'1.5px solid rgba(255,255,255,0.3)':'1.5px solid var(--border)',background:referral.includes(o)?'rgba(255,255,255,0.15)':'transparent',flexShrink:0}}/>
                                             {o}
                                         </button>
                                     ))}
@@ -930,29 +1014,55 @@ function App() {
     /* ─────────── RESULT ─────────── */
     if (step==='result') {
         const s = sortedTypes();
+        const domId   = s[0]?.id || 'blue';
+        const domInfo = TYPE_INFO[domId];
+        const dynStyle = {
+            '--accent':      domInfo.barColor,
+            '--accent-dark': domInfo.darkColor,
+            '--accent-pale': domInfo.bgColor,
+            '--border':      domInfo.borderColor,
+        };
         return (
             <Shell>
-                <div className="top-header" style={{paddingBottom:32}}>
-                    <div style={{width:52,height:52,background:'rgba(245,196,0,0.15)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 14px',border:'1px solid rgba(245,196,0,0.3)'}}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <div style={dynStyle}>
+                <div className="top-header" style={{paddingBottom:32, background: domInfo.bgColor, borderBottom:`1px solid ${domInfo.borderColor}`}}>
+                    {/* Dominant colour strip at top */}
+                    <div style={{position:'absolute',top:0,left:0,width:'100%',height:6,background:`linear-gradient(90deg,${TYPE_INFO.red.barColor},${TYPE_INFO.orange.barColor},${TYPE_INFO.green.barColor},${TYPE_INFO.blue.barColor})`}}/>
+
+                    <div style={{width:52,height:52,background:`${domInfo.barColor}18`,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 14px',border:`1.5px solid ${domInfo.borderColor}`}}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={domInfo.barColor} strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
 
                     {mode==='quiz' ? <>
-                        <div style={{fontSize:11,color:'rgba(255,255,255,0.45)',marginBottom:8,letterSpacing:2,textTransform:'uppercase'}}>您的心智光譜</div>
-                        <div style={{fontSize:28,fontWeight:900,color:'#fff',marginBottom:6}}>{info.label}</div>
-                        <div style={{fontSize:13,color:'rgba(255,255,255,0.5)',marginBottom:16}}>說明已寄至您的信箱</div>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:8}}>
+                            <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
+                                {s.map(t=>(
+                                    <div key={t.id} style={{width:5, height: t.id===domId?22:Math.round(8+scores[t.id]/30*10), background:TYPE_INFO[t.id].barColor, borderRadius:'2px 2px 0 0', transition:'height 0.4s ease'}}/>
+                                ))}
+                            </div>
+                            <div style={{fontSize:11,letterSpacing:'2px',color:domInfo.barColor,fontWeight:700,textTransform:'uppercase'}}>您的心智光譜</div>
+                        </div>
+                        <div style={{fontSize:22,fontWeight:900,color:'var(--text-dark)',marginBottom:6,lineHeight:1.3}}>{info.title}</div>
+                        <div style={{fontSize:13,color:'var(--text-mid)',marginBottom:16}}>資料已成功提交！說明將寄至您的信箱</div>
                         <div style={{maxWidth:300,margin:'0 auto'}}>
-                            <ScoreBar label="開創型（紅）" score={scores.red}    color="#D63030"/>
-                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="#E8600A"/>
-                            <ScoreBar label="協調型（綠）" score={scores.green}  color="#4CAF7D"/>
-                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="#80B8E8"/>
+                            <ScoreBar label="開創型（紅）" score={scores.red}    color="var(--red)"/>
+                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="var(--orange)"/>
+                            <ScoreBar label="協調型（綠）" score={scores.green}  color="var(--green)"/>
+                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="var(--blue)"/>
                         </div>
                     </> : <>
-                        <div style={{fontSize:11,color:'rgba(255,255,255,0.45)',marginBottom:8,letterSpacing:2,textTransform:'uppercase'}}>領取成功</div>
-                        <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:6}}>心智光譜說明</div>
-                        <div style={{fontSize:13,color:'rgba(255,255,255,0.5)'}}>說明已寄至 {email}</div>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:8}}>
+                            <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
+                                <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                            </div>
+                            <div style={{fontSize:11,letterSpacing:'2px',color:domInfo.barColor,fontWeight:700,textTransform:'uppercase'}}>領取成功</div>
+                        </div>
+                        <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:6}}>心智光譜說明</div>
+                        <div style={{fontSize:13,color:'var(--text-mid)'}}>說明已寄至 {email}</div>
                     </>}
-                    <SpectrumStrip/>
                 </div>
 
                 <div className="content">
@@ -974,9 +1084,40 @@ function App() {
                         </div>
                     )}
 
+                    {/* 分齡建議 */}
+                    {mode==='quiz' && childAge && AGE_TIPS[childAge] && (
+                        <div className="card fade-up" style={{padding:'22px',marginBottom:16,borderTop:'3px solid var(--accent)'}}>
+                            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}>
+                                <div style={{width:32,height:32,background:'var(--accent-pale)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.2" strokeLinecap="round"><path d="M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M19 21v-2a7 7 0 0 0-14 0v2"/></svg>
+                                </div>
+                                <div>
+                                    <div style={{fontSize:13,fontWeight:900,color:'var(--text-dark)'}}>
+                                        {AGE_GROUPS.find(a=>a.key===childAge)?.label} 適齡練習
+                                    </div>
+                                    <div style={{fontSize:11,color:'var(--accent)',fontWeight:700}}>
+                                        {AGE_GROUPS.find(a=>a.key===childAge)?.sublabel}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                                {AGE_TIPS[childAge].map((tip,i)=>(
+                                    <div key={i} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
+                                        <div style={{width:20,height:20,borderRadius:'50%',background:'var(--accent)',color:'#fff',fontSize:11,fontWeight:800,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                                            {i+1}
+                                        </div>
+                                        <div style={{fontSize:13,color:'var(--text-dark)',lineHeight:1.7}}>{tip}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {mode==='direct' && (
                         <div className="card" style={{textAlign:'center',padding:'28px 22px',marginBottom:16}}>
-                            <div style={{fontSize:40,marginBottom:14}}>📬</div>
+                            <div style={{width:56,height:56,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 14px',border:'1.5px solid var(--border)'}}>
+                                <Ico.Inbox/>
+                            </div>
                             <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>說明已寄出！</div>
                             <div style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.8}}>
                                 請至 <span style={{fontWeight:800,color:'var(--charcoal)'}}>{email}</span> 查收<br/>
@@ -1000,18 +1141,18 @@ function App() {
 
                     {/* 帶孩子測驗 */}
                     <a href={CHILD_VERSION_URL} target="_blank" rel="noopener noreferrer"
-                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'var(--white)',color:'var(--text-mid)',border:'1.5px solid var(--border)',borderRadius:14,padding:'13px',fontWeight:700,fontSize:14,textDecoration:'none',marginBottom:10,boxShadow:'0 1px 6px rgba(45,45,45,0.06)'}}>
+                       style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',background:'var(--card)',color:'var(--text-mid)',border:'1.5px solid var(--border)',borderRadius:14,padding:'13px',fontWeight:700,fontSize:14,textDecoration:'none',marginBottom:10,boxShadow:'0 1px 6px rgba(45,45,45,0.06)'}}>
                         <Ico.Smile/> 帶孩子也來測測看 →
                     </a>
 
                     {/* 截圖 + 分享 */}
                     <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
                         <button onClick={()=>setShowSS(true)}
-                            style={{background:'var(--white)',color:'var(--text-mid)',border:'1.5px solid var(--border)',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6,boxShadow:'0 1px 4px rgba(45,45,45,0.05)'}}>
+                            style={{background:'var(--card)',color:'var(--text-mid)',border:'1.5px solid var(--border)',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6,boxShadow:'0 1px 4px rgba(45,45,45,0.05)'}}>
                             <Ico.Camera/> 截圖保存
                         </button>
-                        <button onClick={()=>window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(QUIZ_SHARE_URL)}`,'_blank')}
-                            style={{background:'var(--white)',color:'var(--text-mid)',border:'1.5px solid var(--border)',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6,boxShadow:'0 1px 4px rgba(45,45,45,0.05)'}}>
+                        <button onClick={()=>{ const shareUrl = name ? `${QUIZ_SHARE_URL}?ref=${encodeURIComponent(name)}` : QUIZ_SHARE_URL; window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}`,'_blank'); }}
+                            style={{background:'var(--card)',color:'var(--text-mid)',border:'1.5px solid var(--border)',borderRadius:12,padding:'12px',fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:6,boxShadow:'0 1px 4px rgba(45,45,45,0.05)'}}>
                             <Ico.Share/> 分享測驗
                         </button>
                     </div>
@@ -1026,7 +1167,9 @@ function App() {
                     <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
                          onClick={()=>setShowSS(false)}>
                         <div className="card pop-in" style={{maxWidth:300,width:'100%',padding:'32px 24px',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
-                            <div style={{fontSize:40,marginBottom:14}}>📸</div>
+                            <div style={{width:56,height:56,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 14px',border:'1.5px solid var(--border)'}}>
+                                <Ico.Camera/>
+                            </div>
                             <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>請截圖保存</div>
                             <div style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.75,marginBottom:22}}>
                                 請使用手機截圖功能，<br/>保存您的測驗結果。
@@ -1035,6 +1178,7 @@ function App() {
                         </div>
                     </div>
                 )}
+              </div>{/* end dynStyle wrapper */}
             </Shell>
         );
     }
@@ -1043,10 +1187,18 @@ function App() {
     if (step==='lookup') return (
         <Shell>
             <div className="top-header">
-                <div style={{fontSize:11,letterSpacing:'3px',color:'rgba(255,255,255,0.4)',marginBottom:10,fontWeight:700,textTransform:'uppercase'}}>歷史紀錄查詢</div>
-                <div style={{fontSize:26,fontWeight:900,color:'#fff',marginBottom:8}}>查詢過往測驗紀錄</div>
-                <div style={{fontSize:13,color:'rgba(255,255,255,0.55)',lineHeight:1.6}}>請填寫當時測驗所填的資料</div>
                 <SpectrumStrip/>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:10}}>
+                    <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
+                        <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                        <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                        <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                        <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                    </div>
+                    <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>歷史紀錄查詢</div>
+                </div>
+                <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:8}}>查詢過往測驗紀錄</div>
+                <div style={{fontSize:13,color:'var(--text-mid)',lineHeight:1.6}}>請填寫當時測驗所填的資料</div>
             </div>
 
             <div className="content">
@@ -1055,23 +1207,27 @@ function App() {
                     <div style={{marginBottom:16}}>
                         <div style={{fontSize:13,fontWeight:700,color:'var(--text-mid)',marginBottom:14,textAlign:'center'}}>請選擇您要查詢哪一筆紀錄</div>
                         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-                            <button onClick={()=>setLookWho('adult')} style={{
+                            <button onClick={()=>setLookWho('adult')} className="identity-card" style={{
                                 padding:'24px 12px',borderRadius:20,border:'1.5px solid var(--border)',
-                                background:'var(--white)',cursor:'pointer',textAlign:'center',transition:'all 0.15s',
+                                background:'var(--card)',cursor:'pointer',textAlign:'center',transition:'all 0.15s',
                                 boxShadow:'0 2px 10px rgba(45,45,45,0.06)'
                             }}>
-                                <div style={{fontSize:32,marginBottom:10}}>🧑</div>
+                                <div style={{width:56,height:56,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',border:'1.5px solid var(--border)',color:'var(--text-dark)'}}>
+                                    <Ico.PersonAdult/>
+                                </div>
                                 <div style={{fontSize:15,fontWeight:800,color:'var(--text-dark)',marginBottom:4}}>家長紀錄</div>
                                 <div style={{fontSize:11,color:'var(--text-light)'}}>以 Email 查詢</div>
                             </button>
-                            <button onClick={()=>setLookWho('child')} style={{
+                            <button onClick={()=>setLookWho('child')} className="identity-card" style={{
                                 padding:'24px 12px',borderRadius:20,border:'1.5px solid var(--border)',
-                                background:'var(--white)',cursor:'pointer',textAlign:'center',transition:'all 0.15s',
+                                background:'var(--card)',cursor:'pointer',textAlign:'center',transition:'all 0.15s',
                                 boxShadow:'0 2px 10px rgba(45,45,45,0.06)'
                             }}>
-                                <div style={{fontSize:32,marginBottom:10}}>🧒</div>
+                                <div style={{width:56,height:56,background:'#F0FAF4',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',border:'1.5px solid rgba(46,139,90,0.2)',color:'#2E8B5A'}}>
+                                    <Ico.PersonChild/>
+                                </div>
                                 <div style={{fontSize:15,fontWeight:800,color:'var(--text-dark)',marginBottom:4}}>孩子紀錄</div>
-                                <div style={{fontSize:11,color:'var(--text-light)'}}>以孩子信箱查詢</div>
+                                <div style={{fontSize:11,color:'var(--text-light)'}}>以暱稱查詢</div>
                             </button>
                         </div>
                     </div>
@@ -1082,7 +1238,9 @@ function App() {
                     <div className="card" style={{padding:'24px 22px'}}>
                         {/* Identity header */}
                         <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:18,paddingBottom:14,borderBottom:'1px solid var(--border)'}}>
-                            <div style={{fontSize:24}}>{lookWho==='adult'?'🧑':'🧒'}</div>
+                            <div style={{width:36,height:36,borderRadius:'50%',background:lookWho==='adult'?'var(--surface)':'var(--green-pale)',display:'flex',alignItems:'center',justifyContent:'center',border:lookWho==='adult'?'1.5px solid var(--border)':'1.5px solid rgba(30,132,73,0.2)',color:lookWho==='adult'?'var(--text-dark)':'var(--green)',flexShrink:0}}>
+                                {lookWho==='adult' ? <Ico.PersonAdult/> : <Ico.PersonChild/>}
+                            </div>
                             <div>
                                 <div style={{fontSize:14,fontWeight:800,color:'var(--text-dark)'}}>{lookWho==='adult'?'家長版紀錄':'孩子版紀錄'}</div>
                                 <button onClick={()=>{setLookWho(null);setLookErr('');setLookResult(null);setLookNick('');setLookEmail('');setLookChild('');}}
@@ -1116,8 +1274,8 @@ function App() {
                                 </div>
                             </div>
                         ) : (
-                            <div style={{background:'var(--yellow-pale)',borderRadius:12,padding:'12px 14px',marginBottom:22,border:'1px solid rgba(245,196,0,0.3)'}}>
-                                <div style={{fontSize:12,fontWeight:700,color:'#9A7800',display:'flex',alignItems:'center',gap:6}}>
+                            <div style={{background:'var(--surface)',borderRadius:12,padding:'12px 14px',marginBottom:22,border:'1px solid var(--border)'}}>
+                                <div style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'flex',alignItems:'center',gap:6}}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
                                     孩子版紀錄只需填寫暱稱即可查詢
                                 </div>
@@ -1125,15 +1283,15 @@ function App() {
                         )}
 
                         {lookErr && (
-                            <div style={{fontSize:12,color:'#D63030',marginBottom:12,fontWeight:600,padding:'10px 12px',background:'#FFF5F5',borderRadius:10,border:'1px solid #FECACA'}}>
-                                ⚠ {lookErr}
+                            <div style={{fontSize:12,color:'#D63030',marginBottom:12,fontWeight:600,padding:'10px 12px',background:'#FFF5F5',borderRadius:10,border:'1px solid #FECACA',display:'flex',alignItems:'center',gap:6}}>
+                                <Ico.Warning/> {lookErr}
                             </div>
                         )}
 
                         <button className="btn-primary" onClick={doLookup} disabled={lookResult==='loading'}
                             style={{opacity:lookResult==='loading'?0.7:1}}>
                             {lookResult==='loading'
-                                ? <><span style={{display:'inline-block',width:16,height:16,border:'2px solid rgba(45,45,45,0.3)',borderTopColor:'var(--charcoal)',borderRadius:'50%',animation:'spin 0.7s linear infinite'}}/> 查詢中…</>
+                                ? <><span style={{display:'inline-block',width:16,height:16,border:'2px solid rgba(255,255,255,0.3)',borderTopColor:'#fff',borderRadius:'50%',animation:'spin 0.7s linear infinite'}}/> 查詢中…</>
                                 : <><Ico.Search/> 立即查詢紀錄</>}
                         </button>
                     </div>
@@ -1142,7 +1300,9 @@ function App() {
                 {/* Error / Not found */}
                 {lookResult && lookResult !== 'loading' && lookResult.error && (
                     <div className="card" style={{padding:'28px 22px',textAlign:'center'}}>
-                        <div style={{fontSize:40,marginBottom:14}}>😕</div>
+                        <div style={{width:64,height:64,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 14px',border:'1.5px solid var(--border)',color:'var(--text-light)'}}>
+                            <Ico.SearchOff/>
+                        </div>
                         <div style={{fontSize:17,fontWeight:800,color:'var(--text-dark)',marginBottom:8}}>查無紀錄</div>
                         <div style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.75,marginBottom:22,whiteSpace:'pre-line'}}>
                             {lookResult.error === 'missing parameters' || lookResult.error === 'not found'
