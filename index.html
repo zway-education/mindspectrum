@@ -1050,7 +1050,7 @@ function ChildApp({ onBack }) {
             <span className="block text-4xl md:text-6xl text-yellow-400 mb-2">覺知心智光譜</span>
             <span className="block text-lg md:text-xl text-yellow-300">像素怪獸版</span>
           </h1>
-          <div className="relative w-full flex flex-col items-center gap-6 min-h-[300px] justify-center">
+          <div className="relative w-full flex flex-col items-center gap-4 justify-center">
             {!showStartModal && (
               <>
                 <div className="w-32 h-32 mx-auto bg-white rounded-full flex items-center justify-center shadow-[4px_4px_0_rgba(0,0,0,0.5)] overflow-hidden relative">
@@ -1177,16 +1177,12 @@ function ChildApp({ onBack }) {
             {isZhuyinMode ? '注音 ON' : '注音 OFF'}
           </button>
         </div>
-        <div className="flex-1 flex flex-col relative overflow-hidden">
-          <div className="flex-1 flex items-center justify-center min-h-0 p-2">
+        <div className="flex-1 flex flex-col relative overflow-hidden min-h-0">
+          <div className="flex items-center justify-center p-2 pt-3">
             <div className="relative z-10 flex flex-col items-center">
-              <div className="relative bg-gray-800 p-3 rounded-2xl border-b-8 border-r-8 border-gray-900 shadow-2xl">
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-8 flex justify-between px-4 -z-10">
-                  <div className="w-1 h-10 bg-gray-400 rotate-[-30deg] origin-bottom border border-gray-600"></div>
-                  <div className="w-1 h-10 bg-gray-400 rotate-[30deg] origin-bottom border border-gray-600"></div>
-                </div>
-                <div className="bg-gray-700 p-2 rounded-xl border-4 border-gray-600 shadow-inner">
-                  <div className="relative bg-white w-64 h-56 md:w-80 md:h-64 rounded-lg overflow-hidden border-4 border-black shadow-[inset_0_0_30px_rgba(0,0,0,0.15)]">
+              <div className="relative bg-gray-800 p-2 rounded-2xl border-b-4 border-r-4 border-gray-900 shadow-xl">
+                <div className="bg-gray-700 p-1.5 rounded-xl border-2 border-gray-600 shadow-inner">
+                  <div className="relative bg-white rounded-lg overflow-hidden border-2 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.12)]" style={{width:'min(220px,62vw)',height:'min(180px,50vw)'}}>
                     <div className="absolute inset-0 z-20 pointer-events-none opacity-10" style={{backgroundImage: 'linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)', backgroundSize: '100% 4px'}}></div>
                     <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent pointer-events-none z-20"></div>
                     {!isZhuyinMode && (
@@ -1207,28 +1203,27 @@ function ChildApp({ onBack }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between mt-2 px-2">
+                <div className="flex items-center justify-between mt-1 px-1">
                   <div className="flex space-x-1">
-                    <div className="w-12 h-2 bg-gray-950 rounded-full"></div>
-                    <div className="w-12 h-2 bg-gray-950 rounded-full"></div>
+                    <div className="w-8 h-1.5 bg-gray-950 rounded-full"></div>
+                    <div className="w-8 h-1.5 bg-gray-950 rounded-full"></div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-[10px] text-gray-400 font-black tracking-widest">MONSTER-VISION</div>
-                    <div className="w-4 h-4 bg-gray-600 rounded-full border-b-2 border-black cursor-pointer active:translate-y-px"></div>
-                    <div className="w-4 h-4 bg-gray-600 rounded-full border-b-2 border-black cursor-pointer active:translate-y-px"></div>
+                  <div className="flex items-center gap-2">
+                    <div className="text-[8px] text-gray-400 font-black tracking-widest">MONSTER-V</div>
+                    <div className="w-3 h-3 bg-gray-600 rounded-full border-b border-black"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="z-30 p-4 pb-2 w-full flex justify-center">
-            <div className="bg-white border-4 border-black py-2 px-4 shadow-xl min-h-[80px] flex items-center justify-center relative rounded-xl w-full">
+          <div className="flex-1 z-30 px-3 pb-2 w-full flex items-center">
+            <div className="bg-white border-4 border-black py-3 px-4 shadow-xl flex items-center justify-center relative rounded-xl w-full">
               <div className="speech-bubble-tail"></div>
               <div className={`w-full flex flex-wrap justify-start items-center content-center ${isZhuyinMode ? 'zhuyin-grid zhuyin-mode-on' : 'text-center'}`} style={{maxWidth: '100%', margin: '0 auto'}}>
                 {isZhuyinMode ? (
                   renderZhuyinBlock(question.zhuyin)
                 ) : (
-                  <p className="w-full text-xl md:text-2xl leading-relaxed font-bold text-gray-900 tracking-wide text-center">
+                  <p className="w-full text-base leading-relaxed font-bold text-gray-900 tracking-wide text-center">
                     {question.text}
                   </p>
                 )}
@@ -1236,8 +1231,8 @@ function ChildApp({ onBack }) {
             </div>
           </div>
         </div>
-        <div className="bg-gray-800 p-4 border-t-4 border-black pb-6 relative z-20">
-          <div className="grid grid-cols-5 gap-1.5 w-full mb-4">
+        <div className="bg-gray-800 p-3 border-t-4 border-black pb-4 relative z-20">
+          <div className="grid grid-cols-5 gap-1 w-full mb-3">
             {[
               {score:5, label:"非常像我", cls:"battle-btn-5", selBg:"#c53030"},
               {score:4, label:"有點像我", cls:"battle-btn-4", selBg:"#c05621"},
@@ -1249,19 +1244,19 @@ function ChildApp({ onBack }) {
               return (
                 <button key={score} onClick={() => handleBattleOption(score)}
                   className={`battle-btn ${cls}`}
-                  style={isSel ? {background:selBg, borderColor:selBg, transform:'translate(2px,2px)', boxShadow:'1px 1px 0 #000'} : {}}>
-                  <span style={{fontSize:'20px', fontWeight:900, lineHeight:1, color: isSel?'#fff':'#1a202c'}}>{score}</span>
-                  <span style={{fontSize:'9px', fontWeight:700, color: isSel?'rgba(255,255,255,0.9)':'#4a5568', textAlign:'center', lineHeight:1.2}}>{label}</span>
-                  {isSel && <span style={{fontSize:'8px', color:'rgba(255,255,255,0.8)', fontWeight:900}}>選擇中</span>}
+                  style={{height:64, ...(isSel ? {background:selBg, borderColor:selBg, transform:'translate(2px,2px)', boxShadow:'1px 1px 0 #000'} : {})}}>
+                  <span style={{fontSize:'18px', fontWeight:900, lineHeight:1, color: isSel?'#fff':'#1a202c'}}>{score}</span>
+                  <span style={{fontSize:'8px', fontWeight:700, color: isSel?'rgba(255,255,255,0.9)':'#4a5568', textAlign:'center', lineHeight:1.2}}>{label}</span>
+                  {isSel && <span style={{fontSize:'7px', color:'rgba(255,255,255,0.8)', fontWeight:900}}>選擇中</span>}
                 </button>
               );
             })}
           </div>
           {currentQIndex > 0 ? (
-            <button onClick={handlePrevious} className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded border-2 border-gray-500 active:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-              <span>◀</span> 思考 / 上一題
+            <button onClick={handlePrevious} className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded border-2 border-gray-500 active:bg-gray-800 transition-colors flex items-center justify-center gap-2 text-sm">
+              <span>◀</span> 上一題
             </button>
-          ) : (<div className="h-[52px]"></div>)}
+          ) : (<div className="h-9"></div>)}
         </div>
       </div>
     );
@@ -1322,7 +1317,7 @@ function ChildApp({ onBack }) {
               <h3 className={`text-lg font-black ${mainType.color} mb-1`}>{mainType.typeName}</h3>
               <h2 className={`text-2xl font-bold ${mainType.textColor}`}>{pokemon.noun}</h2>
             </div>
-            <div className="flex justify-center my-6 relative">
+            <div className="flex justify-center my-3 relative">
               <div className={`w-40 h-40 bg-white rounded-full flex items-center justify-center shadow-xl overflow-hidden relative`}>
                 <div className="absolute inset-0 bg-white opacity-20 animate-spin-slow"></div>
                 <img src={pokemon.img} className="w-32 h-32 object-contain transform scale-125" alt={pokemon.name} style={{imageRendering: 'pixelated'}} />
@@ -1368,7 +1363,7 @@ function ChildApp({ onBack }) {
             </div>
           </div>
         </div>
-        <div id="saveButtons" className="flex flex-col gap-2 mt-auto">
+        <div id="saveButtons" className="flex flex-col gap-2 mt-4">
           <button onClick={handleRestart} className="w-full bg-gray-800 text-white py-3 font-bold border-4 border-gray-600 hover:bg-black active:border-gray-900"> 重新開始遊戲</button>
           <button
             onClick={() => { playSound('select'); setShowScreenshotModal(true); }}
