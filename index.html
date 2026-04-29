@@ -659,8 +659,26 @@ function App() {
                     <span style={{color:'var(--border-mid)',flexShrink:0}}><Ico.Chevron/></span>
                 </a>
 
-                {/* 彈性空間，把次要按鈕推到底部 */}
-                <div style={{flex:1,minHeight:16}}/>
+                {/* 測驗特點 */}
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,margin:'14px 0'}}>
+                    {[
+                        {num:'3',  unit:'分鐘', label:'快速完成', color:'var(--blue)'},
+                        {num:'24', unit:'題',   label:'情境選擇', color:'var(--green)'},
+                        {num:'4',  unit:'種',   label:'教養底色', color:'var(--orange)'},
+                    ].map((f,i)=>(
+                        <div key={i} style={{background:'var(--card)',borderRadius:14,padding:'14px 6px',textAlign:'center',border:'1px solid var(--border)',boxShadow:'0 2px 8px rgba(99,102,241,0.05)'}}>
+                            <div style={{fontSize:22,fontWeight:900,color:f.color,lineHeight:1.1}}>
+                                {f.num}<span style={{fontSize:13,fontWeight:700}}>{f.unit}</span>
+                            </div>
+                            <div style={{fontSize:10,color:'var(--text-light)',marginTop:5,fontWeight:600,letterSpacing:'0.5px'}}>{f.label}</div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* 引導小文字 */}
+                <p style={{fontSize:12,color:'var(--text-light)',textAlign:'center',lineHeight:1.7,marginBottom:14,padding:'0 4px'}}>
+                    在教養衝突的那一秒，你的直覺反應<br/>揭露了你的底色——先了解自己，才能陪伴孩子。
+                </p>
 
                 {/* 次要行動列 */}
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
@@ -789,6 +807,12 @@ function App() {
                                 ? <><Ico.Bolt/> 開始測驗</>
                                 : <><Ico.Gift/> 確認領取說明</>}
                         </button>
+
+                        {/* 隱私聲明 */}
+                        <p style={{fontSize:11,color:'var(--text-light)',textAlign:'center',marginTop:14,lineHeight:1.7}}>
+                            您的姓名、信箱與電話僅用於寄送測驗說明及課程資訊，<br/>
+                            不會提供予第三方，亦不作其他商業用途。
+                        </p>
                     </form>
                 </div>
 
