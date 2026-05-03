@@ -1178,11 +1178,11 @@ function ChildApp({ onBack }) {
           </button>
         </div>
         <div className="flex-1 flex flex-col relative overflow-hidden min-h-0">
-          <div className="flex items-center justify-center p-2 pt-3">
+          <div className="flex items-center justify-center p-1 pt-2">
             <div className="relative z-10 flex flex-col items-center">
-              <div className="relative bg-gray-800 p-2 rounded-2xl border-b-4 border-r-4 border-gray-900 shadow-xl">
-                <div className="bg-gray-700 p-1.5 rounded-xl border-2 border-gray-600 shadow-inner">
-                  <div className="relative bg-white rounded-lg overflow-hidden border-2 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.12)]" style={{width:'min(220px,62vw)',height:'min(180px,50vw)'}}>
+              <div className="relative bg-gray-800 p-1.5 rounded-2xl border-b-4 border-r-4 border-gray-900 shadow-xl">
+                <div className="bg-gray-700 p-1 rounded-xl border-2 border-gray-600 shadow-inner">
+                  <div className="relative bg-white rounded-lg overflow-hidden border-2 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.12)]" style={{width:'min(170px,52vw)',height:'min(140px,42vw)'}}>
                     <div className="absolute inset-0 z-20 pointer-events-none opacity-10" style={{backgroundImage: 'linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)', backgroundSize: '100% 4px'}}></div>
                     <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent pointer-events-none z-20"></div>
                     {!isZhuyinMode && (
@@ -1216,14 +1216,14 @@ function ChildApp({ onBack }) {
               </div>
             </div>
           </div>
-          <div className="flex-1 z-30 px-3 pb-2 w-full flex items-center">
-            <div className="bg-white border-4 border-black py-3 px-4 shadow-xl flex items-center justify-center relative rounded-xl w-full">
+          <div className="flex-1 z-30 px-3 pb-1 w-full flex items-center">
+            <div className="bg-white border-4 border-black py-2 px-4 shadow-xl flex items-center justify-center relative rounded-xl w-full">
               <div className="speech-bubble-tail"></div>
               <div className={`w-full flex flex-wrap justify-start items-center content-center ${isZhuyinMode ? 'zhuyin-grid zhuyin-mode-on' : 'text-center'}`} style={{maxWidth: '100%', margin: '0 auto'}}>
                 {isZhuyinMode ? (
                   renderZhuyinBlock(question.zhuyin)
                 ) : (
-                  <p className="w-full text-base leading-relaxed font-bold text-gray-900 tracking-wide text-center">
+                  <p className="w-full text-lg leading-relaxed font-bold text-gray-900 tracking-wide text-center">
                     {question.text}
                   </p>
                 )}
@@ -1843,7 +1843,7 @@ function App() {
     /* ─────────── QUIZ ─────────── */
     if (step==='quiz') return (
         <Shell>
-            <div style={{background:'var(--card)',minHeight:'100vh',width:'100%',display:'flex',flexDirection:'column'}}>
+            <div style={{background:'var(--card)',height:'100vh',width:'100%',display:'flex',flexDirection:'column',overflow:'hidden'}}>
                 {/* Progress header */}
                 <div style={{background:'var(--accent-pale)',width:'100%',flexShrink:0,borderBottom:'1px solid var(--border)'}}>
                     <div style={{maxWidth:480,margin:'0 auto',padding:'12px 18px 10px'}}>
@@ -1860,13 +1860,13 @@ function App() {
                 </div>
 
                 {/* Question + Options */}
-                <div style={{flex:1,width:'100%',maxWidth:480,margin:'0 auto',overflowY:'scroll'}} className="no-bar">
+                <div style={{flex:1,width:'100%',maxWidth:480,margin:'0 auto',overflowY:'auto'}} className="no-bar">
                     {/* Question card */}
-                    <div className={navDir==='back' ? 'slide-in-back' : 'slide-in'} key={`q-${qIdx}-${navDir}`} style={{background:'var(--card)',padding:'20px 20px 0'}}>
-                        <div style={{fontSize:20,fontWeight:700,color:'var(--text-dark)',lineHeight:1.6,paddingBottom:16,paddingTop:4,borderBottom:'2px solid var(--border)',minHeight:'clamp(90px,16vh,140px)',width:'100%',boxSizing:'border-box'}}>
+                    <div className={navDir==='back' ? 'slide-in-back' : 'slide-in'} key={`q-${qIdx}-${navDir}`} style={{background:'var(--card)',padding:'16px 20px 0'}}>
+                        <div style={{fontSize:22,fontWeight:700,color:'var(--text-dark)',lineHeight:1.6,paddingBottom:12,paddingTop:4,borderBottom:'2px solid var(--border)',minHeight:'clamp(80px,14vh,120px)',width:'100%',boxSizing:'border-box',textAlign:'center',display:'flex',alignItems:'center',justifyContent:'center'}}>
                             {QUESTIONS[qIdx]}
                         </div>
-                        <div style={{fontSize:11,color:'var(--text-light)',padding:'10px 0 4px'}}>請選擇最符合您真實狀況的選項</div>
+                        <div style={{fontSize:11,color:'var(--text-light)',padding:'6px 0 4px',textAlign:'center'}}>請選擇最符合您真實狀況的選項</div>
                     </div>
 
                     {/* Options — table-row style */}
