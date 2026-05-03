@@ -1,4 +1,4 @@
-<!-- 心智光譜測驗 v7.02 -->
+<!-- 心智光譜測驗 v7.04 -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1705,7 +1705,7 @@ function App() {
                         <Ico.Search/> 查詢過往紀錄
                     </button>
                 </div>
-                <div style={{textAlign:'center',padding:'12px 0 4px',fontSize:10,color:'var(--text-light)',letterSpacing:'1px'}}>v7.02</div>
+                <div style={{textAlign:'center',padding:'12px 0 4px',fontSize:10,color:'var(--text-light)',letterSpacing:'1px'}}>v7.04</div>
             </div>
         </Shell>
     );
@@ -1852,36 +1852,34 @@ function App() {
     /* ─────────── QUIZ ─────────── */
     if (step==='quiz') return (
         <Shell>
-            <div style={{background:'var(--card)',height:'100vh',width:'100%',display:'flex',flexDirection:'column',overflow:'hidden'}}>
-                {/* Quiz top branding */}
-                <div style={{flexShrink:0,width:'100%',background:'var(--accent-pale)',borderBottom:'1px solid var(--border)',padding:'10px 20px 8px'}}>
-                    <div style={{maxWidth:480,margin:'0 auto',display:'flex',alignItems:'center',gap:10}}>
-                        <div style={{display:'flex',alignItems:'flex-end',gap:2.5}}>
-                            <div style={{width:4,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
-                            <div style={{width:4,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
-                            <div style={{width:4,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
-                            <div style={{width:4,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+            <div style={{background:'var(--card)',height:'100vh',width:'100%',display:'flex',flexDirection:'column'}}>
+                {/* Quiz top branding + progress bar — 緊貼在一起 */}
+                <div style={{flexShrink:0,width:'100%',background:'var(--accent-pale)',borderBottom:'2px solid var(--border)'}}>
+                    <div style={{maxWidth:480,margin:'0 auto',padding:'10px 20px 0'}}>
+                        {/* Logo row */}
+                        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                            <div style={{display:'flex',alignItems:'flex-end',gap:2.5}}>
+                                <div style={{width:4,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:4,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:4,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                                <div style={{width:4,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                            </div>
+                            <div>
+                                <div style={{fontSize:15,fontWeight:900,color:'var(--text-dark)',lineHeight:1,letterSpacing:'-0.3px'}}>心智光譜</div>
+                                <div style={{fontSize:7,color:'var(--accent)',letterSpacing:'2px',fontWeight:700,textTransform:'uppercase',marginTop:2}}>MIND SPECTRUM · SEL</div>
+                            </div>
+                            <div style={{marginLeft:'auto',fontSize:11,fontWeight:700,color:'#6366F1',fontFamily:'monospace'}}>{qIdx+1} / {QUESTIONS.length}</div>
                         </div>
-                        <div>
-                            <div style={{fontSize:15,fontWeight:900,color:'var(--text-dark)',lineHeight:1,letterSpacing:'-0.3px'}}>心智光譜</div>
-                            <div style={{fontSize:7,color:'var(--accent)',letterSpacing:'2px',fontWeight:700,textTransform:'uppercase',marginTop:2}}>MIND SPECTRUM · SEL</div>
+                        {/* Progress bar — 緊接在 logo 下方 */}
+                        <div style={{height:10,background:'var(--border)',borderRadius:'0 0 0 0',overflow:'hidden',margin:'0 -20px'}}>
+                            <div style={{height:'100%',background:'#6366F1',width:`${progress}%`,transition:'width 0.3s ease'}}/>
                         </div>
                     </div>
                 </div>
 
-                {/* Question + Options (with inline progress bar) */}
+                {/* Question + Options */}
                 <div style={{flex:1,width:'100%',maxWidth:480,margin:'0 auto',overflowY:'auto'}} className="no-bar">
                   <div style={{minHeight:'100%',display:'flex',flexDirection:'column',justifyContent:'center'}}>
-                    {/* Progress bar — inline, above question */}
-                    <div style={{padding:'0 20px 10px'}}>
-                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
-                            <span style={{fontSize:11,fontWeight:700,color:'var(--text-light)',letterSpacing:'1px',textTransform:'uppercase'}}>整體進度</span>
-                            <span style={{fontSize:11,fontWeight:700,color:'#6366F1',fontFamily:'monospace'}}>{qIdx+1} / {QUESTIONS.length}</span>
-                        </div>
-                        <div style={{height:10,background:'var(--border)',borderRadius:5,overflow:'hidden'}}>
-                            <div style={{height:'100%',background:'#6366F1',width:`${progress}%`,transition:'width 0.3s ease',borderRadius:5}}/>
-                        </div>
-                    </div>
                     {/* Question card */}
                     <div className={navDir==='back' ? 'slide-in-back' : 'slide-in'} key={`q-${qIdx}-${navDir}`} style={{background:'var(--card)',padding:'16px 20px 0'}}>
                         <div style={{fontSize:25,fontWeight:700,color:'var(--text-dark)',lineHeight:1.55,paddingBottom:12,paddingTop:4,borderBottom:'2px solid var(--border)',minHeight:'clamp(80px,14vh,120px)',width:'100%',boxSizing:'border-box',textAlign:'center',display:'flex',alignItems:'center',justifyContent:'center'}}>
