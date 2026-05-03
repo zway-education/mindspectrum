@@ -52,7 +52,6 @@
 
         body, html {
             height: 100%;
-            overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
             background: var(--bg);
             -webkit-user-select: none;
@@ -1854,6 +1853,22 @@ function App() {
     if (step==='quiz') return (
         <Shell>
             <div style={{background:'var(--card)',height:'100vh',width:'100%',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+                {/* Quiz top branding */}
+                <div style={{flexShrink:0,width:'100%',background:'var(--accent-pale)',borderBottom:'1px solid var(--border)',padding:'10px 20px 8px'}}>
+                    <div style={{maxWidth:480,margin:'0 auto',display:'flex',alignItems:'center',gap:10}}>
+                        <div style={{display:'flex',alignItems:'flex-end',gap:2.5}}>
+                            <div style={{width:4,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
+                            <div style={{width:4,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
+                            <div style={{width:4,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
+                            <div style={{width:4,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
+                        </div>
+                        <div>
+                            <div style={{fontSize:15,fontWeight:900,color:'var(--text-dark)',lineHeight:1,letterSpacing:'-0.3px'}}>心智光譜</div>
+                            <div style={{fontSize:7,color:'var(--accent)',letterSpacing:'2px',fontWeight:700,textTransform:'uppercase',marginTop:2}}>MIND SPECTRUM · SEL</div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Question + Options (with inline progress bar) */}
                 <div style={{flex:1,width:'100%',maxWidth:480,margin:'0 auto',overflowY:'auto'}} className="no-bar">
                   <div style={{minHeight:'100%',display:'flex',flexDirection:'column',justifyContent:'center'}}>
@@ -1863,8 +1878,8 @@ function App() {
                             <span style={{fontSize:11,fontWeight:700,color:'var(--text-light)',letterSpacing:'1px',textTransform:'uppercase'}}>整體進度</span>
                             <span style={{fontSize:11,fontWeight:700,color:'#6366F1',fontFamily:'monospace'}}>{qIdx+1} / {QUESTIONS.length}</span>
                         </div>
-                        <div style={{height:5,background:'var(--border)',border:'1px solid var(--border-mid)',borderRadius:0,overflow:'hidden'}}>
-                            <div style={{height:'100%',background:'#6366F1',width:`${progress}%`,transition:'width 0.3s ease'}}/>
+                        <div style={{height:10,background:'var(--border)',borderRadius:5,overflow:'hidden'}}>
+                            <div style={{height:'100%',background:'#6366F1',width:`${progress}%`,transition:'width 0.3s ease',borderRadius:5}}/>
                         </div>
                     </div>
                     {/* Question card */}
