@@ -1,3 +1,4 @@
+<!-- 心智光譜測驗 v7.02 -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1182,7 +1183,7 @@ function ChildApp({ onBack }) {
             <div className="relative z-10 flex flex-col items-center">
               <div className="relative bg-gray-800 p-1.5 rounded-2xl border-b-4 border-r-4 border-gray-900 shadow-xl">
                 <div className="bg-gray-700 p-1 rounded-xl border-2 border-gray-600 shadow-inner">
-                  <div className="relative bg-white rounded-lg overflow-hidden border-2 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.12)]" style={{width:'min(170px,52vw)',height:'min(140px,42vw)'}}>
+                  <div className="relative bg-white rounded-lg overflow-hidden border-2 border-black shadow-[inset_0_0_20px_rgba(0,0,0,0.12)]" style={{width:'min(210px,62vw)',height:'min(170px,52vw)'}}>
                     <div className="absolute inset-0 z-20 pointer-events-none opacity-10" style={{backgroundImage: 'linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)', backgroundSize: '100% 4px'}}></div>
                     <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent pointer-events-none z-20"></div>
                     {!isZhuyinMode && (
@@ -1223,7 +1224,7 @@ function ChildApp({ onBack }) {
                 {isZhuyinMode ? (
                   renderZhuyinBlock(question.zhuyin)
                 ) : (
-                  <p className="w-full text-lg leading-relaxed font-bold text-gray-900 tracking-wide text-center">
+                  <p className="w-full text-xl leading-relaxed font-bold text-gray-900 tracking-wide text-center">
                     {question.text}
                   </p>
                 )}
@@ -1244,10 +1245,10 @@ function ChildApp({ onBack }) {
               return (
                 <button key={score} onClick={() => handleBattleOption(score)}
                   className={`battle-btn ${cls}`}
-                  style={{height:64, ...(isSel ? {background:selBg, borderColor:selBg, transform:'translate(2px,2px)', boxShadow:'1px 1px 0 #000'} : {})}}>
-                  <span style={{fontSize:'18px', fontWeight:900, lineHeight:1, color: isSel?'#fff':'#1a202c'}}>{score}</span>
-                  <span style={{fontSize:'8px', fontWeight:700, color: isSel?'rgba(255,255,255,0.9)':'#4a5568', textAlign:'center', lineHeight:1.2}}>{label}</span>
-                  {isSel && <span style={{fontSize:'7px', color:'rgba(255,255,255,0.8)', fontWeight:900}}>選擇中</span>}
+                  style={{height:72, ...(isSel ? {background:selBg, borderColor:selBg, transform:'translate(2px,2px)', boxShadow:'1px 1px 0 #000'} : {})}}>
+                  <span style={{fontSize:'20px', fontWeight:900, lineHeight:1, color: isSel?'#fff':'#1a202c'}}>{score}</span>
+                  <span style={{fontSize:'11px', fontWeight:700, color: isSel?'rgba(255,255,255,0.9)':'#4a5568', textAlign:'center', lineHeight:1.2}}>{label}</span>
+                  {isSel && <span style={{fontSize:'9px', color:'rgba(255,255,255,0.8)', fontWeight:900}}>選擇中</span>}
                 </button>
               );
             })}
@@ -1697,6 +1698,7 @@ function App() {
                         <Ico.Search/> 查詢過往紀錄
                     </button>
                 </div>
+                <div style={{textAlign:'center',padding:'12px 0 4px',fontSize:10,color:'var(--text-light)',letterSpacing:'1px'}}>v7.02</div>
             </div>
         </Shell>
     );
