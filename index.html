@@ -1,4 +1,4 @@
-<!-- 心智光譜測驗 v7.09 -->
+<!-- 心智光譜測驗 v7.11 -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1528,9 +1528,6 @@ function App() {
     const [childAge, setChildAge]   = useState(null);
     const [showShare, setShowShare] = useState(false);
     const [copied, setCopied]       = useState(false);
-    const [referral, setReferral]   = useState([]);
-    const [refErr, setRefErr]       = useState(false);
-    const [showConfirm, setConfirm] = useState(false);
     const [showSS, setShowSS]       = useState(false);
     const [engPwd, setEngPwd]       = useState('');
     const [showEng, setShowEng]     = useState(false);
@@ -1552,7 +1549,7 @@ function App() {
         setStep('home'); setMode('quiz'); setName(''); setEmail(''); setPhone('');
         setQIdx(0); setAnswers({}); setScores({red:0,orange:0,green:0,blue:0});
         setTotal(0); setReferral([]); setRefErr(false);
-        setConfirm(false); setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap('');
+        setShowSS(false); setShowEng(false); setEngPwd(''); setBotTrap('');
         setLookNick(''); setLookEmail(''); setLookChild(''); setLookResult(null); setLookErr(''); setLookWho(null);
         setNavDir('fwd'); setChildAge(null); setShowShare(false); setCopied(false);
     };
@@ -1585,8 +1582,7 @@ function App() {
         e.preventDefault();
         if (botTrap) return;
         if (!validPhone(phone)) { alert('請填寫正確的手機號碼（如 0912345678）'); return; }
-        if (mode === 'quiz') { setStep('quiz'); }
-        else { setStep('contact'); }
+        setStep('quiz');
     };
 
     const handleAnswer = (score) => {
@@ -1604,42 +1600,11 @@ function App() {
                     const v = (i===qIdx ? score : updated[i+1]) || 0;
                     t += v; sc[CATS[i]] += v;
                 });
-                setTotal(t); setScores(sc); setNav(false); setStep('contact');
+                setTotal(t); setScores(sc); setNav(false); setStep('result');
             }
         }, 180);
     };
 
-    const toggleRef = (o) => {
-        setRefErr(false);
-        setReferral(r => r.includes(o) ? r.filter(x=>x!==o) : [...r,o]);
-    };
-
-    const trySubmit = () => {
-        if (referral.length===0) { setRefErr(true); return; }
-        doSubmit();
-    };
-
-    const doSubmit = () => {
-        setConfirm(false);
-        setStep('result');
-        if (botTrap) return;
-        try {
-            fetch(GOOGLE_SCRIPT_URL, {
-                method:'POST', mode:'no-cors', cache:'no-cache',
-                body: JSON.stringify({
-                    identity:'家長', nickname:sanitize(name),
-                    email, phone,
-                    totalScore: mode==='direct' ? 0 : total,
-                    ...( mode==='direct' ? {red:0,orange:0,green:0,blue:0} : scores ),
-                    answers: mode==='direct' ? {} : answers,
-                    uid, mode,
-                    submittedAt: new Date().toISOString(),
-                    referral: referral.join(','),
-                    source:   referral.join(','),
-                })
-            });
-        } catch(e) { console.error(e); }
-    };
 
     const runEngineer = () => {
         if (engPwd === '259') {
@@ -1654,7 +1619,7 @@ function App() {
         QUESTIONS.forEach((_,i)=>{ const v=Math.ceil(Math.random()*5); ta[i+1]=v; tt+=v; ts[CATS[i]]+=v; });
         setName(`測試員_${rid}`); setEmail(`test${rid}@example.com`);
         setPhone('0900000000'); setAnswers(ta); setTotal(tt); setScores(ts);
-        setMode('quiz'); setShowEng(false); setEngPwd(''); setStep('contact');
+        setMode('quiz'); setShowEng(false); setEngPwd(''); setStep('result');
     };
 
     const top  = sortedTypes()[0];
@@ -1761,21 +1726,13 @@ function App() {
                 </p>
 
                 {/* 次要行動列 */}
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
-                    <button onClick={()=>{setMode('direct');setStep('register');}}
-                        style={{background:'var(--accent)',color:'#fff',border:'none',borderRadius:12,padding:'14px 10px',fontSize:13,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7,transition:'all 0.16s'}}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                        </svg>
-                        領取光譜說明
-                    </button>
+                <div>
                     <button onClick={()=>setStep('lookup')}
-                        style={{display:'flex',alignItems:'center',justifyContent:'center',gap:7,background:'var(--card)',color:'var(--text-mid)',borderRadius:12,padding:'14px 10px',fontSize:13,fontWeight:600,border:'1px solid var(--border)',cursor:'pointer',transition:'all 0.15s'}}>
+                        style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',gap:7,background:'var(--card)',color:'var(--text-mid)',borderRadius:12,padding:'14px 10px',fontSize:13,fontWeight:600,border:'1px solid var(--border)',cursor:'pointer',transition:'all 0.15s'}}>
                         <Ico.Search/> 查詢過往紀錄
                     </button>
                 </div>
-                <div style={{textAlign:'center',padding:'12px 0 4px',fontSize:10,color:'var(--text-light)',letterSpacing:'1px'}}>v7.09</div>
+                <div style={{textAlign:'center',padding:'12px 0 4px',fontSize:10,color:'var(--text-light)',letterSpacing:'1px'}}>v7.11</div>
             </div>
         </Shell>
     );
@@ -1792,18 +1749,10 @@ function App() {
                         <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
                         <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
                     </div>
-                    <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>
-                        {mode==='quiz' ? '覺知SEL' : '說明領取'}
-                    </div>
+                    <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>覺知SEL</div>
                 </div>
-                <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:8}}>
-                    {mode==='quiz' ? '覺知心智光譜 - 家長' : '填寫基本資料'}
-                </div>
-                <div style={{fontSize:13,color:'var(--text-mid)',lineHeight:1.7}}>
-                    {mode==='quiz'
-                        ? '看見自己與孩子的內在狀態'
-                        : '填寫完成後，\n心智光譜說明將寄至您的 Email。'}
-                </div>
+                <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:8}}>覺知心智光譜 - 家長</div>
+                <div style={{fontSize:13,color:'var(--text-mid)',lineHeight:1.7}}>看見自己與孩子的內在狀態</div>
             </div>
 
             <div className="content">
@@ -1833,10 +1782,7 @@ function App() {
 
                         {/* Email */}
                         <div style={{marginBottom:16}}>
-                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:7}}>
-                                您的信箱
-                                <span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>（說明將寄至此信箱）</span>
-                            </label>
+                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:7}}>您的信箱</label>
                             <div className="input-wrap">
                                 <span className="input-icon"><Ico.Mail/></span>
                                 <input type="email" required className="input-field" placeholder="example@mail.com"
@@ -1884,9 +1830,7 @@ function App() {
                         </div>
 
                         <button type="submit" className="btn-primary">
-                            {mode==='quiz'
-                                ? <><Ico.Bolt/> 開始測驗</>
-                                : <><Ico.Gift/> 確認領取說明</>}
+                            <Ico.Bolt/> 開始測驗
                         </button>
 
                         {/* 隱私聲明 */}
@@ -2011,124 +1955,7 @@ function App() {
         </Shell>
     );
 
-    /* ─────────── CONTACT ─────────── */
-    if (step==='contact') {
-        const s = sortedTypes();
-        return (
-            <Shell>
-                <div className="top-header">
-                    <SpectrumStrip/>
-                    {mode==='quiz' && <>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:8}}>
-                            <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
-                                <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
-                                <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
-                                <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
-                                <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
-                            </div>
-                            <div style={{fontSize:15,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>測驗初步結果</div>
-                        </div>
-                        <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:14}}>{s[0].label}</div>
-                        <div style={{maxWidth:300,margin:'0 auto'}}>
-                            <ScoreBar label="開創型（紅）" score={scores.red}    color="var(--red)"/>
-                            <ScoreBar label="關懷型（橙）" score={scores.orange} color="var(--orange)"/>
-                            <ScoreBar label="協調型（綠）" score={scores.green}  color="var(--green)"/>
-                            <ScoreBar label="分析型（藍）" score={scores.blue}   color="var(--blue)"/>
-                        </div>
-                    </>}
-                    {mode==='direct' && <>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:10}}>
-                            <div style={{display:'flex',alignItems:'flex-end',gap:3}}>
-                                <div style={{width:5,height:14,background:'var(--red)',borderRadius:'2px 2px 0 0'}}/>
-                                <div style={{width:5,height:9,background:'var(--orange)',borderRadius:'2px 2px 0 0'}}/>
-                                <div style={{width:5,height:18,background:'var(--green)',borderRadius:'2px 2px 0 0'}}/>
-                                <div style={{width:5,height:12,background:'var(--blue)',borderRadius:'2px 2px 0 0'}}/>
-                            </div>
-                            <div style={{fontSize:11,letterSpacing:'2px',color:'var(--accent)',fontWeight:700,textTransform:'uppercase'}}>領取心智光譜說明</div>
-                        </div>
-                        <div style={{fontSize:26,fontWeight:900,color:'var(--text-dark)',marginBottom:6}}>確認您的資料</div>
-                        <div style={{fontSize:13,color:'var(--text-mid)'}}>說明將寄至您填寫的 Email</div>
-                    </>}
-                </div>
 
-                <div className="content">
-                    <div className="card" style={{padding:'22px'}}>
-                        <div style={{fontSize:13,fontWeight:700,color:'var(--green)',marginBottom:16,display:'flex',alignItems:'center',gap:6}}>
-                            <Ico.Check/> 確認資料
-                        </div>
-
-                        <div style={{marginBottom:12}}>
-                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>姓名</label>
-                            <input className="input-field" style={{paddingLeft:14}} value={name} onChange={e=>setName(e.target.value)} placeholder="您的姓名"/>
-                        </div>
-                        <div style={{marginBottom:12}}>
-                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>
-                                Email <span style={{fontWeight:400,color:'var(--text-light)'}}>（說明寄送用）</span>
-                            </label>
-                            <input className="input-field" style={{paddingLeft:14}} value={email} onChange={e=>setEmail(e.target.value)} placeholder="example@mail.com"/>
-                        </div>
-                        <div>
-                            <label style={{fontSize:12,fontWeight:700,color:'var(--text-mid)',display:'block',marginBottom:6}}>聯繫電話</label>
-                            <input className="input-field" style={{paddingLeft:14}} value={phone}
-                                onChange={e=>setPhone(e.target.value.replace(/\D/g,'').slice(0,10))} placeholder="09xxxxxxxx" maxLength="10"/>
-                        </div>
-                    </div>
-
-                    <button onClick={()=>{
-                        if(!name||!email.includes('@')||!validPhone(phone)){alert('請填寫完整聯絡資料');return;}
-                        setConfirm(true);
-                    }} className="btn-primary" style={{marginBottom:10}}>
-                        確認並領取分析說明
-                    </button>
-                    <button onClick={reset} className="btn-ghost">返回首頁</button>
-                </div>
-
-                {/* Confirm modal */}
-                {showConfirm && (
-                    <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:99,padding:20}}
-                         onClick={e=>{if(e.target===e.currentTarget)setConfirm(false);}}>
-                        <div className="card pop-in" style={{maxWidth:360,width:'100%',padding:'28px 24px',maxHeight:'90vh',overflowY:'auto'}}>
-                            <div style={{textAlign:'center',marginBottom:18}}>
-                                <div style={{width:52,height:52,background:'var(--surface)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',border:'1.5px solid var(--border)'}}>
-                                    <Ico.Mail/>
-                                </div>
-                                <div style={{fontSize:18,fontWeight:800,color:'var(--text-dark)'}}>確認送出</div>
-                                <div style={{fontSize:13,color:'var(--text-mid)',marginTop:6,lineHeight:1.6}}>
-                                    說明將寄至 <span style={{color:'var(--charcoal)',fontWeight:800}}>{email}</span>
-                                </div>
-                            </div>
-
-                            {/* Referral */}
-                            <div style={{background:refErr?'#FFF5F5':'var(--surface)',borderRadius:16,padding:'16px',border:refErr?'1.5px solid #FECACA':'1.5px solid var(--border)',marginBottom:16}}>
-                                <div style={{fontSize:13,fontWeight:700,color:refErr?'#D63030':'var(--text-dark)',marginBottom:10}}>
-                                    如何得知本測驗？<span style={{fontSize:11,fontWeight:400,color:'var(--text-light)',marginLeft:4}}>(必填)</span>
-                                </div>
-                                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
-                                    {REFERRAL_OPTIONS.map(o=>(
-                                        <button key={o} onClick={()=>toggleRef(o)} style={{
-                                            padding:'9px 10px',borderRadius:10,fontSize:12,fontWeight:700,
-                                            border: referral.includes(o)?'2px solid var(--accent)':'1.5px solid var(--border)',
-                                            background: referral.includes(o)?'var(--accent)':'var(--card)',
-                                            color: referral.includes(o)?'#fff':'var(--text-mid)',
-                                            cursor:'pointer',display:'flex',alignItems:'center',gap:6,
-                                            transition:'all 0.15s'
-                                        }}>
-                                            <div style={{width:12,height:12,borderRadius:3,border:referral.includes(o)?'1.5px solid rgba(255,255,255,0.3)':'1.5px solid var(--border)',background:referral.includes(o)?'rgba(255,255,255,0.15)':'transparent',flexShrink:0}}/>
-                                            {o}
-                                        </button>
-                                    ))}
-                                </div>
-                                {refErr && <div style={{fontSize:11,color:'#D63030',marginTop:8,fontWeight:600}}>※ 請至少選擇一項</div>}
-                            </div>
-
-                            <button onClick={trySubmit} className="btn-primary">確認送出</button>
-                            <button onClick={()=>setConfirm(false)} style={{width:'100%',marginTop:10,padding:11,background:'var(--surface)',border:'none',borderRadius:12,fontSize:13,fontWeight:600,color:'var(--text-mid)',cursor:'pointer'}}>返回修改</button>
-                        </div>
-                    </div>
-                )}
-            </Shell>
-        );
-    }
 
     /* ─────────── RESULT ─────────── */
     if (step==='result') {
