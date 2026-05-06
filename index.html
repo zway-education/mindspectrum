@@ -1671,12 +1671,44 @@ function App() {
             if (qIdx < QUESTIONS.length - 1) {
                 setQIdx(q=>q+1); setNav(false);
             } else {
+                // ── 第 24 題答完：計算分數並自動送出到 Google Sheet ──
                 let t=0, sc={red:0,orange:0,green:0,blue:0};
                 QUESTIONS.forEach((_,i)=>{
                     const v = (i===qIdx ? score : updated[i+1]) || 0;
                     t += v; sc[CATS[i]] += v;
                 });
-                setTotal(t); setScores(sc); setNav(false); setStep('result');
+                setTotal(t); setScores(sc); setNav(false);
+
+                // ⭐ 自動送出資料到後端（doPost 觸發點）
+                try {
+                    const sheetData = {
+                        nickname: name,
+                        identity: '家長',
+                        totalScore: t,
+                        red: sc.red,
+                        orange: sc.orange,
+                        green: sc.green,
+                        blue: sc.blue,
+                        email: email,
+                        phone: phone,
+                        birthDate: childAge || '',
+                        answers: updated,
+                        uid: uid,
+                        submittedAt: new Date().toISOString()
+                    };
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        cache: 'no-cache',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(sheetData)
+                    });
+                    console.log('[心智光譜] 已自動送出測驗結果至 Google Sheet');
+                } catch (err) {
+                    console.error('[心智光譜] 送出失敗:', err);
+                }
+
+                setStep('result');
             }
         }, 180);
     };
@@ -1693,8 +1725,27 @@ function App() {
         const rid = Math.floor(Math.random()*9000)+1000;
         let ta={}, tt=0, ts={red:0,orange:0,green:0,blue:0};
         QUESTIONS.forEach((_,i)=>{ const v=Math.ceil(Math.random()*5); ta[i+1]=v; tt+=v; ts[CATS[i]]+=v; });
-        setName(`測試員_${rid}`); setEmail(`test${rid}@example.com`);
-        setPhone('0900000000'); setAnswers(ta); setTotal(tt); setScores(ts);
+        const testName  = `測試員_${rid}`;
+        const testEmail = `test${rid}@example.com`;
+        const testPhone = '0900000000';
+        setName(testName); setEmail(testEmail);
+        setPhone(testPhone); setAnswers(ta); setTotal(tt); setScores(ts);
+
+        // ⭐ 工程師模式也自動送出（驗證後端）
+        try {
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST', mode: 'no-cors', cache: 'no-cache',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    nickname: testName, identity: '家長(工程師測試)',
+                    totalScore: tt, red: ts.red, orange: ts.orange, green: ts.green, blue: ts.blue,
+                    email: testEmail, phone: testPhone, birthDate: childAge || '',
+                    answers: ta, uid: uid, submittedAt: new Date().toISOString()
+                })
+            });
+            console.log('[心智光譜] 工程師模式已送出測試資料');
+        } catch (err) { console.error('[心智光譜] 送出失敗:', err); }
+
         setMode('quiz'); setShowEng(false); setEngPwd(''); setStep('result');
     };
 
