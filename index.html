@@ -90,7 +90,7 @@
             .btn-primary:hover   { background: var(--accent-dark); }
             .btn-secondary:hover { background: var(--surface); }
             .btn-outline:hover   { background: var(--surface); border-color: var(--border-mid); }
-            .btn-ghost:hover     { color: var(--text-mid); }
+            .btn-ghost:hover     { color: var(--text-dark); }
             .identity-card:hover { background: var(--surface); border-color: var(--border-mid); }
         }
 
@@ -202,16 +202,17 @@
             width: 100%;
             background: transparent;
             border: none;
-            color: var(--text-light);
+            color: var(--text-mid);
             padding: 12px;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
         }
+        .btn-ghost:hover { color: var(--text-dark); }
 
         .input-field {
             width: 100%;
@@ -450,23 +451,23 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            width: 2.8rem;
-            height: 3.0rem;
-            margin: 0 0 -10px 0;
+            width: clamp(1.8rem, 6.5vw, 2.4rem);
+            height: clamp(2rem, 7vw, 2.6rem);
+            margin: 0 0 -8px 0;
             vertical-align: middle;
         }
         .zhuyin-punct-block {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 2.8rem;
-            height: 3.0rem;
-            margin: 0 0 -10px 0;
+            width: clamp(1.8rem, 6.5vw, 2.4rem);
+            height: clamp(2rem, 7vw, 2.6rem);
+            margin: 0 0 -8px 0;
             vertical-align: middle;
         }
-        .zhuyin-main-char { font-size: 1.4em; line-height: 1; }
+        .zhuyin-main-char { font-size: 1.2em; line-height: 1; }
         .zhuyin-punct-char {
-            font-size: 1.4em; line-height: 1;
+            font-size: 1.2em; line-height: 1;
             font-family: "BiauKai", "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
             font-weight: bold;
         }
@@ -699,6 +700,8 @@ const SubmitQueue = (() => {
 </script>
 
 <script type="text/babel">
+
+
 
 
 
@@ -1289,7 +1292,7 @@ const Typewriter = ({ text, speed = 40, isTyping, onComplete }) => {
 /* ════════════════════════════════
    ChildApp 元件
 ════════════════════════════════ */
-function ChildApp({ onBack }) {
+function ChildApp({ onBack, onSwitchToParent }) {
   const { useMemo } = React;
   const [scene, setScene] = useState('intro');
 
@@ -1557,7 +1560,7 @@ function ChildApp({ onBack }) {
 
   if (scene === 'intro') {
     return (
-      <div className={`h-full w-full ${introBgClass} flex flex-col items-center justify-center p-6 text-white relative transition-colors duration-1000 overflow-hidden`} style={{ fontFamily: "'DotGothic16', sans-serif" }}>
+      <div className={`h-full w-full ${introBgClass} flex flex-col items-center justify-between pt-3 pb-3 px-4 text-white relative transition-colors duration-1000 overflow-hidden`} style={{ fontFamily: "'DotGothic16', sans-serif" }}>
         <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url('${INTRO_BG_URL}')` }}></div>
 
         {/* Decorative corner sparkles */}
@@ -1639,14 +1642,21 @@ function ChildApp({ onBack }) {
             </div>
           }
         </div>
-        <div className="absolute bottom-2 text-center w-full px-2" style={{ zIndex: -1, opacity: .5, fontFamily: "'Noto Sans TC',sans-serif" }}>
-          <div className="text-[10px] text-gray-500 mb-0.5">© 覺知心智光譜2026_v2</div>
-          <div className="text-[9px] text-gray-400 leading-tight">
+        <div className="absolute bottom-2 text-center w-full px-2" style={{ fontFamily: "'Noto Sans TC',sans-serif" }}>
+          {onSwitchToParent &&
+          <button type="button" onClick={onSwitchToParent}
+          className="inline-flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-1.5 rounded-full border-2 border-white/50 active:translate-y-0.5 transition-all mb-2"
+          style={{ fontSize: 12, backdropFilter: 'blur(6px)' }}>
+              👤 去做家長版測驗 →
+            </button>
+          }
+          <div className="text-[10px] text-white/70 mb-0.5">© 覺知心智光譜2026_v2</div>
+          <div className="text-[9px] text-white/60 leading-tight">
             此測驗僅供教育練習使用，非官方內容。<br />
             Pixel Art Monsters © 2026
           </div>
-          <button onClick={() => onBack && onBack()} style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', background: 'none', border: 'none', cursor: 'pointer', marginTop: 4 }}>← 返回首頁</button>
-          <button type="button" onClick={() => setShowEngineerModal(true)} style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', background: 'none', border: 'none', cursor: 'pointer', marginLeft: 10, marginTop: 4 }}>工程師</button>
+          <button onClick={() => onBack && onBack()} style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', background: 'none', border: 'none', cursor: 'pointer', marginTop: 4 }}>← 返回首頁</button>
+          <button type="button" onClick={() => setShowEngineerModal(true)} style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer', marginLeft: 10, marginTop: 4 }}>工程師</button>
         </div>
 
         {showEngineerModal &&
@@ -1818,7 +1828,7 @@ function ChildApp({ onBack }) {
             <div className="bg-white border-[3px] border-black py-3 px-4 shadow-[4px_4px_0_#000] rounded-2xl mx-1 mb-2 relative">
               <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-0 h-0" style={{ borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderBottom: '10px solid white' }} />
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-0 h-0" style={{ borderLeft: '13px solid transparent', borderRight: '13px solid transparent', borderBottom: '13px solid black', zIndex: -1 }} />
-              <div className={`w-full flex justify-center items-center ${isZhuyinMode ? 'zhuyin-grid zhuyin-mode-on' : ''}`} style={{ minHeight: '3.6em', fontWeight: "700", opacity: "1", textAlign: "center", gap: "0px", justifyContent: "center", alignItems: "center", letterSpacing: "-1.7px", margin: "0px", borderWidth: "0px", height: "81px", width: "365px" }}>
+              <div className={`w-full flex justify-center items-center ${isZhuyinMode ? 'zhuyin-grid zhuyin-mode-on' : ''}`} style={{ minHeight: '3.6em', fontWeight: "700", opacity: "1", textAlign: "center", gap: "0px", alignItems: "center", letterSpacing: "-1.7px", margin: "0px", borderWidth: "0px", height: "81px", width: "424px", justifyContent: "flex-start" }}>
                 {isZhuyinMode ?
                 renderZhuyinBlock(question.zhuyin) :
                 <p className="text-xl leading-relaxed font-black text-gray-900 tracking-wide text-center py-1 mx-auto" style={{ fontFamily: "'Noto Sans TC',sans-serif", textWrap: 'balance', maxWidth: '95%' }}>
@@ -2193,8 +2203,8 @@ function ChildApp({ onBack }) {
             <div className="bg-white border-4 border-black rounded-3xl max-w-sm w-full relative shadow-[8px_8px_0_rgba(0,0,0,0.4)]" onClick={(e) => e.stopPropagation()} style={{ fontFamily: "'M PLUS Rounded 1c','Noto Sans TC',sans-serif", maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
               {/* Floating close button — always visible above scroll */}
               <button onClick={() => setShowGuideModal(false)}
-                className="absolute -top-3 -right-3 w-11 h-11 bg-white text-gray-800 hover:bg-red-500 hover:text-white font-black text-lg rounded-full flex items-center justify-center border-[3px] border-black shadow-[3px_3px_0_#000] active:translate-y-0.5 z-30"
-                style={{ borderWidth: '3px' }}>✕</button>
+            className="absolute -top-3 -right-3 w-11 h-11 bg-white text-gray-800 hover:bg-red-500 hover:text-white font-black text-lg rounded-full flex items-center justify-center border-[3px] border-black shadow-[3px_3px_0_#000] active:translate-y-0.5 z-30"
+            style={{ borderWidth: '3px' }}>✕</button>
 
               {/* Scrollable inner container */}
               <div className="overflow-y-auto rounded-3xl" style={{ maxHeight: '90vh' }}>
@@ -2439,7 +2449,9 @@ function App() {
       { width: '100%', maxWidth: 480, height: '92vh', overflow: 'hidden', borderRadius: 32, boxShadow: '0 32px 80px rgba(0,0,0,0.45)', display: 'flex', flexDirection: 'column' } :
       { width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }
       }>
-                <ChildApp onBack={() => setShowChildApp(false)} />
+                <ChildApp onBack={() => setShowChildApp(false)}
+        onSwitchToParent={() => {setShowChildApp(false);setMode('quiz');setStep('register');}} />
+        
             </div>
         </div>);
 
@@ -2667,7 +2679,7 @@ function App() {
                     </form>
                 </div>
 
-                <button onClick={reset} className="btn-ghost"><Ico.ChevronL /> 返回</button>
+                <button onClick={reset} className="btn-ghost" style={{ color: "rgb(0, 0, 0)" }}><Ico.ChevronL /> 返回</button>
 
                 <div style={{ textAlign: 'center', marginTop: 16 }}>
                     <button onClick={() => setShowEng(true)} style={{ fontSize: 10, color: 'var(--border)', background: 'none', border: 'none', cursor: 'pointer' }}>工程師</button>
