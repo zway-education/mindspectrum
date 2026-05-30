@@ -726,6 +726,23 @@ const REVIEW_RECORDS_URL = "https://sites.google.com/view/mindtest-review/%E9%A6
 const LINE_ADD_FRIEND_URL = "https://lin.ee/nnDYAZE";
 const QUIZ_SHARE_URL = "https://zway-education.github.io/mindspectrum/";
 
+// 站點計數器（Supabase）：來訪人數 + 累積測試人數。任何失敗一律靜默，不影響測驗流程。
+const SUPABASE_URL = "https://tlzrznomcpstwdkfshsk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_sGUPh35w_Sqp2u1PoHXV3w_9h1vQo04";
+async function msCounterRpc(fn, body) {
+  const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/" + fn, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body || {})
+  });
+  if (!res.ok) throw new Error("ms counter " + fn + " HTTP " + res.status);
+  return res.json();
+}
+
 const TYPE_INFO = {
   red: { label: "紅色・開創型", title: "紅色家長：追求效率的「小英雄守護者」", stress: "習慣說「快點」、「我說了算」、「為什麼還沒做好？」", strength: "具備極強的行動力、突破力與主導感。", practice: "練習「三秒鐘留白」。強迫自己閉嘴三秒，改問：「我現在是想解決問題，還是想接住這個孩子？」", barColor: "#D63030", darkColor: "#9B2121", bgColor: "#FFF0F0", borderColor: "rgba(214,48,48,0.18)" },
   orange: { label: "橙色・關懷型", title: "橙色家長：渴望連結的「共情大師」", stress: "容易情緒波動，會說「你這樣讓媽媽很難過」、「你為什麼不理我？」", strength: "天生的雷達，對情感與連結有高度精準的感受力。", practice: "練習「劃分心理邊界」。告訴自己：「孩子的情緒是他的，我的愛不會因為他的情緒而改變。」", barColor: "#E8600A", darkColor: "#B84A00", bgColor: "#FFF0E6", borderColor: "rgba(232,96,10,0.18)" },
@@ -2320,6 +2337,39 @@ function App() {
   const [lookWho, setLookWho] = useState(null);
   const [uid] = useState(() => 'u_' + Math.random().toString(36).slice(2, 9));
   const [showChildApp, setShowChildApp] = useState(false);
+  const [siteStats, setSiteStats] = useState(null); // { visits, tests }
+  const testCountedRef = useRef(false);
+
+  // 來訪人數：每次造訪 +1（同一 session 只加一次），並讀回兩個計數顯示
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        if (!sessionStorage.getItem('ms_visited')) {
+          sessionStorage.setItem('ms_visited', '1');
+          try { await msCounterRpc('ms_bump_counter', { counter_name: 'visits' }); } catch (e) {}
+        }
+        const rows = await msCounterRpc('ms_get_counters');
+        if (!alive) return;
+        const m = {};(rows || []).forEach((r) => {m[r.name] = r.value;});
+        setSiteStats({ visits: m.visits, tests: m.tests });
+      } catch (e) {/* 計數失敗一律靜默，不影響測驗 */}
+    })();
+    return () => {alive = false;};
+  }, []);
+
+  // 累積測試人數：完成測驗（進入 result）時 +1，每次載入只加一次
+  useEffect(() => {
+    if (step === 'result' && !testCountedRef.current) {
+      testCountedRef.current = true;
+      (async () => {
+        try {
+          const v = await msCounterRpc('ms_bump_counter', { counter_name: 'tests' });
+          if (typeof v === 'number') setSiteStats((s) => s ? { ...s, tests: v } : { tests: v });
+        } catch (e) {/* 靜默 */}
+      })();
+    }
+  }, [step]);
 
   const sortedTypes = () =>
   ['red', 'orange', 'green', 'blue'].
@@ -2512,6 +2562,26 @@ function App() {
                         </div>
           )}
                 </div>
+                {/* 社群實證：累積來訪 / 完成數（取自 Supabase 計數器，載入失敗則整列靜默隱藏） */}
+                {siteStats && (siteStats.visits != null || siteStats.tests != null) &&
+        <div style={{ display: 'flex', gap: 8, marginTop: 8, animation: 'fadeUp .55s cubic-bezier(.22,.68,0,1.15) .48s both' }}>
+                    {siteStats.visits != null &&
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, background: 'var(--card)', borderRadius: 14, padding: '12px 6px', border: '1px solid var(--border)', boxShadow: '0 2px 8px rgba(99,102,241,0.05)' }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: 19, fontWeight: 900, color: 'var(--text-dark)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{Number(siteStats.visits).toLocaleString()}</div>
+                            <div style={{ fontSize: 10, color: 'var(--text-light)', marginTop: 4, fontWeight: 600, letterSpacing: '0.5px' }}>累積來訪人次</div>
+                        </div>
+                    </div>}
+                    {siteStats.tests != null &&
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, background: 'var(--card)', borderRadius: 14, padding: '12px 6px', border: '1px solid var(--border)', boxShadow: '0 2px 8px rgba(99,102,241,0.05)' }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: 19, fontWeight: 900, color: 'var(--text-dark)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{Number(siteStats.tests).toLocaleString()}</div>
+                            <div style={{ fontSize: 10, color: 'var(--text-light)', marginTop: 4, fontWeight: 600, letterSpacing: '0.5px' }}>人完成測驗</div>
+                        </div>
+                    </div>}
+                </div>}
             </div>
 
             {/* Content */}
